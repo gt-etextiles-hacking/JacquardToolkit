@@ -1,0 +1,408 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4FE3066B0101F921D47E40DD /* Pods_JacquardToolkitExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD877E47F75A4D1CEC368C2 /* Pods_JacquardToolkitExample.framework */; };
+		8288E20721AD9B3400F03ACC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8288E20621AD9B3400F03ACC /* AppDelegate.swift */; };
+		8288E20921AD9B3400F03ACC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8288E20821AD9B3400F03ACC /* ViewController.swift */; };
+		8288E20C21AD9B3400F03ACC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8288E20A21AD9B3400F03ACC /* Main.storyboard */; };
+		8288E20E21AD9B3600F03ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8288E20D21AD9B3600F03ACC /* Assets.xcassets */; };
+		8288E21121AD9B3600F03ACC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8288E20F21AD9B3600F03ACC /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		02B7479AF6060907362D077A /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JacquardToolkitExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
+		8288E20321AD9B3300F03ACC /* JacquardToolkitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JacquardToolkitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8288E20621AD9B3400F03ACC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8288E20821AD9B3400F03ACC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8288E20B21AD9B3400F03ACC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8288E20D21AD9B3600F03ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8288E21021AD9B3600F03ACC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8288E21221AD9B3600F03ACC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDD877E47F75A4D1CEC368C2 /* Pods_JacquardToolkitExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JacquardToolkitExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F584682CA4C5EAD348810008 /* Pods-JacquardToolkitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JacquardToolkitExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8288E20021AD9B3300F03ACC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FE3066B0101F921D47E40DD /* Pods_JacquardToolkitExample.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8288E1FA21AD9B3300F03ACC = {
+			isa = PBXGroup;
+			children = (
+				8288E20521AD9B3300F03ACC /* JacquardToolkitExample */,
+				8288E20421AD9B3300F03ACC /* Products */,
+				ACC14E6BA8525EA84217D428 /* Pods */,
+				E6E1AA58A3A1DB6A05F6383E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8288E20421AD9B3300F03ACC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8288E20321AD9B3300F03ACC /* JacquardToolkitExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8288E20521AD9B3300F03ACC /* JacquardToolkitExample */ = {
+			isa = PBXGroup;
+			children = (
+				8288E20621AD9B3400F03ACC /* AppDelegate.swift */,
+				8288E20821AD9B3400F03ACC /* ViewController.swift */,
+				8288E20A21AD9B3400F03ACC /* Main.storyboard */,
+				8288E20D21AD9B3600F03ACC /* Assets.xcassets */,
+				8288E20F21AD9B3600F03ACC /* LaunchScreen.storyboard */,
+				8288E21221AD9B3600F03ACC /* Info.plist */,
+			);
+			path = JacquardToolkitExample;
+			sourceTree = "<group>";
+		};
+		ACC14E6BA8525EA84217D428 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				02B7479AF6060907362D077A /* Pods-JacquardToolkitExample.debug.xcconfig */,
+				F584682CA4C5EAD348810008 /* Pods-JacquardToolkitExample.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E6E1AA58A3A1DB6A05F6383E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDD877E47F75A4D1CEC368C2 /* Pods_JacquardToolkitExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8288E20221AD9B3300F03ACC /* JacquardToolkitExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8288E21521AD9B3600F03ACC /* Build configuration list for PBXNativeTarget "JacquardToolkitExample" */;
+			buildPhases = (
+				D6CCFF4D21230B177FB792F6 /* [CP] Check Pods Manifest.lock */,
+				8288E1FF21AD9B3300F03ACC /* Sources */,
+				8288E20021AD9B3300F03ACC /* Frameworks */,
+				8288E20121AD9B3300F03ACC /* Resources */,
+				8170B61D88760CE5B29D6B20 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JacquardToolkitExample;
+			productName = JacquardToolkitExample;
+			productReference = 8288E20321AD9B3300F03ACC /* JacquardToolkitExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8288E1FB21AD9B3300F03ACC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Caleb Rudnicki";
+				TargetAttributes = {
+					8288E20221AD9B3300F03ACC = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = 8288E1FE21AD9B3300F03ACC /* Build configuration list for PBXProject "JacquardToolkitExample" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8288E1FA21AD9B3300F03ACC;
+			productRefGroup = 8288E20421AD9B3300F03ACC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8288E20221AD9B3300F03ACC /* JacquardToolkitExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8288E20121AD9B3300F03ACC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8288E21121AD9B3600F03ACC /* LaunchScreen.storyboard in Resources */,
+				8288E20E21AD9B3600F03ACC /* Assets.xcassets in Resources */,
+				8288E20C21AD9B3400F03ACC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8170B61D88760CE5B29D6B20 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/JacquardToolkit/JacquardToolkit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JacquardToolkit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6CCFF4D21230B177FB792F6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JacquardToolkitExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8288E1FF21AD9B3300F03ACC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8288E20921AD9B3400F03ACC /* ViewController.swift in Sources */,
+				8288E20721AD9B3400F03ACC /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8288E20A21AD9B3400F03ACC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8288E20B21AD9B3400F03ACC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8288E20F21AD9B3600F03ACC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8288E21021AD9B3600F03ACC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8288E21321AD9B3600F03ACC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8288E21421AD9B3600F03ACC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8288E21621AD9B3600F03ACC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02B7479AF6060907362D077A /* Pods-JacquardToolkitExample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 92DETN2MKQ;
+				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.calebrudnicki.JacquardToolkitExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8288E21721AD9B3600F03ACC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F584682CA4C5EAD348810008 /* Pods-JacquardToolkitExample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 92DETN2MKQ;
+				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.calebrudnicki.JacquardToolkitExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8288E1FE21AD9B3300F03ACC /* Build configuration list for PBXProject "JacquardToolkitExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8288E21321AD9B3600F03ACC /* Debug */,
+				8288E21421AD9B3600F03ACC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8288E21521AD9B3600F03ACC /* Build configuration list for PBXNativeTarget "JacquardToolkitExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8288E21621AD9B3600F03ACC /* Debug */,
+				8288E21721AD9B3600F03ACC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8288E1FB21AD9B3300F03ACC /* Project object */;
+}
