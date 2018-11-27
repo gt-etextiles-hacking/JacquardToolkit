@@ -16,4 +16,9 @@ public class Service {
         return "Did Some Stuff, here you go homeboi"
     }
     
+    public static func connectToJacket() -> String {
+        return "CONNECTING TO JACKET"
+    }
+    
+    
 }
