@@ -1,6 +1,6 @@
 {
   "name": "JacquardToolkit",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "summary": "This development toolkit for the Levi's Jacquard.",
   "description": "This is a framework for interacting with the Levi's Jacquard made by Caleb Rudnicki",
   "homepage": "https://github.com/calebrudnicki/JacquardToolkit",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/calebrudnicki/JacquardToolkit.git",
-    "tag": "1.0.0"
+    "tag": "1.0.3"
   },
   "source_files": "JacquardToolkit/**/*.swift"
 }

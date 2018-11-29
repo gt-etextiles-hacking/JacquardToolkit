@@ -10,13 +10,20 @@ import UIKit
 import JacquardToolkit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let myString = Service.doSomething()
-        print(myString)
+        Service.shared.activateBlutooth()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+            Service.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
+        })
+        
     }
-
+    
+    @IBAction func glowButtonTapped(_ sender: Any) {
+        Service.shared.rainbowGlowJacket()
+    }
+    
 
 }
 
