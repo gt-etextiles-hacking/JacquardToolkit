@@ -9,21 +9,26 @@
 import UIKit
 import JacquardToolkit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, JacquardServiceDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Service.shared.activateBlutooth()
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
-            Service.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
-        })
-        
+        JacquardService.shared.delegate = self
+        JacquardService.shared.activateBlutooth()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            JacquardService.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
+        }
     }
     
     @IBAction func glowButtonTapped(_ sender: Any) {
-        Service.shared.rainbowGlowJacket()
+        JacquardService.shared.rainbowGlowJacket()
     }
-    
+
+    func gestureDetected(gestureString: String) {
+        print("The gesture that was detected was \(gestureString)")
+    }
 
 }
+
+
 

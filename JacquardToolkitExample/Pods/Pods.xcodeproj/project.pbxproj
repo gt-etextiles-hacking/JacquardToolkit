@@ -13,7 +13,7 @@
 		1C51CF0E1B337275AF7AE71217F5FF9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		4BB3AF4FCAC4EF7A7A12039C35375D7B /* JacquardToolkit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 354465B1D1AE922001F434D5A88058FB /* JacquardToolkit-dummy.m */; };
 		C0842465925767B5DC5C4F7E912988B6 /* Pods-JacquardToolkitExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA5F84CAAE70FAD42FF8DBC6FBA085DD /* Pods-JacquardToolkitExample-dummy.m */; };
-		DF7A5BED7B8C61156ADA1B7042E675C3 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64794208534C4019C572CAEF239624B1 /* Service.swift */; };
+		DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64794208534C4019C572CAEF239624B1 /* JacquardService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +35,7 @@
 		354465B1D1AE922001F434D5A88058FB /* JacquardToolkit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JacquardToolkit-dummy.m"; sourceTree = "<group>"; };
 		4D927A0F3D90A91F0CD13C28063F981A /* Pods-JacquardToolkitExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JacquardToolkitExample-resources.sh"; sourceTree = "<group>"; };
 		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		64794208534C4019C572CAEF239624B1 /* Service.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Service.swift; path = JacquardToolkit/Service.swift; sourceTree = "<group>"; };
+		64794208534C4019C572CAEF239624B1 /* JacquardService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JacquardService.swift; path = JacquardToolkit/JacquardService.swift; sourceTree = "<group>"; };
 		8F8CF58E8A0B15B876960BAE746EC2DE /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A369364D996FD4384B7B898B02003F2C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 		2E07CD6BDC3CE0F93A55557A3FD68755 /* JacquardToolkit */ = {
 			isa = PBXGroup;
 			children = (
-				64794208534C4019C572CAEF239624B1 /* Service.swift */,
+				64794208534C4019C572CAEF239624B1 /* JacquardService.swift */,
 				DB5F42FBD7861D27724C8730B8679C87 /* Pod */,
 				F897B991AD552959F1217CAC588CAA98 /* Support Files */,
 			);
@@ -264,7 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BB3AF4FCAC4EF7A7A12039C35375D7B /* JacquardToolkit-dummy.m in Sources */,
-				DF7A5BED7B8C61156ADA1B7042E675C3 /* Service.swift in Sources */,
+				DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
