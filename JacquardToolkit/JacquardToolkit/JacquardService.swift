@@ -10,7 +10,11 @@ import Foundation
 import CoreBluetooth
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
-    func gestureDetected(gestureString: String)
+    func didDetectDoubleTapGesture()
+    func didDetectBrushInGesture()
+    func didDetectBrushOutGesture()
+    func didDetectCoverGesture()
+    func didDetectScratchGesture()
 }
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
@@ -43,27 +47,32 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
 
     public func rainbowGlowJacket() {
         if CBManagerState.poweredOn.rawValue == 5 {
-            let dataval = dataWithHexString(hex: "801308001008180BDA060A0810107830013801")
-            let dataval1 = dataWithHexString(hex: "414000")
-            peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
-            peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
+            let dataval = JSHelper.shared.dataWithHexString(hex: "801308001008180BDA060A0810107830013801")
+            let dataval1 = JSHelper.shared.dataWithHexString(hex: "414000")
+            if glowCharacteristic != nil {
+                peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
+                peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
+            } else {
+                NSLog("The glow characteristic has not yet been registered...it doesn't seem like the core bluetooth manager has connected to your jacket. Trying to connect core blutetooth...")
+                centralManager.connect(peripheralObject, options: nil)
+            }
         }
     }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
-            print("Unknown")
+            NSLog(JSConstants.JSStrings.CentralManagerState.unknown)
         case .resetting:
-            print("Resetting")
+            NSLog(JSConstants.JSStrings.CentralManagerState.resetting)
         case .unsupported:
-            print("Unsupported")
+            NSLog(JSConstants.JSStrings.CentralManagerState.unsupporting)
         case .unauthorized:
-            print("Unauthorized")
+            NSLog(JSConstants.JSStrings.CentralManagerState.unauthorized)
         case .poweredOn:
-            print("Powered On")
+            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOn)
         case .poweredOff:
-            print("Powered Off")
+            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOff)
         }
 
     }
@@ -103,65 +112,21 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        delegate?.gestureDetected(gestureString: bodyLocation(from: characteristic))
+        let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+        switch gesture {
+        case .doubleTap:
+            delegate?.didDetectDoubleTapGesture()
+        case .brushIn:
+            delegate?.didDetectBrushInGesture()
+        case .brushOut:
+            delegate?.didDetectBrushOutGesture()
+        case .cover:
+            delegate?.didDetectCoverGesture()
+        case .scratch:
+            delegate?.didDetectScratchGesture()
+        default:
+            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+        }
     }
     
-    private func bodyLocation(from characteristic: CBCharacteristic) -> String {
-        guard let characteristicData = characteristic.value,
-            let byte = characteristicData.first else { return "Error" }
-        
-        switch byte {
-        case 0: return "HAJString.hajGestureUndefined"
-        case 1: return "HAJString.hajGestureDoubleTap"
-        case 2: return "HAJString.hajGestureBrushIn"
-        case 3: return "HAJString.hajGestureBrushOut"
-        case 4: return "HAJString.hajGestureUndefined"
-        case 5: return "HAJString.hajGestureUndefined"
-        case 6: return "HAJString.hajGestureUndefined"
-        case 7: return "HAJString.hajGestureCover"
-        case 8: return "HAJString.hajGestureScratch"
-        default:
-            return "HAJString.hajGestureUndefined"
-        }
-    }
 }
-
-extension JacquardService {
-
-    private func dataWithHexString(hex: String) -> Data {
-        var hex = hex
-        var data = Data()
-        while(hex.count > 0) {
-            let subIndex = hex.index(hex.startIndex, offsetBy: 2)
-            let c = String(hex[..<subIndex])
-            hex = String(hex[subIndex...])
-            var ch: UInt32 = 0
-            Scanner(string: c).scanHexInt32(&ch)
-            var char = UInt8(ch)
-            data.append(&char, count: 1)
-        }
-        return data
-    }
-
-}
-
-//public protocol ServiceDelegate: NSObjectProtocol {
-//    func timerFired()
-//}
-//
-//public class Service: NSObject, ServiceDelegate {
-//
-//    var timer = Timer()
-//    public static let shared = Service()
-//    public weak var delegate: ServiceDelegate?
-//
-//    public func scheduledTimerWithTimeInterval(){
-//        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerFired), userInfo: nil, repeats: true)
-//    }
-//
-//    @objc public func timerFired() {
-//        NSLog("timerfired")
-//        delegate?.timerFired()
-//    }
-//
-//}
