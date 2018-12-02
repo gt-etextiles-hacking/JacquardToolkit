@@ -48,23 +48,23 @@ Service.shared.rainbowGlowJacket()
 extension ViewController: JacquardServiceDelegate {
 
 func didDetectDoubleTapGesture() {
-//Detected Double Tap Gesture
+    //Detected Double Tap Gesture
 }
 
 func didDetectBrushInGesture() {
-//Detected Brush In Gesture
+    //Detected Brush In Gesture
 }
 
 func didDetectBrushOutGesture() {
-//Detected Brush Out Gesture
+    //Detected Brush Out Gesture
 }
 
 func didDetectCoverGesture() {
-//Detected Cover Gesture
+    //Detected Cover Gesture
 }
 
 func didDetectScratchGesture() {
-//Detected Scratch Gesture
+    //Detected Scratch Gesture
 }
 
 }
