@@ -9,7 +9,7 @@
 import UIKit
 import JacquardToolkit
 
-class ViewController: UIViewController, JacquardServiceDelegate {
+class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +24,28 @@ class ViewController: UIViewController, JacquardServiceDelegate {
         JacquardService.shared.rainbowGlowJacket()
     }
 
-    func gestureDetected(gestureString: String) {
-        print("The gesture that was detected was \(gestureString)")
-    }
-
 }
 
-
-
+extension ViewController: JacquardServiceDelegate {
+    
+    func didDetectDoubleTapGesture() {
+        print("didDetectDoubleTapGesture")
+    }
+    
+    func didDetectBrushInGesture() {
+        print("didDetectBrushInGesture")
+    }
+    
+    func didDetectBrushOutGesture() {
+        print("didDetectBrushOutGesture")
+    }
+    
+    func didDetectCoverGesture() {
+        print("didDetectCoverGesture")
+    }
+    
+    func didDetectScratchGesture() {
+        print("didDetectScratchGesture")
+    }
+    
+}

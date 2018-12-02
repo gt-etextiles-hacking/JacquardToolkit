@@ -1,12 +1,13 @@
 # JacquardToolkit
 
-JacquardToolkit is a iOS frameowork to enable developers to develop their own applications using their Levi's Jacquard..
+JacquardToolkit is a iOS frameowork to enable developers to develop their own applications using their Levi's Jacquard...
 
-# New Features!
+# New Features
 
 - Enable your applications bluetooth to start searching nearby devices
 - Ability to easily connect with your own Levi's Jacquard
 - Send a rainbow glow to your jacket with ease
+- React to gesture the user performs on their jacket
 
 ### Installation
 
@@ -37,10 +38,39 @@ Service.shared.activateBlutooth()
 Service.shared.connectToJacket(uuidString: String)
 ```
 
-2. Send a colorful rainbow glow to your jacket: 
+3. Send a colorful rainbow glow to your jacket: 
 ```sh
 Service.shared.rainbowGlowJacket()
 ```
+
+4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch: 
+```sh
+extension ViewController: JacquardServiceDelegate {
+
+func didDetectDoubleTapGesture() {
+//Detected Double Tap Gesture
+}
+
+func didDetectBrushInGesture() {
+//Detected Brush In Gesture
+}
+
+func didDetectBrushOutGesture() {
+//Detected Brush Out Gesture
+}
+
+func didDetectCoverGesture() {
+//Detected Cover Gesture
+}
+
+func didDetectScratchGesture() {
+//Detected Scratch Gesture
+}
+
+}
+```
+
+Be sure to check out the example application for more information (JacquardToolkitExample).
 
 License
 ----
