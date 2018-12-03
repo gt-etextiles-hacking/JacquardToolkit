@@ -43,29 +43,29 @@ Service.shared.connectToJacket(uuidString: String)
 Service.shared.rainbowGlowJacket()
 ```
 
-4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch: 
+4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch): 
 ```sh
 extension ViewController: JacquardServiceDelegate {
 
-func didDetectDoubleTapGesture() {
-    //Detected Double Tap Gesture
-}
+    func didDetectDoubleTapGesture() {
+        //Detected Double Tap Gesture
+    }
 
-func didDetectBrushInGesture() {
-    //Detected Brush In Gesture
-}
+    func didDetectBrushInGesture() {
+        //Detected Brush In Gesture
+    }
 
-func didDetectBrushOutGesture() {
-    //Detected Brush Out Gesture
-}
+    func didDetectBrushOutGesture() {
+        //Detected Brush Out Gesture
+    }
 
-func didDetectCoverGesture() {
-    //Detected Cover Gesture
-}
+    func didDetectCoverGesture() {
+        //Detected Cover Gesture
+    }
 
-func didDetectScratchGesture() {
-    //Detected Scratch Gesture
-}
+    func didDetectScratchGesture() {
+        //Detected Scratch Gesture
+    }
 
 }
 ```

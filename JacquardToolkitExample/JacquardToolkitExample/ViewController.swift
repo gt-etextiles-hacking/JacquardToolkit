@@ -14,8 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         JacquardService.shared.delegate = self
-        JacquardService.shared.activateBlutooth()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        JacquardService.shared.activateBlutooth { _ in 
             JacquardService.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
         }
     }

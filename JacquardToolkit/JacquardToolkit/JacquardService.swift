@@ -21,23 +21,28 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
 
     public static let shared = JacquardService()
     public weak var delegate: JacquardServiceDelegate?
-    private lazy var centralManager: CBCentralManager = {
-        return CBCentralManager(delegate: self, queue: nil)
-    }()
+    
+    private var centralManager: CBCentralManager!
     private var peripheralObject: CBPeripheral!
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
+    private var powerOnCompletion: ((Bool) -> Void)?
 
     private override init() {
         super.init()
+        centralManager = CBCentralManager(delegate: self, queue: nil)
     }
 
-    public func activateBlutooth() {
-        centralManagerDidUpdateState(centralManager)
+    public func activateBlutooth(completion: @escaping (Bool) -> Void) {
+        powerOnCompletion = completion
+        if centralManager.state == .poweredOn {
+            powerOnCompletion?(true)
+            powerOnCompletion = nil
+        }
     }
 
     public func connectToJacket(uuidString: String) {
-        if CBManagerState.poweredOn.rawValue == 5, let uuid = UUID(uuidString: uuidString) {
+        if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
             peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
             peripheralObject = peripheralList[0]
             peripheralObject.delegate = self
@@ -46,7 +51,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
 
     public func rainbowGlowJacket() {
-        if CBManagerState.poweredOn.rawValue == 5 {
+        if centralManager.state == .poweredOn {
             let dataval = JSHelper.shared.dataWithHexString(hex: "801308001008180BDA060A0810107830013801")
             let dataval1 = JSHelper.shared.dataWithHexString(hex: "414000")
             if glowCharacteristic != nil {
@@ -69,12 +74,17 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             NSLog(JSConstants.JSStrings.CentralManagerState.unsupporting)
         case .unauthorized:
             NSLog(JSConstants.JSStrings.CentralManagerState.unauthorized)
+            powerOnCompletion?(false)
+            powerOnCompletion = nil
         case .poweredOn:
             NSLog(JSConstants.JSStrings.CentralManagerState.poweredOn)
+            powerOnCompletion?(true)
+            powerOnCompletion = nil
         case .poweredOff:
             NSLog(JSConstants.JSStrings.CentralManagerState.poweredOff)
+            powerOnCompletion?(false)
+            powerOnCompletion = nil
         }
-
     }
 
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
