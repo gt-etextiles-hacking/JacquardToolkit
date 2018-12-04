@@ -28,23 +28,35 @@ import JacquardToolkit
 
 ### Development
 
-1. Enable your device's bluetooth capabilities: 
+1. Enable your device's bluetooth capabilities and connect to your jacket by passing in your jacket's UUID: 
 ```sh
-Service.shared.activateBlutooth()
-```
+import UIKit
+import JacquardToolkit
 
-2. Connect to your jacket (make sure to pass in your jacket's UUID): 
-```sh
-Service.shared.connectToJacket(uuidString: String)
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        JacquardService.shared.activateBlutooth { _ in 
+            JacquardService.shared.connectToJacket(uuidString: YourJacketsUUIDString)
+        }
+    }
+}
 ```
 
 3. Send a colorful rainbow glow to your jacket: 
 ```sh
-Service.shared.rainbowGlowJacket()
+@IBAction func glowButtonTapped(_ sender: Any) {
+    JacquardService.shared.rainbowGlowJacket()
+}
 ```
 
-4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch): 
+4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch: 
 ```sh
+override func viewDidLoad() {
+    super.viewDidLoad()
+    JacquardService.shared.delegate = self
+}
+
 extension ViewController: JacquardServiceDelegate {
 
     func didDetectDoubleTapGesture() {
