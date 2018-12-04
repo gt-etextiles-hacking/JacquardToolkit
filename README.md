@@ -1,6 +1,6 @@
 # JacquardToolkit
 
-JacquardToolkit is a iOS frameowork to enable developers to develop their own applications using their Levi's Jacquard...
+JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard...
 
 # New Features
 
