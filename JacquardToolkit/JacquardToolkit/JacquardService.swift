@@ -107,10 +107,7 @@ extension JacquardService: CBPeripheralDelegate {
         guard let characteristics = service.characteristics else { return }
 
         for characteristic in characteristics {
-            print(characteristic.uuid.uuidString)
-            if characteristic.uuid.uuidString == "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894" {
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
+            print("Service: \(service.uuid.uuidString) | Char: \(characteristic.uuid.uuidString)")
             if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
