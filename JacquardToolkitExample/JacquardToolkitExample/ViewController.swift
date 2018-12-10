@@ -15,7 +15,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         JacquardService.shared.delegate = self
         JacquardService.shared.activateBlutooth { _ in 
-            JacquardService.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
+//            JacquardService.shared.connectToJacket(uuidString: "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894")
+            JacquardService.shared.searchForJacket()
         }
     }
     
@@ -26,6 +27,12 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: JacquardServiceDelegate {
+    
+    func updatedNearbyJacketsList(localJacketsUUIDList: [String]) {
+        for jacketUUID in localJacketsUUIDList {
+            print(jacketUUID)
+        }
+    }
     
     func didDetectDoubleTapGesture() {
         print("didDetectDoubleTapGesture")
