@@ -28,7 +28,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var centralManager: CBCentralManager!
     private var peripheralObject: CBPeripheral!
     private var peripheralList: [CBPeripheral] = []
-    private var peripheralList1: [CBPeripheral] = []
     private var localJacketsUUIDList: [String] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
@@ -58,7 +57,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func searchForJacket() {
         if centralManager.state == .poweredOn {
             let serviceCBUUID = CBUUID(string: "D45C2000-4270-A125-A25D-EE458C085001")
-            centralManager.scanForPeripherals(withServices: [serviceCBUUID], options: nil)
+            peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
+            if peripheralList.count < 1 {
+                centralManager.scanForPeripherals(withServices: [serviceCBUUID], options: nil)
+            } else {
+                peripheralObject = peripheralList[0]
+                peripheralObject.delegate = self
+                centralManager.connect(peripheralObject, options: nil)
+            }
         }
     }
 
@@ -104,8 +110,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        peripheralList1.append(peripheral)
+        print(peripheral)
         localJacketsUUIDList.append(peripheral.identifier.uuidString)
+        connectToJacket(uuidString: peripheral.identifier.uuidString)
         delegate?.updatedNearbyJacketsList(localJacketsUUIDList: localJacketsUUIDList)
     }
 
