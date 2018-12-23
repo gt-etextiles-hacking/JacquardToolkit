@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 import CoreBluetooth
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
@@ -26,7 +25,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var centralManager: CBCentralManager!
     private var peripheralObject: CBPeripheral!
     private var peripheralList: [CBPeripheral] = []
-    private var localJacketsUUIDList: [String] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
 
