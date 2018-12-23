@@ -19,8 +19,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jeh-Fo-nuN">
-                                <rect key="frame" x="170" y="328.5" width="35" height="30"/>
-                                <state key="normal" title="Glow"/>
+                                <rect key="frame" x="128.5" y="328.5" width="118" height="30"/>
+                                <state key="normal" title="Glow / Stop Glow"/>
                                 <connections>
                                     <action selector="glowButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5zX-Ce-EXZ"/>
                                 </connections>

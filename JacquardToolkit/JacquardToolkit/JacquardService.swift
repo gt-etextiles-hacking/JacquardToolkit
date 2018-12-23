@@ -40,14 +40,38 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             powerOnCompletion = nil
         }
     }
+    
+    public func searchForJacket() {
+        if centralManager.state == .poweredOn {
+            let serviceCBUUID = CBUUID(string: "D45C2000-4270-A125-A25D-EE458C085001")
+            peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
+            guard peripheralList.count > 0 else {
+                NSLog("ERROR: It doesn't seem like your Jacquard is connected. Make sure to manually connect and pair your jacket in the settings app...")
+                return
+            }
+            connectHelper(targetJacket: peripheralList[0])
+        }
+    }
 
     public func connectToJacket(uuidString: String) {
         if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
             peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
-            peripheralObject = peripheralList[0]
-            peripheralObject.delegate = self
-            centralManager.connect(peripheralObject, options: nil)
+            if peripheralList.count < 1 {
+                NSLog("Error: It seems that your list of peripherals is empty...")
+            } else {
+                connectHelper(targetJacket: peripheralList[0])
+            }
         }
+    }
+    
+    public func disconnectFromConnectedJacket() {
+        centralManager.cancelPeripheralConnection(peripheralObject)
+    }
+    
+    public func connectHelper(targetJacket: CBPeripheral) {
+        peripheralObject = targetJacket
+        peripheralObject.delegate = self
+        centralManager.connect(peripheralObject, options: nil)
     }
 
     public func rainbowGlowJacket() {
@@ -58,8 +82,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
                 peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
             } else {
-                NSLog("The glow characteristic has not yet been registered...it doesn't seem like the core bluetooth manager has connected to your jacket. Trying to connect core blutetooth...")
-                centralManager.connect(peripheralObject, options: nil)
+                NSLog("ERROR: Glow is not availible because it seems like your Jacquard is not connected. Make sure to manually connect and pair your jacket in the settings app...")
             }
         }
     }
@@ -107,10 +130,7 @@ extension JacquardService: CBPeripheralDelegate {
         guard let characteristics = service.characteristics else { return }
 
         for characteristic in characteristics {
-            print(characteristic.uuid.uuidString)
-            if characteristic.uuid.uuidString == "3DF4C660-AAE3-FC91-DBE5-0217FCDE7894" {
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
+            print("Service: \(service.uuid.uuidString) | Char: \(characteristic.uuid.uuidString)")
             if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
