@@ -15,6 +15,7 @@ public protocol JacquardServiceDelegate: NSObjectProtocol {
     func didDetectBrushOutGesture()
     func didDetectCoverGesture()
     func didDetectScratchGesture()
+    func didDetectThreadTouch(threadArray: [Float])
 }
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
@@ -56,16 +57,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func connectToJacket(uuidString: String) {
         if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
             peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
-            if peripheralList.count < 1 {
+            guard peripheralList.count > 0 else {
                 NSLog("Error: It seems that your list of peripherals is empty...")
-            } else {
-                connectHelper(targetJacket: peripheralList[0])
+                return
             }
+            connectHelper(targetJacket: peripheralList[0])
         }
-    }
-    
-    public func disconnectFromConnectedJacket() {
-        centralManager.cancelPeripheralConnection(peripheralObject)
     }
     
     public func connectHelper(targetJacket: CBPeripheral) {
@@ -134,6 +131,9 @@ extension JacquardService: CBPeripheralDelegate {
             if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
+            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
             if characteristic.properties.contains(.writeWithoutResponse) {
                 print("\(characteristic.uuid): properties contains .writeWithResponse")
                 glowCharacteristic = characteristic
@@ -142,6 +142,11 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        DispatchQueue.main.async() {
+            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
+                self.delegate?.didDetectThreadTouch(threadArray: JSHelper.shared.findThread(from: characteristic))
+            }
+        }
         let gesture = JSHelper.shared.gestureConverter(from: characteristic)
         switch gesture {
         case .doubleTap:

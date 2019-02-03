@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     @IBAction func glowButtonTapped(_ sender: Any) {
         JacquardService.shared.rainbowGlowJacket()
     }
-
+    
 }
 
 extension ViewController: JacquardServiceDelegate {
@@ -46,6 +46,10 @@ extension ViewController: JacquardServiceDelegate {
     
     func didDetectScratchGesture() {
         print("didDetectScratchGesture")
+    }
+    
+    func didDetectThreadTouch(threadArray: [Float]) {
+        print("Threads: \(threadArray)")
     }
     
 }

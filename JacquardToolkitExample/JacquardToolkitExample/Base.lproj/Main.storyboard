@@ -22,7 +22,7 @@
                                 <rect key="frame" x="128.5" y="328.5" width="118" height="30"/>
                                 <state key="normal" title="Glow / Stop Glow"/>
                                 <connections>
-                                    <action selector="glowButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5zX-Ce-EXZ"/>
+                                    <action selector="glowButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Pj-II-vgR"/>
                                 </connections>
                             </button>
                         </subviews>
