@@ -8,6 +8,7 @@ JacquardToolkit is a iOS framework to enable developers to develop their own app
 - Ability to easily connect with your own Levi's Jacquard
 - Send a rainbow glow to your jacket with ease
 - React to gesture the user performs on their jacket
+- Access each specific threads value at any point in time
 
 ### Installation
 
@@ -50,7 +51,7 @@ class ViewController: UIViewController {
 }
 ```
 
-4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch: 
+4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch): 
 ```sh
 override func viewDidLoad() {
     super.viewDidLoad()
@@ -78,6 +79,23 @@ extension ViewController: JacquardServiceDelegate {
     func didDetectScratchGesture() {
         //Detected Scratch Gesture
     }
+
+}
+```
+
+5. Additionally, you can uncover the values of each specific thread: 
+```sh
+override func viewDidLoad() {
+super.viewDidLoad()
+JacquardService.shared.delegate = self
+}
+
+extension ViewController: JacquardServiceDelegate {
+
+func didDetectThreadTouch(threadArray: [Float]) {
+    //Dected an array of 15 values that represent 
+    //the intensity each thread is being touched by
+}
 
 }
 ```
