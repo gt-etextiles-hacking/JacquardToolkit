@@ -86,16 +86,16 @@ extension ViewController: JacquardServiceDelegate {
 5. Additionally, you can uncover the values of each specific thread: 
 ```sh
 override func viewDidLoad() {
-super.viewDidLoad()
-JacquardService.shared.delegate = self
+    super.viewDidLoad()
+    JacquardService.shared.delegate = self
 }
 
 extension ViewController: JacquardServiceDelegate {
 
-func didDetectThreadTouch(threadArray: [Float]) {
-    //Dected an array of 15 values that represent 
-    //the intensity each thread is being touched by
-}
+    func didDetectThreadTouch(threadArray: [Float]) {
+        //Detected an array of 15 values that represent 
+        //the intensity each thread is being touched by
+    }
 
 }
 ```
