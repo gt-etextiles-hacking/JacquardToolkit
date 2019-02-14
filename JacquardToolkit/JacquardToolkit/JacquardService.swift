@@ -159,8 +159,8 @@ extension JacquardService: CBPeripheralDelegate {
             delegate?.didDetectCoverGesture()
         case .scratch:
             delegate?.didDetectScratchGesture()
-        default:
-            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+        default: break
+//            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
         }
     }
     
