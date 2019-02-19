@@ -9,13 +9,13 @@
 import Foundation
 import CoreBluetooth
 
-public protocol JacquardServiceDelegate: NSObjectProtocol {
-    func didDetectDoubleTapGesture()
-    func didDetectBrushInGesture()
-    func didDetectBrushOutGesture()
-    func didDetectCoverGesture()
-    func didDetectScratchGesture()
-    func didDetectThreadTouch(threadArray: [Float])
+@objc public protocol JacquardServiceDelegate: NSObjectProtocol {
+    @objc optional func didDetectDoubleTapGesture()
+    @objc optional func didDetectBrushInGesture()
+    @objc optional func didDetectBrushOutGesture()
+    @objc optional func didDetectCoverGesture()
+    @objc optional func didDetectScratchGesture()
+    @objc optional func didDetectThreadTouch(threadArray: [Float])
 }
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
@@ -144,21 +144,21 @@ extension JacquardService: CBPeripheralDelegate {
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         DispatchQueue.main.async() {
             if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
-                self.delegate?.didDetectThreadTouch(threadArray: JSHelper.shared.findThread(from: characteristic))
+                self.delegate?.didDetectThreadTouch?(threadArray: JSHelper.shared.findThread(from: characteristic))
             }
         }
         let gesture = JSHelper.shared.gestureConverter(from: characteristic)
         switch gesture {
         case .doubleTap:
-            delegate?.didDetectDoubleTapGesture()
+            delegate?.didDetectDoubleTapGesture?()
         case .brushIn:
-            delegate?.didDetectBrushInGesture()
+            delegate?.didDetectBrushInGesture?()
         case .brushOut:
-            delegate?.didDetectBrushOutGesture()
+            delegate?.didDetectBrushOutGesture?()
         case .cover:
-            delegate?.didDetectCoverGesture()
+            delegate?.didDetectCoverGesture?()
         case .scratch:
-            delegate?.didDetectScratchGesture()
+            delegate?.didDetectScratchGesture?()
         default:
             NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
         }
