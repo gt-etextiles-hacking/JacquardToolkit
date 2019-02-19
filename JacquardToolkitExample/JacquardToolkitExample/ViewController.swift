@@ -8,11 +8,8 @@
 
 import UIKit
 import JacquardToolkit
-import CoreMotion
 
 class ViewController: UIViewController {
-    
-    var motionManager = CMMotionManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,16 +17,6 @@ class ViewController: UIViewController {
         JacquardService.shared.activateBlutooth { _ in 
             JacquardService.shared.connectToJacket(uuidString: "15488896-8AC0-691D-3535-A8E29774CC7A")
         }
-        
-        motionManager.accelerometerUpdateInterval = 0.2
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { (data, error) in
-            if let data = data {
-                print(data.acceleration.z)
-                if abs(data.acceleration.x) > 3 {
-                    print("I'M SHOOK")
-                }
-            }
-        })
     }
     
     @IBAction func glowButtonTapped(_ sender: Any) {
@@ -41,7 +28,7 @@ class ViewController: UIViewController {
 extension ViewController: JacquardServiceDelegate {
     
     func didDetectDoubleTapGesture() {
-//        print("didDetectDoubleTapGesture")
+        print("didDetectDoubleTapGesture")
     }
     
     func didDetectBrushInGesture() {
@@ -49,15 +36,15 @@ extension ViewController: JacquardServiceDelegate {
     }
     
     func didDetectBrushOutGesture() {
-//        print("didDetectBrushOutGesture")
+        print("didDetectBrushOutGesture")
     }
     
     func didDetectCoverGesture() {
-//        print("didDetectCoverGesture")
+        print("didDetectCoverGesture")
     }
     
     func didDetectScratchGesture() {
-//        print("didDetectScratchGesture")
+        print("didDetectScratchGesture")
     }
     
     func didDetectThreadTouch(threadArray: [Float]) {

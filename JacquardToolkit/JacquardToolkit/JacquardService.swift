@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBluetooth
+import CoreMotion
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
     func didDetectDoubleTapGesture()
@@ -28,10 +29,15 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
+    
+    private var motionManager = CMMotionManager()
+    private var needsToConnect: Bool = true
+    private var didBrush: Bool = false
 
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        brushConnect()
     }
 
     public func activateBlutooth(completion: @escaping (Bool) -> Void) {
@@ -83,6 +89,22 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             }
         }
     }
+    
+    public func brushConnect() {
+        motionManager.accelerometerUpdateInterval = 0.2
+        motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { (data, error) in
+            if let data = data {
+                if abs(data.acceleration.z) > 1.25 {
+                    print("I'M SHOOK")
+                    self.didBrush = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                        print("SHOOK BACK")
+                        self.didBrush = false
+                    })
+                }
+            }
+        })
+    }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -131,9 +153,9 @@ extension JacquardService: CBPeripheralDelegate {
             if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
-            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
+//            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
+//                peripheral.setNotifyValue(true, for: characteristic)
+//            }
             if characteristic.properties.contains(.writeWithoutResponse) {
                 print("\(characteristic.uuid): properties contains .writeWithResponse")
                 glowCharacteristic = characteristic
@@ -155,12 +177,17 @@ extension JacquardService: CBPeripheralDelegate {
             delegate?.didDetectBrushInGesture()
         case .brushOut:
             delegate?.didDetectBrushOutGesture()
+            if needsToConnect && didBrush {
+                print("CONNECTION MADE")
+            } else {
+                print("No connection")
+            }
         case .cover:
             delegate?.didDetectCoverGesture()
         case .scratch:
             delegate?.didDetectScratchGesture()
-        default: break
-//            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+        default:
+            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
         }
     }
     

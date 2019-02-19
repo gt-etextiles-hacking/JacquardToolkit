@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JacquardToolkitExample/ViewController.swift"
-            timestampString = "571865091.080322"
+            filePath = "../JacquardToolkit/JacquardToolkit/JacquardService.swift"
+            timestampString = "572311818.370219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "didDetectBrushInGesture()"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "peripheral(_:didUpdateValueFor:error:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
