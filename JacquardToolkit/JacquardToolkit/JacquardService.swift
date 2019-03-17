@@ -8,8 +8,8 @@
 
 import Foundation
 import CoreBluetooth
-import CoreMotion
 import CoreML
+import NotificationCenter
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
     func didDetectDoubleTapGesture()
@@ -31,10 +31,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
-    
-    private var motionManager = CMMotionManager()
-    private var needsToConnect: Bool = true
-    private var didBrush: Bool = false
+    private let notificationCenter = NotificationCenter.default
     
     // new gesture variables
     private let model = NewGestureClassifier_RC2()
@@ -46,13 +43,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        brushConnect()
-        
+
         do {
             input_data = try MLMultiArray(shape:[675], dataType:MLMultiArrayDataType.double);
         } catch {
             fatalError("Unexpected runtime error. MLMultiArray");
         }
+        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name("ReadGesture"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name("ReadThreads"), object: nil)
     }
 
     public func activateBlutooth(completion: @escaping (Bool) -> Void) {
@@ -104,22 +102,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             }
         }
     }
-    
-    public func brushConnect() {
-        motionManager.accelerometerUpdateInterval = 0.2
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { (data, error) in
-            if let data = data {
-                if abs(data.acceleration.z) > 1.25 {
-                    print("I'M SHOOK")
-                    self.didBrush = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                        print("SHOOK BACK")
-                        self.didBrush = false
-                    })
-                }
-            }
-        })
-    }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -165,11 +147,11 @@ extension JacquardService: CBPeripheralDelegate {
 
         for characteristic in characteristics {
             print("Service: \(service.uuid.uuidString) | Char: \(characteristic.uuid.uuidString)")
-            //for gestures
-//            if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
-//                peripheral.setNotifyValue(true, for: characteristic)
-//            }
-            //fpr threads
+            //For Gestures
+            if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
+            //For Threads
             if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
@@ -181,49 +163,65 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        var exitMethod = false;
-        
-        if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
-            threadReadings = JSHelper.shared.findThread(from: characteristic)
-//            self.delegate?.didDetectThreadTouch(threadArray: )
-            
-            // shifting left by (15) numthreads
-            for i in 0 ..< (input_data_dim - numThreads) {
-                input_data![i] = input_data![i + numThreads]
-            }
-            
-            // copying in the latest thread reading into the last 15 elements
-            for i in 0 ..< numThreads {
-//                let ch = threadReadings[threadReadings.index(threadReadings.startIndex, offsetBy: i)]
-                input_data![input_data_dim - numThreads + i] = threadReadings?[i] as! NSNumber ?? NSNumber(floatLiteral: 0.0)
-            }
-            
-            let prediction = try? model.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
-//            print("didDetectForceTouchGesture: \((prediction?.output["ForceTouch"])!)")
-
-            
-            if ((prediction?.output["ForceTouch"])! > 0.7) {
-                delegate?.didDetectForceTouchGesture()
-                exitMethod = true;
+        switch characteristic.uuid.uuidString {
+        case "D45C2010-4270-A125-A25D-EE458C085001":
+            notificationCenter.post(name: Notification.Name("ReadThreads"), object: self, userInfo: ["characteristic": characteristic])
+        case "D45C2030-4270-A125-A25D-EE458C085001":
+            notificationCenter.post(name: Notification.Name("ReadGesture"), object: self, userInfo: ["characteristic": characteristic])
+        default:
+            break
+        }
+    }
+    
+    @objc func readThreads(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
+                delegate?.didDetectThreadTouch(threadArray: threadForceValueArray)
+                checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
-        
-        if !exitMethod {
-            let gesture = JSHelper.shared.gestureConverter(from: characteristic)
-            switch gesture {
-            case .doubleTap:
-                delegate?.didDetectDoubleTapGesture()
-            case .brushIn:
-                delegate?.didDetectBrushInGesture()
-            case .brushOut:
-                delegate?.didDetectBrushOutGesture()
-            case .cover:
-                delegate?.didDetectCoverGesture()
-            case .scratch:
-                delegate?.didDetectScratchGesture()
-            default:
-                NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+    }
+    
+    @objc func readGesture(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+                switch gesture {
+                case .doubleTap:
+                    delegate?.didDetectDoubleTapGesture()
+                case .brushIn:
+                    delegate?.didDetectBrushInGesture()
+                case .brushOut:
+                    delegate?.didDetectBrushOutGesture()
+                case .cover:
+                    delegate?.didDetectCoverGesture()
+                case .scratch:
+                    delegate?.didDetectScratchGesture()
+                default:
+                    NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+                }
             }
+        }
+    }
+    
+    func checkForForceTouch(threadReadings: [Float]) {
+        for i in 0 ..< (input_data_dim - numThreads) {
+            input_data![i] = input_data![i + numThreads]
+        }
+        
+        // copying in the latest thread reading into the last 15 elements
+        for i in 0 ..< numThreads {
+//            let ch = threadReadings[threadReadings.index(threadReadings.startIndex, offsetBy: i)]
+            input_data![input_data_dim - numThreads + i] = threadReadings[i] as! NSNumber ?? NSNumber(floatLiteral: 0.0)
+        }
+        
+        let prediction = try? model.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
+//        print("didDetectForceTouchGesture: \((prediction?.output["ForceTouch"])!)")
+        
+        
+        if ((prediction?.output["ForceTouch"])! > 0.7) {
+            delegate?.didDetectForceTouchGesture()
         }
     }
     
