@@ -48,7 +48,7 @@ extension ViewController: JacquardServiceDelegate {
     }
     
     func didDetectThreadTouch(threadArray: [Float]) {
-//        print("Threads: \(threadArray)")
+        print("Threads: \(threadArray)")
     }
     
 }

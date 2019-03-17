@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreBluetooth
-import CoreMotion
+import NotificationCenter
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
     func didDetectDoubleTapGesture()
@@ -29,15 +29,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
-    
-    private var motionManager = CMMotionManager()
-    private var needsToConnect: Bool = true
-    private var didBrush: Bool = false
+    private let notificationCenter = NotificationCenter.default
 
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        brushConnect()
+        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name("ReadGesture"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name("ReadThreads"), object: nil)
     }
 
     public func activateBlutooth(completion: @escaping (Bool) -> Void) {
@@ -89,22 +87,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             }
         }
     }
-    
-    public func brushConnect() {
-        motionManager.accelerometerUpdateInterval = 0.2
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { (data, error) in
-            if let data = data {
-                if abs(data.acceleration.z) > 1.25 {
-                    print("I'M SHOOK")
-                    self.didBrush = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                        print("SHOOK BACK")
-                        self.didBrush = false
-                    })
-                }
-            }
-        })
-    }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -153,9 +135,9 @@ extension JacquardService: CBPeripheralDelegate {
             if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
-//            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
-//                peripheral.setNotifyValue(true, for: characteristic)
-//            }
+            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
             if characteristic.properties.contains(.writeWithoutResponse) {
                 print("\(characteristic.uuid): properties contains .writeWithResponse")
                 glowCharacteristic = characteristic
@@ -164,30 +146,43 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        DispatchQueue.main.async() {
-            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
-                self.delegate?.didDetectThreadTouch(threadArray: JSHelper.shared.findThread(from: characteristic))
+        switch characteristic.uuid.uuidString {
+        case "D45C2010-4270-A125-A25D-EE458C085001":
+            notificationCenter.post(name: Notification.Name("ReadThreads"), object: self, userInfo: ["characteristic": characteristic])
+        case "D45C2030-4270-A125-A25D-EE458C085001":
+            notificationCenter.post(name: Notification.Name("ReadGesture"), object: self, userInfo: ["characteristic": characteristic])
+        default:
+            break
+        }
+    }
+    
+    @objc func readThreads(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+                delegate?.didDetectThreadTouch(threadArray: JSHelper.shared.findThread(from: characteristic))
             }
         }
-        let gesture = JSHelper.shared.gestureConverter(from: characteristic)
-        switch gesture {
-        case .doubleTap:
-            delegate?.didDetectDoubleTapGesture()
-        case .brushIn:
-            delegate?.didDetectBrushInGesture()
-        case .brushOut:
-            delegate?.didDetectBrushOutGesture()
-            if needsToConnect && didBrush {
-                print("CONNECTION MADE")
-            } else {
-                print("No connection")
+    }
+    
+    @objc func readGesture(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+                switch gesture {
+                case .doubleTap:
+                    delegate?.didDetectDoubleTapGesture()
+                case .brushIn:
+                    delegate?.didDetectBrushInGesture()
+                case .brushOut:
+                    delegate?.didDetectBrushOutGesture()
+                case .cover:
+                    delegate?.didDetectCoverGesture()
+                case .scratch:
+                    delegate?.didDetectScratchGesture()
+                default:
+                    NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+                }
             }
-        case .cover:
-            delegate?.didDetectCoverGesture()
-        case .scratch:
-            delegate?.didDetectScratchGesture()
-        default:
-            NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
         }
     }
     
