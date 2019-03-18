@@ -39,6 +39,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private let numThreads = 15
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
+    private var forceTouchTurnedEnabled = true
+    private var confidenceIntervalArray: [Double] = []
 
     private override init() {
         super.init()
@@ -205,7 +207,7 @@ extension JacquardService: CBPeripheralDelegate {
         }
     }
     
-    func checkForForceTouch(threadReadings: [Float]) {
+    func checkForForceTouch(threadReadings: [Float]) -> Bool {
         for i in 0 ..< (input_data_dim - numThreads) {
             input_data![i] = input_data![i + numThreads]
         }
@@ -217,12 +219,34 @@ extension JacquardService: CBPeripheralDelegate {
         }
         
         let prediction = try? model.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
-//        print("didDetectForceTouchGesture: \((prediction?.output["ForceTouch"])!)")
+        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
-        
-        if ((prediction?.output["ForceTouch"])! > 0.7) {
-            delegate?.didDetectForceTouchGesture()
+        if forceTouchTurnedEnabled {
+            if ((prediction?.output["ForceTouch"])! > 0.7) {
+                forceTouchTurnedEnabled = false
+                delegate?.didDetectForceTouchGesture()
+                return true
+            }
+        } else {
+            //add the next confidence interval into the array
+            confidenceIntervalArray.append(prediction?.output["ForceTouch"] ?? 0.0)
+            if confidenceIntervalArray.count > 5 {
+                var reenableForceTouch = true
+                for i in confidenceIntervalArray {
+                    if i > 0.5 {
+                        reenableForceTouch = false
+                    }
+                }
+                if reenableForceTouch {
+                    confidenceIntervalArray = []
+                    forceTouchTurnedEnabled = true
+                    print("Reenabling force touch")
+                } else {
+                    confidenceIntervalArray.removeFirst()
+                }
+            }
         }
+        return false
     }
     
 }
