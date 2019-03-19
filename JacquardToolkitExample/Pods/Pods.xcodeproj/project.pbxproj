@@ -11,6 +11,7 @@
 		0C487D644FA2EEFB74C29AB9B20C926E /* Pods-JacquardToolkitExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A7BF50FD9DA3D2E883A2FB20B6184ADB /* Pods-JacquardToolkitExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		18C75D0BE7A6A1E9056605E12BFF8913 /* JacquardToolkit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F271F3F5219ED748BB6DB710407D6787 /* JacquardToolkit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C51CF0E1B337275AF7AE71217F5FF9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		451DA69E223722F20034A411 /* NewGestureClassifier_RC2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 451DA69D223722F20034A411 /* NewGestureClassifier_RC2.mlmodel */; };
 		4BB3AF4FCAC4EF7A7A12039C35375D7B /* JacquardToolkit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 354465B1D1AE922001F434D5A88058FB /* JacquardToolkit-dummy.m */; };
 		8205993E21B1E18E00CCE2EB /* JSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205993D21B1E18E00CCE2EB /* JSHelper.swift */; };
 		8205994021B3739E00CCE2EB /* JSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205993F21B3739E00CCE2EB /* JSConstants.swift */; };
@@ -35,6 +36,7 @@
 		29E2CAE5DEB0F4382BEF028DC38D9A6D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31543626F626397E58C81E3CE63691D6 /* Pods-JacquardToolkitExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-JacquardToolkitExample.modulemap"; sourceTree = "<group>"; };
 		354465B1D1AE922001F434D5A88058FB /* JacquardToolkit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JacquardToolkit-dummy.m"; sourceTree = "<group>"; };
+		451DA69D223722F20034A411 /* NewGestureClassifier_RC2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = NewGestureClassifier_RC2.mlmodel; sourceTree = "<group>"; };
 		4D927A0F3D90A91F0CD13C28063F981A /* Pods-JacquardToolkitExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JacquardToolkitExample-resources.sh"; sourceTree = "<group>"; };
 		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		64794208534C4019C572CAEF239624B1 /* JacquardService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JacquardService.swift; path = JacquardToolkit/JacquardService.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 		2E07CD6BDC3CE0F93A55557A3FD68755 /* JacquardToolkit */ = {
 			isa = PBXGroup;
 			children = (
+				451DA69D223722F20034A411 /* NewGestureClassifier_RC2.mlmodel */,
 				64794208534C4019C572CAEF239624B1 /* JacquardService.swift */,
 				8205993F21B3739E00CCE2EB /* JSConstants.swift */,
 				8205993D21B1E18E00CCE2EB /* JSHelper.swift */,
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BB3AF4FCAC4EF7A7A12039C35375D7B /* JacquardToolkit-dummy.m in Sources */,
+				451DA69E223722F20034A411 /* NewGestureClassifier_RC2.mlmodel in Sources */,
 				DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */,
 				8205994021B3739E00CCE2EB /* JSConstants.swift in Sources */,
 				8205993E21B1E18E00CCE2EB /* JSHelper.swift in Sources */,

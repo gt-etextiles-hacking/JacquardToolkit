@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBluetooth
+import CoreML
 import NotificationCenter
 
 public protocol JacquardServiceDelegate: NSObjectProtocol {
@@ -16,6 +17,7 @@ public protocol JacquardServiceDelegate: NSObjectProtocol {
     func didDetectBrushOutGesture()
     func didDetectCoverGesture()
     func didDetectScratchGesture()
+    func didDetectForceTouchGesture()
     func didDetectThreadTouch(threadArray: [Float])
 }
 
@@ -30,10 +32,22 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
     private let notificationCenter = NotificationCenter.default
+    
+    // new gesture variables
+    private let forceTouchModel = NewGestureClassifier_RC2()
+    private var threadReadings: [Float]?
+    private var input_data: MLMultiArray?
+    private var forceTouchTurnedEnabled = true
+    private var confidenceIntervalArray: [Double] = []
 
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        do {
+            input_data = try MLMultiArray(shape: [JSConstants.JSNumbers.ForceTouch.fullThreadCount as NSNumber], dataType: MLMultiArrayDataType.double);
+        } catch {
+            fatalError("Unexpected runtime error. MLMultiArray");
+        }
         notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name("ReadGesture"), object: nil)
         notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name("ReadThreads"), object: nil)
     }
@@ -48,10 +62,10 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     
     public func searchForJacket() {
         if centralManager.state == .poweredOn {
-            let serviceCBUUID = CBUUID(string: "D45C2000-4270-A125-A25D-EE458C085001")
+            let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
             peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
             guard peripheralList.count > 0 else {
-                NSLog("ERROR: It doesn't seem like your Jacquard is connected. Make sure to manually connect and pair your jacket in the settings app...")
+                NSLog(JSConstants.JSStrings.ErrorMessages.reconnectJacket)
                 return
             }
             connectHelper(targetJacket: peripheralList[0])
@@ -62,30 +76,30 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
             peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
             guard peripheralList.count > 0 else {
-                NSLog("Error: It seems that your list of peripherals is empty...")
+                NSLog(JSConstants.JSStrings.ErrorMessages.emptyPeriphalList)
                 return
             }
             connectHelper(targetJacket: peripheralList[0])
         }
     }
     
-    public func connectHelper(targetJacket: CBPeripheral) {
-        peripheralObject = targetJacket
-        peripheralObject.delegate = self
-        centralManager.connect(peripheralObject, options: nil)
-    }
-
     public func rainbowGlowJacket() {
         if centralManager.state == .poweredOn {
-            let dataval = JSHelper.shared.dataWithHexString(hex: "801308001008180BDA060A0810107830013801")
-            let dataval1 = JSHelper.shared.dataWithHexString(hex: "414000")
+            let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
+            let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
             if glowCharacteristic != nil {
                 peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
                 peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
             } else {
-                NSLog("ERROR: Glow is not availible because it seems like your Jacquard is not connected. Make sure to manually connect and pair your jacket in the settings app...")
+                NSLog(JSConstants.JSStrings.ErrorMessages.rainbowGlow)
             }
         }
+    }
+    
+    private func connectHelper(targetJacket: CBPeripheral) {
+        peripheralObject = targetJacket
+        peripheralObject.delegate = self
+        centralManager.connect(peripheralObject, options: nil)
     }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -132,10 +146,8 @@ extension JacquardService: CBPeripheralDelegate {
 
         for characteristic in characteristics {
             print("Service: \(service.uuid.uuidString) | Char: \(characteristic.uuid.uuidString)")
-            if characteristic.uuid.uuidString == "D45C2030-4270-A125-A25D-EE458C085001" {
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
-            if characteristic.uuid.uuidString == "D45C2010-4270-A125-A25D-EE458C085001" {
+            if characteristic.uuid.uuidString == JSConstants.JSUUIDs.CharacteristicsStrings.threadReadingUUID ||
+                characteristic.uuid.uuidString == JSConstants.JSUUIDs.CharacteristicsStrings.gestureReadingUUID {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
             if characteristic.properties.contains(.writeWithoutResponse) {
@@ -147,26 +159,28 @@ extension JacquardService: CBPeripheralDelegate {
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid.uuidString {
-        case "D45C2010-4270-A125-A25D-EE458C085001":
+        case JSConstants.JSUUIDs.CharacteristicsStrings.threadReadingUUID:
             notificationCenter.post(name: Notification.Name("ReadThreads"), object: self, userInfo: ["characteristic": characteristic])
-        case "D45C2030-4270-A125-A25D-EE458C085001":
+        case JSConstants.JSUUIDs.CharacteristicsStrings.gestureReadingUUID:
             notificationCenter.post(name: Notification.Name("ReadGesture"), object: self, userInfo: ["characteristic": characteristic])
         default:
             break
         }
     }
     
-    @objc func readThreads(userInfo: Notification) {
+    @objc private func readThreads(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
-                delegate?.didDetectThreadTouch(threadArray: JSHelper.shared.findThread(from: characteristic))
+                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
+                delegate?.didDetectThreadTouch(threadArray: threadForceValueArray)
+                checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
     }
     
-    @objc func readGesture(userInfo: Notification) {
+    @objc private func readGesture(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
-            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
                 switch gesture {
                 case .doubleTap:
@@ -184,6 +198,47 @@ extension JacquardService: CBPeripheralDelegate {
                 }
             }
         }
+    }
+    
+    private func checkForForceTouch(threadReadings: [Float]) -> Bool {
+        for i in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
+            input_data![i] = input_data![i + JSConstants.JSNumbers.ForceTouch.threadCount]
+        }
+        
+        // copying in the latest thread reading into the last 15 elements
+        for i in 0 ..< JSConstants.JSNumbers.ForceTouch.threadCount {
+            input_data![JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
+        }
+        
+        let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
+        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
+        
+        if forceTouchTurnedEnabled {
+            if ((prediction?.output["ForceTouch"])! > 0.7) {
+                forceTouchTurnedEnabled = false
+                delegate?.didDetectForceTouchGesture()
+                return true
+            }
+        } else {
+            //add the next confidence interval into the array
+            confidenceIntervalArray.append(prediction?.output["ForceTouch"] ?? 0.0)
+            if confidenceIntervalArray.count > 5 {
+                var reenableForceTouch = true
+                for i in confidenceIntervalArray {
+                    if i > 0.5 {
+                        reenableForceTouch = false
+                    }
+                }
+                if reenableForceTouch {
+                    confidenceIntervalArray = []
+                    forceTouchTurnedEnabled = true
+                    print("Reenabling force touch")
+                } else {
+                    confidenceIntervalArray.removeFirst()
+                }
+            }
+        }
+        return false
     }
     
 }
