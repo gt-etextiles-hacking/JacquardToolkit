@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         JacquardService.shared.delegate = self
-        JacquardService.shared.activateBlutooth { _ in 
+        JacquardService.shared.activateBlutooth { _ in
             JacquardService.shared.connectToJacket(uuidString: "15488896-8AC0-691D-3535-A8E29774CC7A")
         }
     }
@@ -48,7 +48,10 @@ extension ViewController: JacquardServiceDelegate {
     }
     
     func didDetectThreadTouch(threadArray: [Float]) {
-        print("Threads: \(threadArray)")
+//        print("Threads: \(threadArray)")
     }
     
+    func didDetectForceTouchGesture() {
+        print("didDetectForceTouchGesture")
+    }
 }
