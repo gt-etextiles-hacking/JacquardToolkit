@@ -107,8 +107,8 @@
 			children = (
 				451DA69D223722F20034A411 /* NewGestureClassifier_RC2.mlmodel */,
 				64794208534C4019C572CAEF239624B1 /* JacquardService.swift */,
-				8205993F21B3739E00CCE2EB /* JSConstants.swift */,
 				8205993D21B1E18E00CCE2EB /* JSHelper.swift */,
+				8205993F21B3739E00CCE2EB /* JSConstants.swift */,
 				DB5F42FBD7861D27724C8730B8679C87 /* Pod */,
 				F897B991AD552959F1217CAC588CAA98 /* Support Files */,
 			);

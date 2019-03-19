@@ -11,14 +11,13 @@ import CoreBluetooth
 import CoreML
 import NotificationCenter
 
-public protocol JacquardServiceDelegate: NSObjectProtocol {
-    func didDetectDoubleTapGesture()
-    func didDetectBrushInGesture()
-    func didDetectBrushOutGesture()
-    func didDetectCoverGesture()
-    func didDetectScratchGesture()
-    func didDetectForceTouchGesture()
-    func didDetectThreadTouch(threadArray: [Float])
+@objc public protocol JacquardServiceDelegate: NSObjectProtocol {
+    @objc optional func didDetectDoubleTapGesture()
+    @objc optional func didDetectBrushInGesture()
+    @objc optional func didDetectBrushOutGesture()
+    @objc optional func didDetectCoverGesture()
+    @objc optional func didDetectScratchGesture()
+    @objc optional func didDetectThreadTouch(threadArray: [Float])
 }
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
