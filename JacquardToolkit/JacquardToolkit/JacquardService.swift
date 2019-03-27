@@ -33,12 +33,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var powerOnCompletion: ((Bool) -> Void)?
     private let notificationCenter = NotificationCenter.default
     
-    // new gesture variables
+    // forcetouch gesture variables
     private let forceTouchModel = NewGestureClassifier_RC2()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
-    private var confidenceIntervalArray: [Double] = []
+    private var minForceTouchCooldownLength = 5
+    private var forceTouchCooldownThreshold = 0.4
+    private var forceTouchCooldownProgress = 0
 
     private override init() {
         super.init()
@@ -220,23 +222,20 @@ extension JacquardService: CBPeripheralDelegate {
                 return true
             }
         } else {
-            //add the next confidence interval into the array
-            confidenceIntervalArray.append(prediction?.output["ForceTouch"] ?? 0.0)
-            if confidenceIntervalArray.count > 5 {
-                var reenableForceTouch = true
-                for i in confidenceIntervalArray {
-                    if i > 0.5 {
-                        reenableForceTouch = false
-                    }
-                }
-                if reenableForceTouch {
-                    confidenceIntervalArray = []
-                    forceTouchTurnedEnabled = true
-                    print("Reenabling force touch")
-                } else {
-                    confidenceIntervalArray.removeFirst()
-                }
+            if prediction?.output["ForceTouch"] ?? 1.0 > forceTouchCooldownThreshold {
+                // reset cooldown progress any time we get too confident of a prediction
+                forceTouchCooldownProgress = 0
+            } else {
+                // increment cooldown progress with each sufficiently low prediction confidence
+                forceTouchCooldownProgress += 1
             }
+            
+            if forceTouchCooldownProgress > minForceTouchCooldownLength {
+                forceTouchCooldownProgress = 0
+                forceTouchTurnedEnabled = true
+                print("Reenabling force touch")
+            }
+       
         }
         return false
     }
