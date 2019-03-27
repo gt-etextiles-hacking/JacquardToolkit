@@ -34,13 +34,18 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private let notificationCenter = NotificationCenter.default
     
     // forcetouch gesture variables
-    private let forceTouchModel = NewGestureClassifier_RC2()
+    private let forceTouchModel = Forcetouch()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
-    private var minForceTouchCooldownLength = 5
-    private var forceTouchCooldownThreshold = 0.4
+    // forcetouch detection
+    private var forceTouchDetectionProgress = 0
+    private var forceTouchDetectionLength = 6
+    private var forceTouchDetectionThreshold = 0.9
+    // forcetouch detection cooldown
     private var forceTouchCooldownProgress = 0
+    private var minForceTouchCooldownLength = 6
+    private var forceTouchCooldownThreshold = 0.4
 
     private override init() {
         super.init()
@@ -212,14 +217,22 @@ extension JacquardService: CBPeripheralDelegate {
             input_data![JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
         }
         
-        let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
+        let prediction = try? forceTouchModel.prediction(input: ForcetouchInput(_15ThreadConductivityReadings: input_data!))
 //        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
-        
+
         if forceTouchTurnedEnabled {
-            if ((prediction?.output["ForceTouch"])! > 0.7) {
-                forceTouchTurnedEnabled = false
-                delegate?.didDetectForceTouchGesture!()
-                return true
+            if ((prediction?.output["ForceTouch"])! > forceTouchDetectionThreshold) {
+                forceTouchDetectionProgress += 1
+                
+                if forceTouchDetectionProgress >= forceTouchDetectionLength {
+                    forceTouchDetectionProgress = 0
+                    forceTouchTurnedEnabled = false
+                    delegate?.didDetectForceTouchGesture!()
+                    return true
+                }
+                
+            } else {
+                forceTouchDetectionProgress = 0
             }
         } else {
             if prediction?.output["ForceTouch"] ?? 1.0 > forceTouchCooldownThreshold {
@@ -230,7 +243,7 @@ extension JacquardService: CBPeripheralDelegate {
                 forceTouchCooldownProgress += 1
             }
             
-            if forceTouchCooldownProgress > minForceTouchCooldownLength {
+            if forceTouchCooldownProgress >= minForceTouchCooldownLength {
                 forceTouchCooldownProgress = 0
                 forceTouchTurnedEnabled = true
                 print("Reenabling force touch")
