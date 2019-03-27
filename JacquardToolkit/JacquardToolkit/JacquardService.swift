@@ -17,6 +17,7 @@ import NotificationCenter
     @objc optional func didDetectBrushOutGesture()
     @objc optional func didDetectCoverGesture()
     @objc optional func didDetectScratchGesture()
+    @objc optional func didDetectForceTouchGesture()
     @objc optional func didDetectThreadTouch(threadArray: [Float])
 }
 
@@ -171,7 +172,7 @@ extension JacquardService: CBPeripheralDelegate {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
                 let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
-                delegate?.didDetectThreadTouch(threadArray: threadForceValueArray)
+                delegate?.didDetectThreadTouch!(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
@@ -183,15 +184,15 @@ extension JacquardService: CBPeripheralDelegate {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
                 switch gesture {
                 case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture()
+                    delegate?.didDetectDoubleTapGesture!()
                 case .brushIn:
-                    delegate?.didDetectBrushInGesture()
+                    delegate?.didDetectBrushInGesture!()
                 case .brushOut:
-                    delegate?.didDetectBrushOutGesture()
+                    delegate?.didDetectBrushOutGesture!()
                 case .cover:
-                    delegate?.didDetectCoverGesture()
+                    delegate?.didDetectCoverGesture!()
                 case .scratch:
-                    delegate?.didDetectScratchGesture()
+                    delegate?.didDetectScratchGesture!()
                 default:
                     NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                 }
@@ -210,12 +211,12 @@ extension JacquardService: CBPeripheralDelegate {
         }
         
         let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
-        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
+//        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
         if forceTouchTurnedEnabled {
             if ((prediction?.output["ForceTouch"])! > 0.7) {
                 forceTouchTurnedEnabled = false
-                delegate?.didDetectForceTouchGesture()
+                delegate?.didDetectForceTouchGesture!()
                 return true
             }
         } else {

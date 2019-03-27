@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../JacquardToolkit/JacquardToolkit/JacquardService.swift"
-            timestampString = "574041019.023041"
+            timestampString = "575407246.327237"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "peripheral(_:didUpdateValueFor:error:)"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "checkForForceTouch(threadReadings:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
