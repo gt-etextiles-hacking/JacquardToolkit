@@ -207,7 +207,7 @@ extension JacquardService: CBPeripheralDelegate {
         }
     }
     
-    private func checkForForceTouch(threadReadings: [Float]) -> Bool {
+    private func checkForForceTouch(threadReadings: [Float]) {
         for i in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
             input_data![i] = input_data![i + JSConstants.JSNumbers.ForceTouch.threadCount]
         }
@@ -229,7 +229,6 @@ extension JacquardService: CBPeripheralDelegate {
                     forceTouchDetectionProgress = 0
                     forceTouchTurnedEnabled = false
                     delegate?.didDetectForceTouchGesture!()
-                    return true
                 }
                 
             } else {
@@ -251,7 +250,6 @@ extension JacquardService: CBPeripheralDelegate {
             }
        
         }
-        return false
     }
     
 }
