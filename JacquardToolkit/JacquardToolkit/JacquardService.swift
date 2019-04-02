@@ -59,6 +59,21 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
     }
     
+    public func connect() {
+        centralManager.scanForPeripherals(withServices: nil, options: nil)
+    }
+    
+    public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        if peripheral.name == "Jacquard" {
+            let adData = advertisementData["kCBAdvDataManufacturerData"]! as! Data
+            var adDataArray = Array(adData.map { UInt32($0) })
+            adDataArray.removeFirst()
+            adDataArray.removeFirst()
+            let jacketID = JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray)
+            print(jacketID)
+        }
+    }
+    
     public func searchForJacket() {
         if centralManager.state == .poweredOn {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
@@ -171,7 +186,7 @@ extension JacquardService: CBPeripheralDelegate {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
                 let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
-                delegate?.didDetectThreadTouch(threadArray: threadForceValueArray)
+                delegate?.didDetectThreadTouch!(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
@@ -183,15 +198,15 @@ extension JacquardService: CBPeripheralDelegate {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
                 switch gesture {
                 case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture()
+                    delegate?.didDetectDoubleTapGesture!()
                 case .brushIn:
-                    delegate?.didDetectBrushInGesture()
+                    delegate?.didDetectBrushInGesture!()
                 case .brushOut:
-                    delegate?.didDetectBrushOutGesture()
+                    delegate?.didDetectBrushOutGesture!()
                 case .cover:
-                    delegate?.didDetectCoverGesture()
+                    delegate?.didDetectCoverGesture!()
                 case .scratch:
-                    delegate?.didDetectScratchGesture()
+                    delegate?.didDetectScratchGesture!()
                 default:
                     NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                 }
@@ -215,7 +230,7 @@ extension JacquardService: CBPeripheralDelegate {
         if forceTouchTurnedEnabled {
             if ((prediction?.output["ForceTouch"])! > 0.7) {
                 forceTouchTurnedEnabled = false
-                delegate?.didDetectForceTouchGesture()
+                delegate?.didDetectScratchGesture!()
                 return true
             }
         } else {
@@ -241,3 +256,77 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
 }
+
+extension Data {
+
+    init<T>(fromArray values: [T]) {
+        var values = values
+        self.init(buffer: UnsafeBufferPointer(start: &values, count: values.count))
+    }
+
+    func toArray<T>(type: T.Type) -> [T] {
+        return self.withUnsafeBytes {
+            [T](UnsafeBufferPointer(start: $0, count: self.count/MemoryLayout<T>.stride))
+        }
+    }
+}
+
+//
+//extension Data {
+//
+//    var uint8: UInt8 {
+//        get {
+//            var number: UInt8 = 0
+//            self.copyBytes(to:&number, count: MemoryLayout<UInt8>.size)
+//            return number
+//        }
+//    }
+//
+//    var uint16: UInt16 {
+//        get {
+//            let i16array = self.withUnsafeBytes {
+//                UnsafeBufferPointer<UInt16>(start: $0, count: self.count/2).map(UInt16.init(littleEndian:))
+//            }
+//            return i16array[0]
+//        }
+//    }
+//
+//    var uint32: UInt32 {
+//        get {
+//            let i32array = self.withUnsafeBytes {
+//                UnsafeBufferPointer<UInt32>(start: $0, count: self.count/2).map(UInt32.init(littleEndian:))
+//            }
+//            return i32array[0]
+//        }
+//    }
+//
+//    var uuid: NSUUID? {
+//        get {
+//            var bytes = [UInt8](repeating: 0, count: self.count)
+//            self.copyBytes(to:&bytes, count: self.count * MemoryLayout<UInt32>.size)
+//            return NSUUID(uuidBytes: bytes)
+//        }
+//    }
+//    var stringASCII: String? {
+//        get {
+//            return NSString(data: self, encoding: String.Encoding.ascii.rawValue) as String?
+//        }
+//    }
+//
+//    var stringUTF8: String? {
+//        get {
+//            return NSString(data: self, encoding: String.Encoding.utf8.rawValue) as String?
+//        }
+//    }
+//
+//    struct HexEncodingOptions: OptionSet {
+//        let rawValue: Int
+//        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+//    }
+//
+//    func hexEncodedString(options: HexEncodingOptions = []) -> String {
+//        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
+//        return map { String(format: format, $0) }.joined()
+//    }
+//
+//}
