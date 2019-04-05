@@ -10,6 +10,7 @@ import Foundation
 import CoreBluetooth
 import CoreML
 import NotificationCenter
+import AVFoundation
 
 @objc public protocol JacquardServiceDelegate: NSObjectProtocol {
     @objc optional func didDetectDoubleTapGesture()
@@ -26,11 +27,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public weak var delegate: JacquardServiceDelegate?
     
     private var centralManager: CBCentralManager!
-    private var peripheralObject: CBPeripheral!
+    private var targetJacket: CBPeripheral!
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
     private let notificationCenter = NotificationCenter.default
+    private var viewController = UIViewController()
+    private var targetJacketIDString: String?
+    private var jsQRCodeScannerView = JSQRCodeScannerView()
     
     // new gesture variables
     private let forceTouchModel = NewGestureClassifier_RC2()
@@ -59,7 +63,29 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
     }
     
-    public func connect() {
+    public func connect(viewController: UIViewController) {
+        if centralManager.state == .poweredOn {
+            let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
+            peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
+            guard peripheralList.count > 0 else {
+                jsQRCodeScannerView = JSQRCodeScannerView(frame: viewController.view.bounds)
+                viewController.view.addSubview(jsQRCodeScannerView)
+                jsQRCodeScannerView.startScanner()
+                return
+            }
+            targetJacket = peripheralList[0]
+            print("Connected again")
+            connectHelper()
+        }
+    }
+    
+    private func connectHelper() {
+        targetJacket.delegate = self
+        centralManager.connect(targetJacket, options: nil)
+    }
+    
+    public func updateJacketIDString(jacketIDString: String) {
+        targetJacketIDString = jacketIDString
         centralManager.scanForPeripherals(withServices: nil, options: nil)
     }
     
@@ -69,31 +95,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             var adDataArray = Array(adData.map { UInt32($0) })
             adDataArray.removeFirst()
             adDataArray.removeFirst()
-            let jacketID = JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray)
-            print(jacketID)
-        }
-    }
-    
-    public func searchForJacket() {
-        if centralManager.state == .poweredOn {
-            let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
-            peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
-            guard peripheralList.count > 0 else {
-                NSLog(JSConstants.JSStrings.ErrorMessages.reconnectJacket)
+            if JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
+                print("Connected for first time")
+                jsQRCodeScannerView.stopScanner()
+                targetJacket = peripheral
+                connectHelper()
                 return
             }
-            connectHelper(targetJacket: peripheralList[0])
-        }
-    }
-
-    public func connectToJacket(uuidString: String) {
-        if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
-            peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
-            guard peripheralList.count > 0 else {
-                NSLog(JSConstants.JSStrings.ErrorMessages.emptyPeriphalList)
-                return
-            }
-            connectHelper(targetJacket: peripheralList[0])
         }
     }
     
@@ -102,18 +110,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
             let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
             if glowCharacteristic != nil {
-                peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
-                peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
+                targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
+                targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
             } else {
                 NSLog(JSConstants.JSStrings.ErrorMessages.rainbowGlow)
             }
         }
-    }
-    
-    private func connectHelper(targetJacket: CBPeripheral) {
-        peripheralObject = targetJacket
-        peripheralObject.delegate = self
-        centralManager.connect(peripheralObject, options: nil)
     }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -214,7 +216,7 @@ extension JacquardService: CBPeripheralDelegate {
         }
     }
     
-    private func checkForForceTouch(threadReadings: [Float]) -> Bool {
+    private func checkForForceTouch(threadReadings: [Float]) {
         for i in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
             input_data![i] = input_data![i + JSConstants.JSNumbers.ForceTouch.threadCount]
         }
@@ -225,13 +227,12 @@ extension JacquardService: CBPeripheralDelegate {
         }
         
         let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
-        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
+//        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
         if forceTouchTurnedEnabled {
             if ((prediction?.output["ForceTouch"])! > 0.7) {
                 forceTouchTurnedEnabled = false
                 delegate?.didDetectScratchGesture!()
-                return true
             }
         } else {
             //add the next confidence interval into the array
@@ -252,7 +253,6 @@ extension JacquardService: CBPeripheralDelegate {
                 }
             }
         }
-        return false
     }
     
 }
@@ -270,63 +270,3 @@ extension Data {
         }
     }
 }
-
-//
-//extension Data {
-//
-//    var uint8: UInt8 {
-//        get {
-//            var number: UInt8 = 0
-//            self.copyBytes(to:&number, count: MemoryLayout<UInt8>.size)
-//            return number
-//        }
-//    }
-//
-//    var uint16: UInt16 {
-//        get {
-//            let i16array = self.withUnsafeBytes {
-//                UnsafeBufferPointer<UInt16>(start: $0, count: self.count/2).map(UInt16.init(littleEndian:))
-//            }
-//            return i16array[0]
-//        }
-//    }
-//
-//    var uint32: UInt32 {
-//        get {
-//            let i32array = self.withUnsafeBytes {
-//                UnsafeBufferPointer<UInt32>(start: $0, count: self.count/2).map(UInt32.init(littleEndian:))
-//            }
-//            return i32array[0]
-//        }
-//    }
-//
-//    var uuid: NSUUID? {
-//        get {
-//            var bytes = [UInt8](repeating: 0, count: self.count)
-//            self.copyBytes(to:&bytes, count: self.count * MemoryLayout<UInt32>.size)
-//            return NSUUID(uuidBytes: bytes)
-//        }
-//    }
-//    var stringASCII: String? {
-//        get {
-//            return NSString(data: self, encoding: String.Encoding.ascii.rawValue) as String?
-//        }
-//    }
-//
-//    var stringUTF8: String? {
-//        get {
-//            return NSString(data: self, encoding: String.Encoding.utf8.rawValue) as String?
-//        }
-//    }
-//
-//    struct HexEncodingOptions: OptionSet {
-//        let rawValue: Int
-//        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
-//    }
-//
-//    func hexEncodedString(options: HexEncodingOptions = []) -> String {
-//        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
-//        return map { String(format: format, $0) }.joined()
-//    }
-//
-//}
