@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import JacquardToolkit
 
-public class JSQRCodeScannerView: UIView, AVCaptureMetadataOutputObjectsDelegate {
+public class JSQRCodeScannerView: UIView {
 
     private var video = AVCaptureVideoPreviewLayer()
     private var session = AVCaptureSession()
@@ -50,10 +50,13 @@ public class JSQRCodeScannerView: UIView, AVCaptureMetadataOutputObjectsDelegate
         self.removeFromSuperview()
     }
     
+}
+
+extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
+    
     public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
             if object.type == .qr {
-                print(object.stringValue!)
                 JacquardService.shared.updateJacketIDString(jacketIDString: object.stringValue!)
                 session.startRunning()
             }

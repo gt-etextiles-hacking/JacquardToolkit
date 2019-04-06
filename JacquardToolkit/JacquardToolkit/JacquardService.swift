@@ -96,7 +96,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             adDataArray.removeFirst()
             adDataArray.removeFirst()
             if JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
-                print("Connected for first time")
                 jsQRCodeScannerView.stopScanner()
                 targetJacket = peripheral
                 connectHelper()
