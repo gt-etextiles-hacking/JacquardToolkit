@@ -10,6 +10,7 @@ import Foundation
 import CoreBluetooth
 import CoreML
 import NotificationCenter
+import AVFoundation
 
 @objc public protocol JacquardServiceDelegate: NSObjectProtocol {
     @objc optional func didDetectDoubleTapGesture()
@@ -26,11 +27,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public weak var delegate: JacquardServiceDelegate?
     
     private var centralManager: CBCentralManager!
-    private var peripheralObject: CBPeripheral!
+    private var targetJacket: CBPeripheral!
     private var peripheralList: [CBPeripheral] = []
     private var glowCharacteristic: CBCharacteristic!
     private var powerOnCompletion: ((Bool) -> Void)?
     private let notificationCenter = NotificationCenter.default
+    private var viewController = UIViewController()
+    private var targetJacketIDString: String?
+    private var jsQRCodeScannerView = JSQRCodeScannerView()
     
     // new gesture variables
     private let forceTouchModel = NewGestureClassifier_RC2()
@@ -59,26 +63,44 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
     }
     
-    public func searchForJacket() {
+    public func connect(viewController: UIViewController) {
         if centralManager.state == .poweredOn {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
             peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
             guard peripheralList.count > 0 else {
-                NSLog(JSConstants.JSStrings.ErrorMessages.reconnectJacket)
+                jsQRCodeScannerView = JSQRCodeScannerView(frame: viewController.view.bounds)
+                viewController.view.addSubview(jsQRCodeScannerView)
+                jsQRCodeScannerView.startScanner()
                 return
             }
-            connectHelper(targetJacket: peripheralList[0])
+            targetJacket = peripheralList[0]
+            print("Connected again")
+            connectHelper()
         }
     }
-
-    public func connectToJacket(uuidString: String) {
-        if centralManager.state == .poweredOn, let uuid = UUID(uuidString: uuidString) {
-            peripheralList = centralManager.retrievePeripherals(withIdentifiers: [uuid])
-            guard peripheralList.count > 0 else {
-                NSLog(JSConstants.JSStrings.ErrorMessages.emptyPeriphalList)
+    
+    private func connectHelper() {
+        targetJacket.delegate = self
+        centralManager.connect(targetJacket, options: nil)
+    }
+    
+    public func updateJacketIDString(jacketIDString: String) {
+        targetJacketIDString = jacketIDString
+        centralManager.scanForPeripherals(withServices: nil, options: nil)
+    }
+    
+    public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        if peripheral.name == "Jacquard" {
+            let adData = advertisementData["kCBAdvDataManufacturerData"]! as! Data
+            var adDataArray = Array(adData.map { UInt32($0) })
+            adDataArray.removeFirst()
+            adDataArray.removeFirst()
+            if JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
+                jsQRCodeScannerView.stopScanner()
+                targetJacket = peripheral
+                connectHelper()
                 return
             }
-            connectHelper(targetJacket: peripheralList[0])
         }
     }
     
@@ -87,18 +109,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
             let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
             if glowCharacteristic != nil {
-                peripheralObject.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
-                peripheralObject.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
+                targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
+                targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
             } else {
                 NSLog(JSConstants.JSStrings.ErrorMessages.rainbowGlow)
             }
         }
-    }
-    
-    private func connectHelper(targetJacket: CBPeripheral) {
-        peripheralObject = targetJacket
-        peripheralObject.delegate = self
-        centralManager.connect(peripheralObject, options: nil)
     }
 
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -171,7 +187,7 @@ extension JacquardService: CBPeripheralDelegate {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
                 let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
-                delegate?.didDetectThreadTouch(threadArray: threadForceValueArray)
+                delegate?.didDetectThreadTouch!(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
@@ -183,15 +199,15 @@ extension JacquardService: CBPeripheralDelegate {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
                 switch gesture {
                 case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture()
+                    delegate?.didDetectDoubleTapGesture!()
                 case .brushIn:
-                    delegate?.didDetectBrushInGesture()
+                    delegate?.didDetectBrushInGesture!()
                 case .brushOut:
-                    delegate?.didDetectBrushOutGesture()
+                    delegate?.didDetectBrushOutGesture!()
                 case .cover:
-                    delegate?.didDetectCoverGesture()
+                    delegate?.didDetectCoverGesture!()
                 case .scratch:
-                    delegate?.didDetectScratchGesture()
+                    delegate?.didDetectScratchGesture!()
                 default:
                     NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                 }
@@ -199,7 +215,7 @@ extension JacquardService: CBPeripheralDelegate {
         }
     }
     
-    private func checkForForceTouch(threadReadings: [Float]) -> Bool {
+    private func checkForForceTouch(threadReadings: [Float]) {
         for i in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
             input_data![i] = input_data![i + JSConstants.JSNumbers.ForceTouch.threadCount]
         }
@@ -210,13 +226,12 @@ extension JacquardService: CBPeripheralDelegate {
         }
         
         let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
-        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
+//        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
         if forceTouchTurnedEnabled {
             if ((prediction?.output["ForceTouch"])! > 0.7) {
                 forceTouchTurnedEnabled = false
-                delegate?.didDetectForceTouchGesture()
-                return true
+                delegate?.didDetectScratchGesture!()
             }
         } else {
             //add the next confidence interval into the array
@@ -237,7 +252,20 @@ extension JacquardService: CBPeripheralDelegate {
                 }
             }
         }
-        return false
     }
     
+}
+
+extension Data {
+
+    init<T>(fromArray values: [T]) {
+        var values = values
+        self.init(buffer: UnsafeBufferPointer(start: &values, count: values.count))
+    }
+
+    func toArray<T>(type: T.Type) -> [T] {
+        return self.withUnsafeBytes {
+            [T](UnsafeBufferPointer(start: $0, count: self.count/MemoryLayout<T>.stride))
+        }
+    }
 }
