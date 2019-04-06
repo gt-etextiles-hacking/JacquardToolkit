@@ -95,6 +95,46 @@ class JSHelper {
         return data
     }
     
+    internal func decodeAdvertisementData(dataIn: [UInt32]) -> String {
+        var accumulator: UInt32 = 0 // Accumulator to aggregate multiple bytes' worth of bits.
+        var bitsLeft = 0 // How many bits of valid data are in the LSB of the accumulator.
+        var bytesUsed = 0 // How many bytes from the input data have been shifted into the accumulator.
+        var finalArr: [UInt8] = []
+        
+        for _ in 0...dataIn.count {
+            //Check if we need to load more bits into the accumulator
+            if bitsLeft < 6 {
+                //Load the next byte in, shifted to the left to avoid bits already in the accumulator
+                accumulator += dataIn[bytesUsed] << bitsLeft
+                bytesUsed += 1 //Mark one more byte used
+                bitsLeft += 8 //Mark 8 bits available
+            }
+            
+            // Take the lowest 6 bits of the accumulator
+            var sixBitCode: UInt8 = UInt8(accumulator & 0x3f)
+            
+            //Decode the encoded character into [0-9;A-Z;a-z;-]
+            if sixBitCode <= 0x09 {
+                sixBitCode += UInt8(Character(unicodeScalarLiteral: "0").asciiValue)
+            } else if sixBitCode <= 0x22 {
+                sixBitCode += UInt8(Character(unicodeScalarLiteral: "A").asciiValue - 0x0a)
+            } else if sixBitCode <= 0x3b {
+                sixBitCode += UInt8(Character(unicodeScalarLiteral: "a").asciiValue - 0x23)
+            } else if sixBitCode == 0x3c {
+                sixBitCode = 0x2d
+            } else if sixBitCode == 0x3f {
+                break //End-of-string character
+            } else {
+                continue //Invalid characters are skipped
+            }
+            
+            accumulator >>= 6 //Chop the bits out of the accumulator
+            bitsLeft -= 6 //Mark those bits as used
+            finalArr.append(sixBitCode)
+        }
+        return String(bytes: finalArr, encoding: .ascii) ?? "N/A"
+    }
+    
 }
 
 extension Data {
@@ -120,5 +160,14 @@ extension String {
         let start = index(startIndex, offsetBy: bounds.lowerBound)
         let end = index(startIndex, offsetBy: bounds.upperBound)
         return String(self[start..<end])
+    }
+}
+
+extension Character {
+    var asciiValue: Int {
+        get {
+            let s = String(self).unicodeScalars
+            return Int(s[s.startIndex].value)
+        }
     }
 }
