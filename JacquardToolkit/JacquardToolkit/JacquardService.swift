@@ -18,6 +18,7 @@ import AVFoundation
     @objc optional func didDetectBrushOutGesture()
     @objc optional func didDetectCoverGesture()
     @objc optional func didDetectScratchGesture()
+    @objc optional func didDetectForceTouchGesture()
     @objc optional func didDetectThreadTouch(threadArray: [Float])
 }
 
@@ -36,12 +37,19 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var targetJacketIDString: String?
     private var jsQRCodeScannerView = JSQRCodeScannerView()
     
-    // new gesture variables
-    private let forceTouchModel = NewGestureClassifier_RC2()
+    // forcetouch gesture variables
+    private let forceTouchModel = ForceTouch()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
-    private var confidenceIntervalArray: [Double] = []
+    // forcetouch detection
+    private var forceTouchDetectionProgress = 0
+    private var forceTouchDetectionLength = 6
+    private var forceTouchDetectionThreshold = 0.9
+    // forcetouch detection cooldown
+    private var forceTouchCooldownProgress = 0
+    private var minForceTouchCooldownLength = 6
+    private var forceTouchCooldownThreshold = 0.4
 
     private override init() {
         super.init()
@@ -225,32 +233,38 @@ extension JacquardService: CBPeripheralDelegate {
             input_data![JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
         }
         
-        let prediction = try? forceTouchModel.prediction(input: NewGestureClassifier_RC2Input(_15ThreadConductivityReadings: input_data!))
+        let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data!))
 //        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
-        
+
         if forceTouchTurnedEnabled {
-            if ((prediction?.output["ForceTouch"])! > 0.7) {
-                forceTouchTurnedEnabled = false
-                delegate?.didDetectScratchGesture!()
+            if ((prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel])! > forceTouchDetectionThreshold) {
+                // increment detection progress with each sufficiently high prediction confidence
+                forceTouchDetectionProgress += 1
+                // if enough detection progress has elapsed, register a detection of ForceTouch and reset
+                if forceTouchDetectionProgress >= forceTouchDetectionLength {
+                    forceTouchDetectionProgress = 0
+                    forceTouchTurnedEnabled = false
+                    delegate?.didDetectForceTouchGesture!()
+                }
+                
+            } else {
+                forceTouchDetectionProgress = 0
             }
         } else {
-            //add the next confidence interval into the array
-            confidenceIntervalArray.append(prediction?.output["ForceTouch"] ?? 0.0)
-            if confidenceIntervalArray.count > 5 {
-                var reenableForceTouch = true
-                for i in confidenceIntervalArray {
-                    if i > 0.5 {
-                        reenableForceTouch = false
-                    }
-                }
-                if reenableForceTouch {
-                    confidenceIntervalArray = []
-                    forceTouchTurnedEnabled = true
-                    print("Reenabling force touch")
-                } else {
-                    confidenceIntervalArray.removeFirst()
-                }
+            if prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel] ?? 1.0 > forceTouchCooldownThreshold {
+                // reset cooldown progress any time we get too confident of a prediction
+                forceTouchCooldownProgress = 0
+            } else {
+                // increment cooldown progress with each sufficiently low prediction confidence
+                forceTouchCooldownProgress += 1
             }
+            // if enough cooldown progress has elapsed, prime service for next ForceTouch recognition
+            if forceTouchCooldownProgress >= minForceTouchCooldownLength {
+                forceTouchCooldownProgress = 0
+                forceTouchTurnedEnabled = true
+                print(JSConstants.JSStrings.ForceTouch.reenableMessage)
+            }
+       
         }
     }
     
