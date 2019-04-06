@@ -95,7 +95,7 @@ class JSHelper {
         return data
     }
     
-    func decodeAdvertisementData(dataIn: [UInt32]) -> String {
+    internal func decodeAdvertisementData(dataIn: [UInt32]) -> String {
         var accumulator: UInt32 = 0 // Accumulator to aggregate multiple bytes' worth of bits.
         var bitsLeft = 0 // How many bits of valid data are in the LSB of the accumulator.
         var bytesUsed = 0 // How many bytes from the input data have been shifted into the accumulator.
