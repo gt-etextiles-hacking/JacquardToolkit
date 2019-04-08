@@ -13,6 +13,8 @@ import NotificationCenter
 import AVFoundation
 
 @objc public protocol JacquardServiceDelegate: NSObjectProtocol {
+    @objc optional func didDetectConnection(isConnected: Bool)
+    
     @objc optional func didDetectDoubleTapGesture()
     @objc optional func didDetectBrushInGesture()
     @objc optional func didDetectBrushOutGesture()
@@ -149,7 +151,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
 
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        delegate?.didDetectConnection!(isConnected: true)
         peripheral.discoverServices(nil)
+    }
+    
+    public func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        delegate?.didDetectConnection!(isConnected: false)
     }
 
 }

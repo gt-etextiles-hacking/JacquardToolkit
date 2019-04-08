@@ -58,7 +58,7 @@ extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
         if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
             if object.type == .qr {
                 JacquardService.shared.updateJacketIDString(jacketIDString: object.stringValue!)
-                session.startRunning()
+                session.stopRunning()
             }
         }
     }
