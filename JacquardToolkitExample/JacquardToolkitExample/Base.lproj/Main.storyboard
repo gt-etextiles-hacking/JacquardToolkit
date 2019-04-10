@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="JacquardToolkitExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="RedCircle" translatesAutoresizingMaskIntoConstraints="NO" id="bIy-It-VkS">
@@ -68,11 +68,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="xOB-vQ-hIu" userLabel="Thread3">
-                                <rect key="frame" x="16" y="140" width="343" height="7"/>
+                                <rect key="frame" x="16" y="131" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="yo1-Hv-jJr" userLabel="Thread4">
-                                <rect key="frame" x="16" y="131" width="343" height="7"/>
+                                <rect key="frame" x="16" y="140" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="ttt-VS-Xft" userLabel="Thread5">
@@ -91,12 +91,8 @@
                                 <rect key="frame" x="16" y="176" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-EK-h7e" userLabel="Thread9">
-                                <rect key="frame" x="16" y="194" width="343" height="7"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="gaA-Mf-qqw" userLabel="Thread10">
-                                <rect key="frame" x="16" y="185" width="343" height="7"/>
+                                <rect key="frame" x="16" y="194" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="mP9-mZ-410" userLabel="Thread11">
@@ -119,6 +115,10 @@
                                 <rect key="frame" x="16" y="239" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Thread" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-EK-h7e" userLabel="Thread9">
+                                <rect key="frame" x="16" y="185" width="343" height="7"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -126,21 +126,21 @@
                     <connections>
                         <outlet property="connectionIndicator" destination="bIy-It-VkS" id="shk-in-7Gi"/>
                         <outlet property="lastGestureLabel" destination="s7u-u3-kgS" id="eEM-To-pkO"/>
-                        <outlet property="thread1" destination="RHM-HZ-JCn" id="BdG-uy-puC"/>
-                        <outlet property="thread10" destination="gaA-Mf-qqw" id="Yyu-y1-fT1"/>
-                        <outlet property="thread11" destination="mP9-mZ-410" id="XZ5-Vr-bm7"/>
-                        <outlet property="thread12" destination="ew4-3d-Kl9" id="dbP-PZ-mrw"/>
-                        <outlet property="thread13" destination="KQ8-61-D9N" id="Kq1-ny-NYy"/>
-                        <outlet property="thread14" destination="cWw-ch-fYY" id="KaC-sO-yig"/>
-                        <outlet property="thread15" destination="THe-Ew-1dj" id="idq-eR-sXK"/>
-                        <outlet property="thread2" destination="0JA-hX-zuw" id="FzN-FK-wLT"/>
-                        <outlet property="thread3" destination="xOB-vQ-hIu" id="bap-60-4pa"/>
-                        <outlet property="thread4" destination="yo1-Hv-jJr" id="t0D-Gh-UHW"/>
-                        <outlet property="thread5" destination="ttt-VS-Xft" id="ZCf-Bs-Dma"/>
-                        <outlet property="thread6" destination="cBu-Fz-Hj8" id="6aL-h0-6yT"/>
-                        <outlet property="thread7" destination="eTK-ki-jEP" id="Ald-wS-xPS"/>
-                        <outlet property="thread8" destination="vWb-DC-9tt" id="HDI-yO-ZPl"/>
-                        <outlet property="thread9" destination="Gcf-EK-h7e" id="04h-XX-b2b"/>
+                        <outletCollection property="threads" destination="RHM-HZ-JCn" collectionClass="NSMutableArray" id="rh9-Eq-dcw"/>
+                        <outletCollection property="threads" destination="0JA-hX-zuw" collectionClass="NSMutableArray" id="OEq-Ya-lUX"/>
+                        <outletCollection property="threads" destination="xOB-vQ-hIu" collectionClass="NSMutableArray" id="CAA-0z-F0n"/>
+                        <outletCollection property="threads" destination="yo1-Hv-jJr" collectionClass="NSMutableArray" id="qj9-x0-87x"/>
+                        <outletCollection property="threads" destination="ttt-VS-Xft" collectionClass="NSMutableArray" id="u02-eg-MCM"/>
+                        <outletCollection property="threads" destination="cBu-Fz-Hj8" collectionClass="NSMutableArray" id="RZa-z6-Wtk"/>
+                        <outletCollection property="threads" destination="eTK-ki-jEP" collectionClass="NSMutableArray" id="sl2-j5-XGY"/>
+                        <outletCollection property="threads" destination="vWb-DC-9tt" collectionClass="NSMutableArray" id="26g-OS-gvk"/>
+                        <outletCollection property="threads" destination="Gcf-EK-h7e" collectionClass="NSMutableArray" id="Ia4-9Q-cYA"/>
+                        <outletCollection property="threads" destination="gaA-Mf-qqw" collectionClass="NSMutableArray" id="3cg-iM-WAT"/>
+                        <outletCollection property="threads" destination="mP9-mZ-410" collectionClass="NSMutableArray" id="AJd-fU-BSr"/>
+                        <outletCollection property="threads" destination="ew4-3d-Kl9" collectionClass="NSMutableArray" id="FhZ-vR-rIK"/>
+                        <outletCollection property="threads" destination="KQ8-61-D9N" collectionClass="NSMutableArray" id="rH5-8r-wrg"/>
+                        <outletCollection property="threads" destination="cWw-ch-fYY" collectionClass="NSMutableArray" id="KbZ-5b-2d9"/>
+                        <outletCollection property="threads" destination="THe-Ew-1dj" collectionClass="NSMutableArray" id="PwX-ej-wxN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
