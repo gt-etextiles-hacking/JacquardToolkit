@@ -70,7 +70,7 @@ extension ViewController: JacquardServiceDelegate {
     
     func didDetectThreadTouch(threadArray: [Float]) {
         for (index, thread) in threads.enumerated() {
-            thread.alpha = CGFloat(threadArray[index])
+            thread.alpha = CGFloat(max(0.05, threadArray[index]))
         }
     }
     
