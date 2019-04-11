@@ -40,6 +40,11 @@ struct JSConstants {
             static let reenableMessage = "Reenabling force touch"
         }
         
+        struct Directions {
+            static let qrInstructionPreScan = "Scan the QR Code on the inside of the jacket:"
+            static let qrInstructionPostScan = "Re-snap the tag into the left cuff."
+        }
+        
     }
     
     struct JSNumbers {

@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         JacquardService.shared.delegate = self
+        for thread in threads {
+            thread.alpha = CGFloat(0.05)
+        }
     }
     
     @IBAction func connectButtonTapped(_ sender: Any) {
