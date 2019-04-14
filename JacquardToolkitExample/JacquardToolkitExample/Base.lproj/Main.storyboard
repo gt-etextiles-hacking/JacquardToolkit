@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="RedCircle" translatesAutoresizingMaskIntoConstraints="NO" id="bIy-It-VkS">
-                                <rect key="frame" x="313" y="20" width="46" height="46"/>
+                                <rect key="frame" x="313" y="37" width="46" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vDg-sb-KPw">
@@ -51,11 +51,10 @@
                                 <rect key="frame" x="16" y="503" width="343" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.9992151856" green="0.15658691529999999" blue="0.32633703949999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Rainbow Glow">
+                                <state key="normal" title="Toggle Rainbow Glow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="connectButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mcX-7z-hie"/>
                                     <action selector="glowButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eQu-ZI-tb1"/>
                                 </connections>
                             </button>
@@ -119,6 +118,14 @@
                                 <rect key="frame" x="16" y="185" width="343" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g11-7D-kIR">
+                                <rect key="frame" x="16" y="44" width="93" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Start Logging"/>
+                                <connections>
+                                    <action selector="loggingButtonToggled:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Jb-qk-vgk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -126,6 +133,8 @@
                     <connections>
                         <outlet property="connectionIndicator" destination="bIy-It-VkS" id="shk-in-7Gi"/>
                         <outlet property="lastGestureLabel" destination="s7u-u3-kgS" id="eEM-To-pkO"/>
+                        <outlet property="loggingButton" destination="g11-7D-kIR" id="hPJ-nF-tIw"/>
+                        <outlet property="rainbowGlowButton" destination="HMb-MV-zsI" id="Pgb-iZ-ch9"/>
                         <outletCollection property="threads" destination="RHM-HZ-JCn" collectionClass="NSMutableArray" id="rh9-Eq-dcw"/>
                         <outletCollection property="threads" destination="0JA-hX-zuw" collectionClass="NSMutableArray" id="OEq-Ya-lUX"/>
                         <outletCollection property="threads" destination="xOB-vQ-hIu" collectionClass="NSMutableArray" id="CAA-0z-F0n"/>
