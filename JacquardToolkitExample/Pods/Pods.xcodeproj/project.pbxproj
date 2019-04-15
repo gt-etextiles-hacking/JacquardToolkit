@@ -17,6 +17,7 @@
 		8205994021B3739E00CCE2EB /* JSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205993F21B3739E00CCE2EB /* JSConstants.swift */; };
 		82A61D062254F5BF005844BF /* JSQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A61D052254F5BF005844BF /* JSQRCodeScannerView.swift */; };
 		82A61D072254F5BF005844BF /* JSQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A61D052254F5BF005844BF /* JSQRCodeScannerView.swift */; };
+		82B37FF12264CB8800C6C22C /* ForceTouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B37FF02264CB8800C6C22C /* ForceTouch.swift */; };
 		C0842465925767B5DC5C4F7E912988B6 /* Pods-JacquardToolkitExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA5F84CAAE70FAD42FF8DBC6FBA085DD /* Pods-JacquardToolkitExample-dummy.m */; };
 		DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64794208534C4019C572CAEF239624B1 /* JacquardService.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		8205993D21B1E18E00CCE2EB /* JSHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSHelper.swift; sourceTree = "<group>"; };
 		8205993F21B3739E00CCE2EB /* JSConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSConstants.swift; sourceTree = "<group>"; };
 		82A61D052254F5BF005844BF /* JSQRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSQRCodeScannerView.swift; sourceTree = "<group>"; };
+		82B37FF02264CB8800C6C22C /* ForceTouch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceTouch.swift; sourceTree = "<group>"; };
 		8F8CF58E8A0B15B876960BAE746EC2DE /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A369364D996FD4384B7B898B02003F2C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				45055172224EC1B80004A6EC /* ForceTouch.mlmodel */,
+				82B37FF02264CB8800C6C22C /* ForceTouch.swift */,
 			);
 			path = "Custom Gesture Models";
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */,
 				8205994021B3739E00CCE2EB /* JSConstants.swift in Sources */,
 				8205993E21B1E18E00CCE2EB /* JSHelper.swift in Sources */,
+				82B37FF12264CB8800C6C22C /* ForceTouch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +393,8 @@
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				COREML_CODEGEN_LANGUAGE = None;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -558,6 +564,8 @@
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				COREML_CODEGEN_LANGUAGE = None;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
