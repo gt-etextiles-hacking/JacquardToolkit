@@ -16,7 +16,6 @@
 		8205993E21B1E18E00CCE2EB /* JSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205993D21B1E18E00CCE2EB /* JSHelper.swift */; };
 		8205994021B3739E00CCE2EB /* JSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205993F21B3739E00CCE2EB /* JSConstants.swift */; };
 		82A61D062254F5BF005844BF /* JSQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A61D052254F5BF005844BF /* JSQRCodeScannerView.swift */; };
-		82A61D072254F5BF005844BF /* JSQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A61D052254F5BF005844BF /* JSQRCodeScannerView.swift */; };
 		C0842465925767B5DC5C4F7E912988B6 /* Pods-JacquardToolkitExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA5F84CAAE70FAD42FF8DBC6FBA085DD /* Pods-JacquardToolkitExample-dummy.m */; };
 		DF7A5BED7B8C61156ADA1B7042E675C3 /* JacquardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64794208534C4019C572CAEF239624B1 /* JacquardService.swift */; };
 /* End PBXBuildFile section */
@@ -303,7 +302,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82A61D072254F5BF005844BF /* JSQRCodeScannerView.swift in Sources */,
 				C0842465925767B5DC5C4F7E912988B6 /* Pods-JacquardToolkitExample-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
