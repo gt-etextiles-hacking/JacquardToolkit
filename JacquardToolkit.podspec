@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.license       = "MIT"
   s.author        = { "Caleb Rudnicki" => "calebrudnicki@gmail.com" }
   s.platform      = :ios, "11.0"
-  s.source        = { :git => "https://github.com/calebrudnicki/JacquardToolkit.git", :tag => "1.1.3" }
+  s.source        = { :git => "https://github.com/calebrudnicki/JacquardToolkit.git", :tag => s.version.to_s }
   s.source_files  = "JacquardToolkit/**/*.{h,m,swift,mlmodel}"
   s.exclude_files = [ 'JacquardToolkit/CustomGestureModels/**']
   
