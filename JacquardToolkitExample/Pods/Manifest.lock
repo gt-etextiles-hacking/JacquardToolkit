@@ -1,16 +1,16 @@
 PODS:
-  - JacquardToolkit (1.0.3)
+  - JacquardToolkit (1.1.3)
 
 DEPENDENCIES:
-  - JacquardToolkit (from `../JacquardToolkit/`)
+  - JacquardToolkit (from `../`)
 
 EXTERNAL SOURCES:
   JacquardToolkit:
-    :path: "../JacquardToolkit/"
+    :path: "../"
 
 SPEC CHECKSUMS:
-  JacquardToolkit: 2162a18eb6f31df686040eb4e31d8449400ab480
+  JacquardToolkit: ed2c34434139e1ae76ce66e9411aa93c122eb72e
 
-PODFILE CHECKSUM: 4b0894ab336ef6d25cfbadebd6d1cbb5ecf70fc7
+PODFILE CHECKSUM: 9f4d13ec29006053e52ad5631a347c5243259d47
 
 COCOAPODS: 1.5.3
