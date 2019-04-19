@@ -7,7 +7,6 @@
 
 import UIKit
 import AVFoundation
-import JacquardToolkit
 
 public class JSQRCodeScannerView: UIView {
 

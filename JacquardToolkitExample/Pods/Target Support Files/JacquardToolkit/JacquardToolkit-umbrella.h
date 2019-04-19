@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "JacquardToolkit.h"
 
 FOUNDATION_EXPORT double JacquardToolkitVersionNumber;
 FOUNDATION_EXPORT const unsigned char JacquardToolkitVersionString[];
