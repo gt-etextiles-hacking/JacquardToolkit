@@ -29,7 +29,10 @@ import JacquardToolkit
 
 ### Development
 
-1. Enable your device's bluetooth capabilities and connect to your jacket by passing in your jacket's UUID: 
+1. Add the 'Privacy - Camera Usage Description' to your Info.plist:
+![Image of Privacy - Camera Usage Description](https://i.imgur.com/Ki84eK3.png)
+
+2. Enable your device's bluetooth capabilities and connect to your jacket by passing in your jacket's UUID: 
 ```sh
 import UIKit
 import JacquardToolkit
@@ -38,7 +41,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         JacquardService.shared.activateBlutooth { _ in 
-            JacquardService.shared.connectToJacket(uuidString: YourJacketsUUIDString)
+            JacquardService.shared.connect(viewController: self)
         }
     }
 }
@@ -51,7 +54,7 @@ class ViewController: UIViewController {
 }
 ```
 
-4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, & Scratch): 
+4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, Scratch & Force Touch): 
 ```sh
 override func viewDidLoad() {
     super.viewDidLoad()
@@ -80,6 +83,10 @@ extension ViewController: JacquardServiceDelegate {
         //Detected Scratch Gesture
     }
 
+    func didDetectForceTouch() {
+        //Detected Force Touch Gesture 
+    }
+
 }
 ```
 
@@ -93,7 +100,7 @@ override func viewDidLoad() {
 extension ViewController: JacquardServiceDelegate {
 
     func didDetectThreadTouch(threadArray: [Float]) {
-        //Detected an array of 15 values that represent 
+        //Dected an array of 15 values that represent 
         //the intensity each thread is being touched by
     }
 
@@ -101,6 +108,11 @@ extension ViewController: JacquardServiceDelegate {
 ```
 
 Be sure to check out the example application for more information (JacquardToolkitExample).
+
+### E-Textile Hacking 
+This framework is just a small part of the project that our team at Georgia Tech has been working on. If you are interested in learning more about our project, please visit [our Medium publication](https://medium.com/e-textile-hacking).
+
+![Jacquard Logo](https://i.imgur.com/DXSKUx9.jpg)
 
 License
 ----
