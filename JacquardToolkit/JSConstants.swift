@@ -20,13 +20,13 @@ struct JSConstants {
     
     struct JSStrings {
         
-        struct CentralManagerState {
-            static let unknown = "Bluetooth Manager's state is unknown"
-            static let resetting = "Bluetooth Manager's state is resetting"
-            static let unsupporting = "Bluetooth Manager's state is unsupporting"
-            static let unauthorized = "Bluetooth Manager's state is unauthorized"
-            static let poweredOn = "Bluetooth Manager's state is powered on"
-            static let poweredOff = "Bluetooth Manager's state is powered off"
+        enum CentralManagerState: String {
+            case unknown = "Bluetooth Manager's state is unknown"
+            case resetting = "Bluetooth Manager's state is resetting"
+            case unsupporting = "Bluetooth Manager's state is unsupporting"
+            case unauthorized = "Bluetooth Manager's state is unauthorized"
+            case poweredOn = "Bluetooth Manager's state is powered on"
+            case poweredOff = "Bluetooth Manager's state is powered off"
         }
         
         struct ErrorMessages {

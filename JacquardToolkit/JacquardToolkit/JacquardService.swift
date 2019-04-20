@@ -92,14 +92,19 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         centralManager.connect(targetJacket, options: nil)
     }
     
-    public func updateJacketIDString(jacketIDString: String) {
+    public func updateJacketIDString(jacketIDString: String?) {
+        guard let jacketIDString = jacketIDString else {
+            return
+        }
         targetJacketIDString = jacketIDString
         centralManager.scanForPeripherals(withServices: nil, options: nil)
     }
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if peripheral.name == "Jacquard" {
-            let adData = advertisementData["kCBAdvDataManufacturerData"]! as! Data
+            guard let adData = advertisementData["kCBAdvDataManufacturerData"] as? Data else {
+                return
+            }
             var adDataArray = Array(adData.map { UInt32($0) })
             adDataArray.removeFirst()
             adDataArray.removeFirst()
@@ -128,21 +133,21 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
-            NSLog(JSConstants.JSStrings.CentralManagerState.unknown)
+            NSLog(JSConstants.JSStrings.CentralManagerState.unknown.rawValue)
         case .resetting:
-            NSLog(JSConstants.JSStrings.CentralManagerState.resetting)
+            NSLog(JSConstants.JSStrings.CentralManagerState.resetting.rawValue)
         case .unsupported:
-            NSLog(JSConstants.JSStrings.CentralManagerState.unsupporting)
+            NSLog(JSConstants.JSStrings.CentralManagerState.unsupporting.rawValue)
         case .unauthorized:
-            NSLog(JSConstants.JSStrings.CentralManagerState.unauthorized)
+            NSLog(JSConstants.JSStrings.CentralManagerState.unauthorized.rawValue)
             powerOnCompletion?(false)
             powerOnCompletion = nil
         case .poweredOn:
-            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOn)
+            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOn.rawValue)
             powerOnCompletion?(true)
             powerOnCompletion = nil
         case .poweredOff:
-            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOff)
+            NSLog(JSConstants.JSStrings.CentralManagerState.poweredOff.rawValue)
             powerOnCompletion?(false)
             powerOnCompletion = nil
         }
@@ -195,7 +200,7 @@ extension JacquardService: CBPeripheralDelegate {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
                 let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
-                delegate?.didDetectThreadTouch!(threadArray: threadForceValueArray)
+                delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
             }
         }
@@ -207,15 +212,15 @@ extension JacquardService: CBPeripheralDelegate {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
                 switch gesture {
                 case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture!()
+                    delegate?.didDetectDoubleTapGesture?()
                 case .brushIn:
-                    delegate?.didDetectBrushInGesture!()
+                    delegate?.didDetectBrushInGesture?()
                 case .brushOut:
-                    delegate?.didDetectBrushOutGesture!()
+                    delegate?.didDetectBrushOutGesture?()
                 case .cover:
-                    delegate?.didDetectCoverGesture!()
+                    delegate?.didDetectCoverGesture?()
                 case .scratch:
-                    delegate?.didDetectScratchGesture!()
+                    delegate?.didDetectScratchGesture?()
                 default:
                     NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                 }
@@ -224,27 +229,30 @@ extension JacquardService: CBPeripheralDelegate {
     }
     
     private func checkForForceTouch(threadReadings: [Float]) {
-        for i in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
-            input_data![i] = input_data![i + JSConstants.JSNumbers.ForceTouch.threadCount]
+        guard let input_data = input_data else {
+            return
+        }
+        for index in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
+            input_data[index] = input_data[index + JSConstants.JSNumbers.ForceTouch.threadCount]
         }
         
         // copying in the latest thread reading into the last 15 elements
         for i in 0 ..< JSConstants.JSNumbers.ForceTouch.threadCount {
-            input_data![JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
+            input_data[JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
         }
         
-        let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data!))
+        let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data))
 //        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
 
         if forceTouchTurnedEnabled {
-            if ((prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel])! > forceTouchDetectionThreshold) {
+            if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > forceTouchDetectionThreshold {
                 // increment detection progress with each sufficiently high prediction confidence
                 forceTouchDetectionProgress += 1
                 // if enough detection progress has elapsed, register a detection of ForceTouch and reset
                 if forceTouchDetectionProgress >= forceTouchDetectionLength {
                     forceTouchDetectionProgress = 0
                     forceTouchTurnedEnabled = false
-                    delegate?.didDetectForceTouchGesture!()
+                    delegate?.didDetectForceTouchGesture?()
                 }
                 
             } else {
