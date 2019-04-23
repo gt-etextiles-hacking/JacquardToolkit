@@ -44,7 +44,6 @@ public class JSQRCodeScannerView: UIView {
             scannerBounds.borderWidth = 5
             
             textLayer.string = "Scan QR Code"
-            textLayer.alignmentMode = .center
             textLayer.cornerRadius = 10
             textLayer.backgroundColor = UIColor.gray.cgColor
             textLayer.borderColor = UIColor.black.cgColor
