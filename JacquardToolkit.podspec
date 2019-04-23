@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name          = "JacquardToolkit"
-  s.version       = "1.1.3"
+  s.version       = "1.1.4"
   s.summary       = "This development toolkit for the Levi's Jacquard."
   s.description   = "This is a framework for interacting with the Levi's Jacquard made by Caleb Rudnicki"
   s.homepage      = "https://github.com/calebrudnicki/JacquardToolkit"
@@ -12,5 +12,4 @@ Pod::Spec.new do |s|
   s.source_files  = "JacquardToolkit/**/*.{h,m,swift,mlmodel}"
   s.exclude_files = [ 'JacquardToolkit/CustomGestureModels/**']
   
-
 end

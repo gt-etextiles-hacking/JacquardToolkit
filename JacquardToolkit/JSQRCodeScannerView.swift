@@ -12,16 +12,16 @@ public class JSQRCodeScannerView: UIView {
 
     private var video = AVCaptureVideoPreviewLayer()
     private var session = AVCaptureSession()
-    private var scannerBounds = CAShapeLayer()
-    private var textLayer = CATextLayer()
     private let output = AVCaptureMetadataOutput()
     
+    private var scannerBounds = CAShapeLayer()
+    private var textLayer = CATextLayer()
     private var scannerRect = CGRect()
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        scannerRect = CGRect(x: self.center.x - (self.frame.width * 0.667 / 2), y: self.frame.width * 0.667 / 4, width: self.frame.width * 0.667, height: self.frame.width * 0.667)
+        scannerRect = CGRect(x: self.center.x - (self.frame.width * 0.5 / 2), y: self.frame.width * 0.5 / 3, width: self.frame.width * 0.5, height: self.frame.width * 0.5)
         
         if let captureDevice = AVCaptureDevice.default(for: .video) {
             do {
@@ -40,12 +40,19 @@ public class JSQRCodeScannerView: UIView {
             video.frame = self.layer.bounds
             
             scannerBounds.frame = scannerRect
-            scannerBounds.borderColor = UIColor.yellow.cgColor
+            scannerBounds.borderColor = UIColor.gray.cgColor
             scannerBounds.borderWidth = 5
             
             textLayer.string = "Scan QR Code"
             textLayer.alignmentMode = .center
-            textLayer.backgroundColor = UIColor.yellow.cgColor
+            textLayer.cornerRadius = 10
+            textLayer.backgroundColor = UIColor.gray.cgColor
+            textLayer.borderColor = UIColor.black.cgColor
+            textLayer.borderWidth = 2
+            textLayer.shadowColor = UIColor.black.cgColor
+            textLayer.shadowOffset = CGSize(width: 3, height: 3)
+            textLayer.shadowOpacity = 0.7
+            textLayer.shadowRadius = 4.0
             textLayer.frame = CGRect(x: 15, y: self.frame.height + 15 - (self.frame.height * 0.25), width: self.frame.width - 30, height: self.frame.height * 0.25 - 30)
             
             self.layer.addSublayer(video)

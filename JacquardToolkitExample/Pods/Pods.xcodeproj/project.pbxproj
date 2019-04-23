@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,32 +32,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		18634442CC7D485589C9589D6E6E7AD4 /* ForceTouch.mlmodel */ = {isa = PBXFileReference; includeInIndex = 1; name = ForceTouch.mlmodel; path = JacquardToolkit/ForceTouch.mlmodel; sourceTree = "<group>"; };
+		18634442CC7D485589C9589D6E6E7AD4 /* ForceTouch.mlmodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.mlmodel; name = ForceTouch.mlmodel; path = JacquardToolkit/ForceTouch.mlmodel; sourceTree = "<group>"; };
 		1BA048F6187B2CD98B1966C9F9F46256 /* JacquardToolkit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JacquardToolkit-dummy.m"; sourceTree = "<group>"; };
 		1C2796E599A238237BF1E77886466C50 /* JacquardService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JacquardService.swift; sourceTree = "<group>"; };
 		29E2CAE5DEB0F4382BEF028DC38D9A6D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2E2E638E0017E1C64300428E06B93A95 /* JacquardToolkit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = JacquardToolkit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		2E2E638E0017E1C64300428E06B93A95 /* JacquardToolkit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = JacquardToolkit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		31543626F626397E58C81E3CE63691D6 /* Pods-JacquardToolkitExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-JacquardToolkitExample.modulemap"; sourceTree = "<group>"; };
 		46788913FCAF30A588280DA69EDA9F9D /* JacquardToolkit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JacquardToolkit.xcconfig; sourceTree = "<group>"; };
 		4D927A0F3D90A91F0CD13C28063F981A /* Pods-JacquardToolkitExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JacquardToolkitExample-resources.sh"; sourceTree = "<group>"; };
 		4DD435858822BFD6F8D21E595183C53B /* JSQRCodeScannerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSQRCodeScannerView.swift; path = JacquardToolkit/JSQRCodeScannerView.swift; sourceTree = "<group>"; };
-		6E8A03C114384FCA185A249B3B3FF0F9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		6E8A03C114384FCA185A249B3B3FF0F9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8F8CF58E8A0B15B876960BAE746EC2DE /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A31C7BBA5468ACA2B465F528D167762D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A31C7BBA5468ACA2B465F528D167762D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A6695E63AD2B66FA8F1A0BF3000BA087 /* JacquardToolkit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JacquardToolkit-prefix.pch"; sourceTree = "<group>"; };
 		A7BF50FD9DA3D2E883A2FB20B6184ADB /* Pods-JacquardToolkitExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JacquardToolkitExample-umbrella.h"; sourceTree = "<group>"; };
 		B18B830EDD9ECAC9D5D5BC42641EB0AD /* JacquardToolkit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JacquardToolkit.h; sourceTree = "<group>"; };
 		B586550CBD799D25F885F096BD4232EF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA5F84CAAE70FAD42FF8DBC6FBA085DD /* Pods-JacquardToolkitExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JacquardToolkitExample-dummy.m"; sourceTree = "<group>"; };
-		BD88BF8BDAE6CB78FF39ED8F79D1BDF0 /* Pods_JacquardToolkitExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_JacquardToolkitExample.framework; path = "Pods-JacquardToolkitExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD88BF8BDAE6CB78FF39ED8F79D1BDF0 /* Pods_JacquardToolkitExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JacquardToolkitExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33E6F1466B55C471E9BBD5CD5FF353A /* Pods-JacquardToolkitExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-JacquardToolkitExample-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C383F758BC269E7C4EE52E767205280D /* Pods-JacquardToolkitExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JacquardToolkitExample-frameworks.sh"; sourceTree = "<group>"; };
 		C5820C60FD38C8213BA874B59FBD21D2 /* Pods-JacquardToolkitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JacquardToolkitExample.release.xcconfig"; sourceTree = "<group>"; };
 		D3328515D3969B1BC2D8247434D8D7D1 /* JSHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSHelper.swift; path = JacquardToolkit/JSHelper.swift; sourceTree = "<group>"; };
 		D67C88BD7181EAFBC6962545ED862CDB /* JSConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSConstants.swift; path = JacquardToolkit/JSConstants.swift; sourceTree = "<group>"; };
 		D6DFF15000AFE2A371BF499E7AFDA808 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		E0EBFB86ECFFEAB09965F2051EE2B0F3 /* JacquardToolkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = JacquardToolkit.framework; path = JacquardToolkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0EBFB86ECFFEAB09965F2051EE2B0F3 /* JacquardToolkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JacquardToolkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C2DECAD263A453820A0F386D650123 /* JacquardToolkit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = JacquardToolkit.modulemap; sourceTree = "<group>"; };
 		E7C5B2A1A8B11DC9FDCBCC4D6CFDBA25 /* Pods-JacquardToolkitExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-JacquardToolkitExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		FDC7CD9F1CDF656AA1054FBF391D622E /* JacquardToolkit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JacquardToolkit-umbrella.h"; sourceTree = "<group>"; };
@@ -276,6 +276,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
@@ -358,11 +359,7 @@
 				INFOPLIST_FILE = "Target Support Files/JacquardToolkit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/JacquardToolkit/JacquardToolkit.modulemap";
 				PRODUCT_MODULE_NAME = JacquardToolkit;
 				PRODUCT_NAME = JacquardToolkit;
@@ -395,11 +392,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-JacquardToolkitExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -471,8 +464,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.2;
 				SYMROOT = "${SRCROOT}/../build";
 			};
@@ -496,11 +488,7 @@
 				INFOPLIST_FILE = "Target Support Files/Pods-JacquardToolkitExample/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.modulemap";
 				OTHER_LDFLAGS = "";
@@ -534,11 +522,7 @@
 				INFOPLIST_FILE = "Target Support Files/JacquardToolkit/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/JacquardToolkit/JacquardToolkit.modulemap";
 				PRODUCT_MODULE_NAME = JacquardToolkit;
 				PRODUCT_NAME = JacquardToolkit;
