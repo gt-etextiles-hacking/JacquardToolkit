@@ -15,7 +15,7 @@ public class JSQRCodeScannerView: UIView {
     private let output = AVCaptureMetadataOutput()
     
     private var scannerBounds = CAShapeLayer()
-    private var textLayer = CATextLayer()
+//    private var textLayer = CATextLayer()
     private var scannerRect = CGRect()
 
     public override init(frame: CGRect) {
@@ -43,20 +43,20 @@ public class JSQRCodeScannerView: UIView {
             scannerBounds.borderColor = UIColor.gray.cgColor
             scannerBounds.borderWidth = 5
             
-            textLayer.string = "Scan QR Code"
-            textLayer.cornerRadius = 10
-            textLayer.backgroundColor = UIColor.gray.cgColor
-            textLayer.borderColor = UIColor.black.cgColor
-            textLayer.borderWidth = 2
-            textLayer.shadowColor = UIColor.black.cgColor
-            textLayer.shadowOffset = CGSize(width: 3, height: 3)
-            textLayer.shadowOpacity = 0.7
-            textLayer.shadowRadius = 4.0
-            textLayer.frame = CGRect(x: 15, y: self.frame.height + 15 - (self.frame.height * 0.25), width: self.frame.width - 30, height: self.frame.height * 0.25 - 30)
+//            textLayer.string = "Scan QR Code"
+//            textLayer.cornerRadius = 10
+//            textLayer.backgroundColor = UIColor.gray.cgColor
+//            textLayer.borderColor = UIColor.black.cgColor
+//            textLayer.borderWidth = 2
+//            textLayer.shadowColor = UIColor.black.cgColor
+//            textLayer.shadowOffset = CGSize(width: 3, height: 3)
+//            textLayer.shadowOpacity = 0.7
+//            textLayer.shadowRadius = 4.0
+//            textLayer.frame = CGRect(x: 15, y: self.frame.height + 15 - (self.frame.height * 0.25), width: self.frame.width - 30, height: self.frame.height * 0.25 - 30)
             
             self.layer.addSublayer(video)
             self.layer.insertSublayer(scannerBounds, above: video)
-            self.layer.insertSublayer(textLayer, above: video)
+//            self.layer.insertSublayer(textLayer, above: video)
         }
     }
     
@@ -80,7 +80,7 @@ public class JSQRCodeScannerView: UIView {
 extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
     
     public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        textLayer.string = "Pop tag in"
+//        textLayer.string = "Pop tag in"
         session.stopRunning()
         if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
             if object.type == .qr {
