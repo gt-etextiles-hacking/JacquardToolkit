@@ -100,8 +100,9 @@ class JSHelper {
         var bitsLeft = 0 // How many bits of valid data are in the LSB of the accumulator.
         var bytesUsed = 0 // How many bytes from the input data have been shifted into the accumulator.
         var finalArr: [UInt8] = []
+        var counter = 0
         
-        for _ in 0...dataIn.count {
+        while counter < dataIn.count {
             //Check if we need to load more bits into the accumulator
             if bitsLeft < 6 {
                 //Load the next byte in, shifted to the left to avoid bits already in the accumulator
@@ -116,12 +117,16 @@ class JSHelper {
             //Decode the encoded character into [0-9;A-Z;a-z;-]
             if sixBitCode <= 0x09 {
                 sixBitCode += UInt8(Character(unicodeScalarLiteral: "0").asciiValue)
+                counter = counter + 1
             } else if sixBitCode <= 0x22 {
                 sixBitCode += UInt8(Character(unicodeScalarLiteral: "A").asciiValue - 0x0a)
+//                i = i - 1
             } else if sixBitCode <= 0x3b {
                 sixBitCode += UInt8(Character(unicodeScalarLiteral: "a").asciiValue - 0x23)
+                counter = counter + 1
             } else if sixBitCode == 0x3c {
                 sixBitCode = 0x2d
+                counter = counter + 1
             } else if sixBitCode == 0x3f {
                 break //End-of-string character
             } else {

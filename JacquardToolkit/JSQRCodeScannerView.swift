@@ -80,6 +80,7 @@ public class JSQRCodeScannerView: UIView {
 extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
     
     public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         textLayer.string = "Pop tag in"
         session.stopRunning()
         if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
