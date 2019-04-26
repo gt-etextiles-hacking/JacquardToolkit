@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import AVKit
 import AVFoundation
 
 public class JSQRCodeScannerView: UIView {
