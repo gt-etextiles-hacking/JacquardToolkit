@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 import AVFoundation
 
 public class JSQRCodeScannerView: UIView {
@@ -21,7 +22,7 @@ public class JSQRCodeScannerView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        scannerRect = CGRect(x: self.center.x - (self.frame.width * 0.5 / 2), y: self.frame.width * 0.5 / 3, width: self.frame.width * 0.5, height: self.frame.width * 0.5)
+        scannerRect = CGRect(x: self.center.x - (self.frame.width * 0.5 / 2), y: self.frame.width * 0.5 / 2, width: self.frame.width * 0.5, height: self.frame.width * 0.5)
         
         if let captureDevice = AVCaptureDevice.default(for: .video) {
             do {
@@ -38,6 +39,7 @@ public class JSQRCodeScannerView: UIView {
             
             video = AVCaptureVideoPreviewLayer(session: session)
             video.frame = self.layer.bounds
+            video.videoGravity = .resizeAspectFill
             
             scannerBounds.frame = scannerRect
             scannerBounds.borderColor = UIColor.gray.cgColor
@@ -52,7 +54,7 @@ public class JSQRCodeScannerView: UIView {
             textLayer.shadowOffset = CGSize(width: 3, height: 3)
             textLayer.shadowOpacity = 0.7
             textLayer.shadowRadius = 4.0
-            textLayer.frame = CGRect(x: 15, y: self.frame.height + 15 - (self.frame.height * 0.25), width: self.frame.width - 30, height: self.frame.height * 0.25 - 30)
+            textLayer.frame = CGRect(x: 15, y: self.frame.height - 30 - (self.frame.height * 0.25), width: self.frame.width - 30, height: self.frame.height * 0.25 - 30)
             
             self.layer.addSublayer(video)
             self.layer.insertSublayer(scannerBounds, above: video)
