@@ -12,16 +12,6 @@ import CoreML
 import NotificationCenter
 import AVFoundation
 
-@objc public protocol JacquardServiceDelegate: NSObjectProtocol {
-    @objc optional func didDetectDoubleTapGesture()
-    @objc optional func didDetectBrushInGesture()
-    @objc optional func didDetectBrushOutGesture()
-    @objc optional func didDetectCoverGesture()
-    @objc optional func didDetectScratchGesture()
-    @objc optional func didDetectForceTouchGesture()
-    @objc optional func didDetectThreadTouch(threadArray: [Float])
-}
-
 public class JacquardService: NSObject, CBCentralManagerDelegate {
 
     public static let shared = JacquardService()
@@ -36,21 +26,16 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var viewController = UIViewController()
     private var targetJacketIDString: String?
     private var jsQRCodeScannerView = JSQRCodeScannerView()
-    
-    // forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
-    // forcetouch detection
     private var forceTouchDetectionProgress = 0
-    private var forceTouchDetectionLength = 6
-    private var forceTouchDetectionThreshold = 0.9
-    // forcetouch detection cooldown
     private var forceTouchCooldownProgress = 0
-    private var minForceTouchCooldownLength = 6
-    private var forceTouchCooldownThreshold = 0.4
 
+    //MARK: Initializers
+    
+    //This function 
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -59,11 +44,22 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         } catch {
             fatalError("Unexpected runtime error. MLMultiArray");
         }
-        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name("ReadGesture"), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name("ReadThreads"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name(Notification.Name(JSConstants.JSStrings.Notifications.readGesture), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name(JSConstants.JSStrings.Notifications.readThreads), object: nil)
     }
+    
+    //MARK: Developer Functions
 
-    public func activateBlutooth(completion: @escaping (Bool) -> Void) {
+    /**
+     Turns on your phone's bluetooth capalities
+     
+     This function is used to make sure that your phone's bluetooth is in the right state to connect to
+     a Jacquard. You will need to call this function before `connect()` to ensure the connection process
+     runs smoothly.
+     
+     - Parameter completion: completion handler for inserting `connect()`
+     */
+    public func activateBluetooth(completion: @escaping (Bool) -> Void) {
         powerOnCompletion = completion
         if centralManager.state == .poweredOn {
             powerOnCompletion?(true)
@@ -71,6 +67,16 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
     }
     
+    /**
+     Allows you to easily connect to your Jacquard
+     
+     If you already have a Jacquard in your list of connected bluetooth devices in your phone's settings,
+     this function will choose that Jacquard to connect to. Otherwise, you will need your phone's camera
+     to scan the code on the inside right of the Jacquard to pair a new Jacquard. For best practice, call
+     this function in the completion handler of `activateBluetooth()`
+     
+     - Parameter viewController: the class you would like to have the camera open up on
+     */
     public func connect(viewController: UIViewController) {
         if centralManager.state == .poweredOn {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
@@ -82,10 +88,29 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 return
             }
             targetJacket = peripheralList[0]
-            print("Connected again")
             connectHelper()
         }
     }
+    
+    /**
+     Sends a rainbow strobe glow to your Jacquard's tag
+     
+     Be sure that you are connected and paired to your Jacquard or else this function will not work
+     */
+    public func rainbowGlowJacket() {
+        if centralManager.state == .poweredOn {
+            let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
+            let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
+            if glowCharacteristic != nil {
+                targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
+                targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
+            } else {
+                NSLog(JSConstants.JSStrings.ErrorMessages.rainbowGlow)
+            }
+        }
+    }
+    
+    //MARK: Helper Functions
     
     private func connectHelper() {
         targetJacket.delegate = self
@@ -100,6 +125,87 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         centralManager.scanForPeripherals(withServices: nil, options: nil)
     }
     
+    @objc private func readThreads(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
+                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
+                delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
+                checkForForceTouch(threadReadings: threadForceValueArray)
+            }
+        }
+    }
+    
+    @objc private func readGesture(userInfo: Notification) {
+        if let userInfo = userInfo.userInfo {
+            if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
+                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+                switch gesture {
+                case .doubleTap:
+                    delegate?.didDetectDoubleTapGesture?()
+                case .brushIn:
+                    delegate?.didDetectBrushInGesture?()
+                case .brushOut:
+                    delegate?.didDetectBrushOutGesture?()
+                case .cover:
+                    delegate?.didDetectCoverGesture?()
+                case .scratch:
+                    delegate?.didDetectScratchGesture?()
+                default:
+                    NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+                }
+            }
+        }
+    }
+    
+    private func checkForForceTouch(threadReadings: [Float]) {
+        guard let input_data = input_data else {
+            return
+        }
+        for index in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
+            input_data[index] = input_data[index + JSConstants.JSNumbers.ForceTouch.threadCount]
+        }
+        
+        // copying in the latest thread reading into the last 15 elements
+        for i in 0 ..< JSConstants.JSNumbers.ForceTouch.threadCount {
+            input_data[JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
+        }
+        
+        let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data))
+        
+        if forceTouchTurnedEnabled {
+            if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > JSConstants.JSNumbers.ForceTouch.detectionThreshhold {
+                // increment detection progress with each sufficiently high prediction confidence
+                forceTouchDetectionProgress += 1
+                // if enough detection progress has elapsed, register a detection of ForceTouch and reset
+                if forceTouchDetectionProgress >= JSConstants.JSNumbers.ForceTouch.detectionLength {
+                    forceTouchDetectionProgress = 0
+                    forceTouchTurnedEnabled = false
+                    delegate?.didDetectForceTouchGesture?()
+                }
+                
+            } else {
+                forceTouchDetectionProgress = 0
+            }
+        } else {
+            if prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel] ?? 1.0 > JSConstants.JSNumbers.ForceTouch.cooldownDetectionThreshhold {
+                // reset cooldown progress any time we get too confident of a prediction
+                forceTouchCooldownProgress = 0
+            } else {
+                // increment cooldown progress with each sufficiently low prediction confidence
+                forceTouchCooldownProgress += 1
+            }
+            // if enough cooldown progress has elapsed, prime service for next ForceTouch recognition
+            if forceTouchCooldownProgress >= JSConstants.JSNumbers.ForceTouch.cooldownDetectionLength {
+                forceTouchCooldownProgress = 0
+                forceTouchTurnedEnabled = true
+                print(JSConstants.JSStrings.ForceTouch.reenableMessage)
+            }
+            
+        }
+    }
+    
+    //MARK: Central Manager Functions
+    
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if peripheral.name == "Jacquard" {
             guard let adData = advertisementData["kCBAdvDataManufacturerData"] as? Data else {
@@ -113,19 +219,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 targetJacket = peripheral
                 connectHelper()
                 return
-            }
-        }
-    }
-    
-    public func rainbowGlowJacket() {
-        if centralManager.state == .poweredOn {
-            let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
-            let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
-            if glowCharacteristic != nil {
-                targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
-                targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
-            } else {
-                NSLog(JSConstants.JSStrings.ErrorMessages.rainbowGlow)
             }
         }
     }
@@ -188,91 +281,11 @@ extension JacquardService: CBPeripheralDelegate {
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid.uuidString {
         case JSConstants.JSUUIDs.CharacteristicsStrings.threadReadingUUID:
-            notificationCenter.post(name: Notification.Name("ReadThreads"), object: self, userInfo: ["characteristic": characteristic])
+            notificationCenter.post(name: Notification.Name(JSConstants.JSStrings.Notifications.readThreads), object: self, userInfo: ["characteristic": characteristic])
         case JSConstants.JSUUIDs.CharacteristicsStrings.gestureReadingUUID:
-            notificationCenter.post(name: Notification.Name("ReadGesture"), object: self, userInfo: ["characteristic": characteristic])
+            notificationCenter.post(name: Notification.Name(JSConstants.JSStrings.Notifications.readGesture), object: self, userInfo: ["characteristic": characteristic])
         default:
             break
-        }
-    }
-    
-    @objc private func readThreads(userInfo: Notification) {
-        if let userInfo = userInfo.userInfo {
-            if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
-                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
-                delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
-                checkForForceTouch(threadReadings: threadForceValueArray)
-            }
-        }
-    }
-    
-    @objc private func readGesture(userInfo: Notification) {
-        if let userInfo = userInfo.userInfo {
-            if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
-                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
-                switch gesture {
-                case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture?()
-                case .brushIn:
-                    delegate?.didDetectBrushInGesture?()
-                case .brushOut:
-                    delegate?.didDetectBrushOutGesture?()
-                case .cover:
-                    delegate?.didDetectCoverGesture?()
-                case .scratch:
-                    delegate?.didDetectScratchGesture?()
-                default:
-                    NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
-                }
-            }
-        }
-    }
-    
-    private func checkForForceTouch(threadReadings: [Float]) {
-        guard let input_data = input_data else {
-            return
-        }
-        for index in 0 ..< (JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount) {
-            input_data[index] = input_data[index + JSConstants.JSNumbers.ForceTouch.threadCount]
-        }
-        
-        // copying in the latest thread reading into the last 15 elements
-        for i in 0 ..< JSConstants.JSNumbers.ForceTouch.threadCount {
-            input_data[JSConstants.JSNumbers.ForceTouch.fullThreadCount - JSConstants.JSNumbers.ForceTouch.threadCount + i] = threadReadings[i] as NSNumber
-        }
-        
-        let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data))
-//        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
-
-        if forceTouchTurnedEnabled {
-            if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > forceTouchDetectionThreshold {
-                // increment detection progress with each sufficiently high prediction confidence
-                forceTouchDetectionProgress += 1
-                // if enough detection progress has elapsed, register a detection of ForceTouch and reset
-                if forceTouchDetectionProgress >= forceTouchDetectionLength {
-                    forceTouchDetectionProgress = 0
-                    forceTouchTurnedEnabled = false
-                    delegate?.didDetectForceTouchGesture?()
-                }
-                
-            } else {
-                forceTouchDetectionProgress = 0
-            }
-        } else {
-            if prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel] ?? 1.0 > forceTouchCooldownThreshold {
-                // reset cooldown progress any time we get too confident of a prediction
-                forceTouchCooldownProgress = 0
-            } else {
-                // increment cooldown progress with each sufficiently low prediction confidence
-                forceTouchCooldownProgress += 1
-            }
-            // if enough cooldown progress has elapsed, prime service for next ForceTouch recognition
-            if forceTouchCooldownProgress >= minForceTouchCooldownLength {
-                forceTouchCooldownProgress = 0
-                forceTouchTurnedEnabled = true
-                print(JSConstants.JSStrings.ForceTouch.reenableMessage)
-            }
-       
         }
     }
     
