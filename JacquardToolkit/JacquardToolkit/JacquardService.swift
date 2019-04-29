@@ -35,7 +35,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
 
     //MARK: Initializers
     
-    //This function 
     private override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
