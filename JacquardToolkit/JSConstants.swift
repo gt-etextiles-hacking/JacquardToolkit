@@ -35,6 +35,11 @@ struct JSConstants {
             static let rainbowGlow = "ERROR: Glow is not availible because it seems like your Jacquard is not connected. Make sure to manually connect and pair your jacket in the settings app..."
         }
         
+        struct Notifications {
+            static let readGesture = "ReadGesture"
+            static let readThreads = "ReadThreads"
+        }
+        
         struct ForceTouch {
             static let outputLabel = "ForceTouch"
             static let reenableMessage = "Reenabling force touch"
@@ -47,6 +52,10 @@ struct JSConstants {
         struct ForceTouch {
             static let threadCount = 15
             static let fullThreadCount = 675
+            static let detectionLength = 6
+            static let detectionThreshhold = 0.9
+            static let cooldownDetectionLength = 6
+            static let cooldownDetectionThreshhold = 0.4
         }
         
     }
