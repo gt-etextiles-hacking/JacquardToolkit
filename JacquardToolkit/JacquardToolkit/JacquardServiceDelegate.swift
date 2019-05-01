@@ -10,6 +10,11 @@ import Foundation
 @objc public protocol JacquardServiceDelegate: NSObjectProtocol {
     
     /**
+     Invoked when a connection to Jacquard is attempted
+     */
+    @objc optional func didDetectConnection(isConnected: Bool)
+    
+    /**
      Invoked when a double tap gesture is performed on the Jacquard
      */
     @objc optional func didDetectDoubleTapGesture()
