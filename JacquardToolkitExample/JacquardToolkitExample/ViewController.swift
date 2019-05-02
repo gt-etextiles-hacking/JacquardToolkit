@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 import JacquardToolkit
 
 class ViewController: UIViewController {
@@ -23,6 +24,9 @@ class ViewController: UIViewController {
         JacquardService.shared.rainbowGlowJacket()
     }
     
+    @IBAction func showVideoButtonTapped(_ sender: Any) {
+        JacquardService.shared.showVideo(viewController: self)
+    }
 }
 
 extension ViewController: JacquardServiceDelegate {
@@ -53,6 +57,10 @@ extension ViewController: JacquardServiceDelegate {
     
     func didDetectThreadTouch(threadArray: [Float]) {
         print("Threads: \(threadArray)")
+    }
+    
+    func didDetectConnection(isConnected: Bool) {
+        print(isConnected)
     }
     
 }

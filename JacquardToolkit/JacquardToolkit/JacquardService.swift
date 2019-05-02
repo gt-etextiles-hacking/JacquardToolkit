@@ -11,6 +11,7 @@ import CoreBluetooth
 import CoreML
 import NotificationCenter
 import AVFoundation
+import AVKit
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
 
@@ -26,6 +27,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var viewController = UIViewController()
     private var targetJacketIDString: String?
     private var jsQRCodeScannerView = JSQRCodeScannerView()
+    private var jsGestureTutorialView = JSGestureTutorialView()
     
     // forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
@@ -124,6 +126,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         let csvTextStore = csvText
         csvText.removeAll()
         return csvTextStore
+    }
+    
+    public func showVideo(viewController: UIViewController) {
+        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
+        viewController.view.addSubview(jsGestureTutorialView)
+        jsGestureTutorialView.playVideo()
     }
     
     //MARK: Helper Functions
