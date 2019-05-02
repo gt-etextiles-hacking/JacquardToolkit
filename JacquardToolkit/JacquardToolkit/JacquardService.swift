@@ -32,16 +32,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
-    // forcetouch detection
     private var forceTouchDetectionProgress = 0
-    private var forceTouchDetectionLength = 16
-    
-    private var forceTouchDetectionThreshold = 0.90
-    // forcetouch detection cooldown
     private var forceTouchCooldownProgress = 0
-    private var minForceTouchCooldownLength = 6
-    private var forceTouchCooldownThreshold = 0.4
-    
     private var mostRecentGesture: JSConstants.JSGestures = .undefined
     private var cachingGoogleGestures = false
     
@@ -57,8 +49,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         } catch {
             fatalError("Unexpected runtime error. MLMultiArray");
         }
-        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name("ReadGesture"), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name("ReadThreads"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name(JSConstants.JSStrings.Notifications.readGesture), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name(JSConstants.JSStrings.Notifications.readThreads), object: nil)
     }
     
     //MARK: Developer Functions
@@ -124,7 +116,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
     
     /**
-     Exports csv log of timestamped thread readings as a string and flushes JacquardToolkit logs
+     Exports .csv log of timestamped thread readings as a string and flushes JacquardToolkit logs
      
      Be sure that you are connected and paired to your Jacquard or else this function will not work
      */
@@ -208,7 +200,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         //        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
         if forceTouchTurnedEnabled {
-            if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > forceTouchDetectionThreshold {
+            if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > JSConstants.JSNumbers.ForceTouch.detectionThreshhold {
                 
                 if forceTouchDetectionProgress == 0 {
                     // Point A: The first confident prediction for Force Touch has been recieved
@@ -218,7 +210,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 // increment detection progress with each sufficiently high prediction confidence
                 forceTouchDetectionProgress += 1
                 // if enough detection progress has elapsed, register a detection of Force Touch and reset
-                if forceTouchDetectionProgress >= forceTouchDetectionLength {
+                if forceTouchDetectionProgress >= JSConstants.JSNumbers.ForceTouch.detectionLength {
                     // Point C: enough consecutive and confident predictions have transpired to warrant Force Touch detection
                     forceTouchDetectionProgress = 0
                     forceTouchTurnedEnabled = false
@@ -251,7 +243,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 forceTouchDetectionProgress = 0
             }
         } else {
-            if prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel] ?? 1.0 > forceTouchCooldownThreshold {
+            if prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel] ?? 1.0 > JSConstants.JSNumbers.ForceTouch.cooldownDetectionThreshhold {
                 // reset cooldown progress any time we get too confident of a prediction
                 forceTouchCooldownProgress = 0
             } else {
@@ -259,7 +251,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 forceTouchCooldownProgress += 1
             }
             // if enough cooldown progress has elapsed, prime service for next ForceTouch recognition
-            if forceTouchCooldownProgress >= minForceTouchCooldownLength {
+            if forceTouchCooldownProgress >= JSConstants.JSNumbers.ForceTouch.cooldownDetectionLength {
                 forceTouchCooldownProgress = 0
                 forceTouchTurnedEnabled = true
                 print(JSConstants.JSStrings.ForceTouch.reenableMessage)

@@ -52,7 +52,7 @@ struct JSConstants {
         struct ForceTouch {
             static let threadCount = 15
             static let fullThreadCount = 675
-            static let detectionLength = 6
+            static let detectionLength = 16
             static let detectionThreshhold = 0.9
             static let cooldownDetectionLength = 6
             static let cooldownDetectionThreshhold = 0.4
