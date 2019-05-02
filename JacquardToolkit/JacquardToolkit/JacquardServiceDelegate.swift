@@ -48,4 +48,9 @@ import Foundation
      to the thread closest to the elbow)
      */
     @objc optional func didDetectThreadTouch(threadArray: [Float])
+    
+    /**
+     Invoked when a connection to Jacquard is attempted
+     */
+    @objc optional func didDetectConnection(isConnected: Bool)
 }

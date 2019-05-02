@@ -26,14 +26,20 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var viewController = UIViewController()
     private var targetJacketIDString: String?
     private var jsQRCodeScannerView = JSQRCodeScannerView()
+    
+    // forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
     private var forceTouchTurnedEnabled = true
     private var forceTouchDetectionProgress = 0
     private var forceTouchCooldownProgress = 0
-
-    //MARK: Initializers
+    private var mostRecentGesture: JSConstants.JSGestures = .undefined
+    private var cachingGoogleGestures = false
+    
+    // csv logging
+    private var csvText = ""
+    public var loggingThreads = false
     
     private override init() {
         super.init()
@@ -43,7 +49,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         } catch {
             fatalError("Unexpected runtime error. MLMultiArray");
         }
-        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name(Notification.Name(JSConstants.JSStrings.Notifications.readGesture), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(readGesture), name: Notification.Name(JSConstants.JSStrings.Notifications.readGesture), object: nil)
         notificationCenter.addObserver(self, selector: #selector(readThreads), name: Notification.Name(JSConstants.JSStrings.Notifications.readThreads), object: nil)
     }
     
@@ -109,6 +115,17 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
     }
     
+    /**
+     Exports .csv log of timestamped thread readings as a string and flushes JacquardToolkit logs
+     
+     Be sure that you are connected and paired to your Jacquard or else this function will not work
+     */
+    public func exportLog() -> String {
+        let csvTextStore = csvText
+        csvText.removeAll()
+        return csvTextStore
+    }
+    
     //MARK: Helper Functions
     
     private func connectHelper() {
@@ -130,6 +147,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
                 delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
+
+                if self.loggingThreads {
+                    let strArray = threadForceValueArray.map { String($0) }
+                    csvText.append("\(strArray.joined(separator:",")),\n")
+                }
             }
         }
     }
@@ -138,19 +160,24 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
                 let gesture = JSHelper.shared.gestureConverter(from: characteristic)
-                switch gesture {
-                case .doubleTap:
-                    delegate?.didDetectDoubleTapGesture?()
-                case .brushIn:
-                    delegate?.didDetectBrushInGesture?()
-                case .brushOut:
-                    delegate?.didDetectBrushOutGesture?()
-                case .cover:
-                    delegate?.didDetectCoverGesture?()
-                case .scratch:
-                    delegate?.didDetectScratchGesture?()
-                default:
-                    NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+                if cachingGoogleGestures {
+                    mostRecentGesture = gesture
+                    print("cached \(mostRecentGesture)")
+                } else {
+                    switch gesture {
+                    case .doubleTap:
+                        delegate?.didDetectDoubleTapGesture?()
+                    case .brushIn:
+                        delegate?.didDetectBrushInGesture?()
+                    case .brushOut:
+                        delegate?.didDetectBrushOutGesture?()
+                    case .cover:
+                        delegate?.didDetectCoverGesture?()
+                    case .scratch:
+                        delegate?.didDetectScratchGesture?()
+                    default:
+                        NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
+                    }
                 }
             }
         }
@@ -170,19 +197,49 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         }
         
         let prediction = try? forceTouchModel.prediction(input: ForceTouchInput(_15ThreadConductivityReadings: input_data))
+        //        print("Prediction Result: \((prediction?.output["ForceTouch"])!)")
         
         if forceTouchTurnedEnabled {
             if let prediction = prediction?.output[JSConstants.JSStrings.ForceTouch.outputLabel], prediction > JSConstants.JSNumbers.ForceTouch.detectionThreshhold {
+                
+                if forceTouchDetectionProgress == 0 {
+                    // Point A: The first confident prediction for Force Touch has been recieved
+                    cachingGoogleGestures = true
+                }
+                
                 // increment detection progress with each sufficiently high prediction confidence
                 forceTouchDetectionProgress += 1
-                // if enough detection progress has elapsed, register a detection of ForceTouch and reset
+                // if enough detection progress has elapsed, register a detection of Force Touch and reset
                 if forceTouchDetectionProgress >= JSConstants.JSNumbers.ForceTouch.detectionLength {
+                    // Point C: enough consecutive and confident predictions have transpired to warrant Force Touch detection
                     forceTouchDetectionProgress = 0
                     forceTouchTurnedEnabled = false
+                    cachingGoogleGestures = false
+                    mostRecentGesture = .undefined
                     delegate?.didDetectForceTouchGesture?()
                 }
                 
             } else {
+                if forceTouchDetectionProgress > 0 {
+                    // Point B: did not complete all n timesteps, so take the most recently cached official gesture
+                    switch mostRecentGesture {
+                    case .doubleTap:
+                        delegate?.didDetectDoubleTapGesture?()
+                    case .brushIn:
+                        delegate?.didDetectBrushInGesture?()
+                    case .brushOut:
+                        delegate?.didDetectBrushOutGesture?()
+                    case .cover:
+                        delegate?.didDetectCoverGesture?()
+                    case .scratch:
+                        delegate?.didDetectScratchGesture?()
+                    default:
+                        print("default placeholder")
+                    }
+                    cachingGoogleGestures = false
+                    mostRecentGesture = .undefined
+                }
+                
                 forceTouchDetectionProgress = 0
             }
         } else {
@@ -199,9 +256,10 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                 forceTouchTurnedEnabled = true
                 print(JSConstants.JSStrings.ForceTouch.reenableMessage)
             }
-            
         }
     }
+    
+
     
     //MARK: Central Manager Functions
     
@@ -246,8 +304,15 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
 
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        delegate?.didDetectConnection!(isConnected: true)
         peripheral.discoverServices(nil)
     }
+    
+    public func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        delegate?.didDetectConnection!(isConnected: false)
+    }
+    
+    
 
 }
 
