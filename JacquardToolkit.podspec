@@ -12,4 +12,9 @@ Pod::Spec.new do |s|
   s.source_files  = "JacquardToolkit/**/*.{h,m,swift,mlmodel}"
   s.exclude_files = [ 'JacquardToolkit/CustomGestureModels/**']
   
+  s.resources = "JacquardToolkit/*,mp4"
+  s.resource_bundles = {
+      'JacquardToolkit' => ['JacquardToolkit/Pods/**/*.mp4']
+  }
+  
 end

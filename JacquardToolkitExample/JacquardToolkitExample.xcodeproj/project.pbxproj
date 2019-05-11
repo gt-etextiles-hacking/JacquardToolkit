@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4FE3066B0101F921D47E40DD /* Pods_JacquardToolkitExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD877E47F75A4D1CEC368C2 /* Pods_JacquardToolkitExample.framework */; };
-		8232F3A7227AA0E500DB963A /* SampleVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8232F3A6227AA0E100DB963A /* SampleVideo.mp4 */; };
 		8288E20721AD9B3400F03ACC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8288E20621AD9B3400F03ACC /* AppDelegate.swift */; };
 		8288E20921AD9B3400F03ACC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8288E20821AD9B3400F03ACC /* ViewController.swift */; };
 		8288E20C21AD9B3400F03ACC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8288E20A21AD9B3400F03ACC /* Main.storyboard */; };
@@ -18,7 +17,6 @@
 
 /* Begin PBXFileReference section */
 		02B7479AF6060907362D077A /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JacquardToolkitExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
-		8232F3A6227AA0E100DB963A /* SampleVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo.mp4; sourceTree = "<group>"; };
 		8288E20321AD9B3300F03ACC /* JacquardToolkitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JacquardToolkitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8288E20621AD9B3400F03ACC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8288E20821AD9B3400F03ACC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -45,7 +43,6 @@
 		8288E1FA21AD9B3300F03ACC = {
 			isa = PBXGroup;
 			children = (
-				8232F3A6227AA0E100DB963A /* SampleVideo.mp4 */,
 				8288E20521AD9B3300F03ACC /* JacquardToolkitExample */,
 				8288E20421AD9B3300F03ACC /* Products */,
 				ACC14E6BA8525EA84217D428 /* Pods */,
@@ -151,7 +148,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8232F3A7227AA0E500DB963A /* SampleVideo.mp4 in Resources */,
 				8288E21121AD9B3600F03ACC /* LaunchScreen.storyboard in Resources */,
 				8288E20E21AD9B3600F03ACC /* Assets.xcassets in Resources */,
 				8288E20C21AD9B3400F03ACC /* Main.storyboard in Resources */,
