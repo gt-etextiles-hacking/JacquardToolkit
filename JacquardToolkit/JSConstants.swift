@@ -81,5 +81,18 @@ struct JSConstants {
         }
         
     }
+    
+    struct JSURLs {
+        
+        struct Tutorial {
+            static let doubleTap = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+            static let brushIn = ""
+            static let brushOut = ""
+            static let cover = ""
+            static let scratch = ""
+            static let forceTouch = ""
+        }
+        
+    }
 
 }
