@@ -40,7 +40,6 @@ class JSGestureTutorialView: UIView {
     
     public func stopVideo() {
         player.pause()
-        player.
     }
     
 }

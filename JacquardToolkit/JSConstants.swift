@@ -85,12 +85,12 @@ struct JSConstants {
     struct JSURLs {
         
         struct Tutorial {
-            static let doubleTap = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-            static let brushIn = ""
-            static let brushOut = ""
-            static let cover = ""
-            static let scratch = ""
-            static let forceTouch = ""
+            static let doubleTap = "https://cdn-b-east.streamable.com/video/mp4/rzpud.mp4?token=-qqRR9SaWO6s6Y5z-NW_vA&expires=1558822200"
+            static let brushIn = "https://cdn-b-east.streamable.com/video/mp4/pl2ku.mp4?token=nMJ_OMPv7ajoLiy8w8zMpA&expires=1558822560"
+            static let brushOut = "https://cdn-b-east.streamable.com/video/mp4/ht3oh.mp4?token=E8WLjT3HSR4hgwSQH5XLyw&expires=1558822740"
+            static let cover = "https://cdn-b-east.streamable.com/video/mp4/zi9gn.mp4?token=X-BMVh1yOWyHZgirbi29kQ&expires=1558822740"
+            static let scratch = "https://cdn-b-east.streamable.com/video/mp4/ytw3g.mp4?token=MwO30M-e4f58eUbb0eO9jw&expires=1558822740"
+            static let forceTouch = "https://cdn-b-east.streamable.com/video/mp4/a9ij7.mp4?token=cux_TjMhTM7cJymB3w20LA&expires=1558822800"
         }
         
     }

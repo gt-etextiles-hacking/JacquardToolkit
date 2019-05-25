@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showVideoButtonTapped(_ sender: Any) {
-        JacquardService.shared.playDoubleTapTutorial(viewController: self)
+        JacquardService.shared.playCoverTutorial(viewController: self)
     }
 }
 
