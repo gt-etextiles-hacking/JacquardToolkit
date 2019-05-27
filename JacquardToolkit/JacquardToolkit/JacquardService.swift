@@ -10,7 +10,6 @@ import Foundation
 import CoreBluetooth
 import CoreML
 import NotificationCenter
-import AVFoundation
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
 
@@ -26,6 +25,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var viewController = UIViewController()
     private var targetJacketIDString: String?
     private var jsQRCodeScannerView = JSQRCodeScannerView()
+    private var jsGestureTutorialView = JSGestureTutorialView()
     
     // forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
@@ -36,6 +36,14 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var forceTouchCooldownProgress = 0
     private var mostRecentGesture: JSConstants.JSGestures = .undefined
     private var cachingGoogleGestures = false
+    
+    //Tutorial variables
+    private var isDoubleTapTutorialActivated = false
+    private var isBrushInTutorialActivated = false
+    private var isBrushOutTutorialActivated = false
+    private var isCoverTutorialActivated = false
+    private var isScratchTutorialActivated = false
+    private var isForceTouchTutorialActivated = false
     
     // csv logging
     private var csvText = ""
@@ -126,6 +134,90 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
         return csvTextStore
     }
     
+    /**
+     Plays the video tutorial for the Double Tap gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playDoubleTapTutorial(viewController: UIViewController) {
+        isDoubleTapTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
+    }
+    
+    /**
+     Plays the video tutorial for the Brush in gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playBrushInTutorial(viewController: UIViewController) {
+        isBrushInTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
+    }
+    
+    /**
+     Plays the video tutorial for the Brush Out gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playBrushOutTutorial(viewController: UIViewController) {
+        isBrushOutTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
+    }
+    
+    /**
+     Plays the video tutorial for the Cover gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playCoverTutorial(viewController: UIViewController) {
+        isCoverTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
+    }
+    
+    /**
+     Plays the video tutorial for the Scratch gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playScratchTutorial(viewController: UIViewController) {
+        isScratchTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
+    }
+    
+    /**
+     Plays the video tutorial for the Force Touch gesture
+     
+     Be sure that you have an internet connection
+     
+     - Parameter viewController: the class you would like to have the video appear over
+     */
+    public func playForceTouchTutorial(viewController: UIViewController) {
+        isForceTouchTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
+        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
+    }
+    
     //MARK: Helper Functions
     
     private func connectHelper() {
@@ -167,14 +259,34 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     switch gesture {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
+                        if isDoubleTapTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isDoubleTapTutorialActivated = false
+                        }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
+                        if isBrushInTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushInTutorialActivated = false
+                        }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
+                        if isBrushOutTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushOutTutorialActivated = false
+                        }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
+                        if isCoverTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isCoverTutorialActivated = false
+                        }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
+                        if isScratchTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isScratchTutorialActivated = false
+                        }
                     default:
                         NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                     }
@@ -217,22 +329,45 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     cachingGoogleGestures = false
                     mostRecentGesture = .undefined
                     delegate?.didDetectForceTouchGesture?()
+                    if isForceTouchTutorialActivated {
+                        jsGestureTutorialView.view.removeFromSuperview()
+                        isForceTouchTutorialActivated = false
+                    }
                 }
-                
             } else {
                 if forceTouchDetectionProgress > 0 {
                     // Point B: did not complete all n timesteps, so take the most recently cached official gesture
                     switch mostRecentGesture {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
+                        if isDoubleTapTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isDoubleTapTutorialActivated = false
+                        }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
+                        if isBrushInTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushInTutorialActivated = false
+                        }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
+                        if isBrushOutTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushOutTutorialActivated = false
+                        }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
+                        if isCoverTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isCoverTutorialActivated = false
+                        }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
+                        if isScratchTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isScratchTutorialActivated = false
+                        }
                     default:
                         print("default placeholder")
                     }
@@ -258,8 +393,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             }
         }
     }
-    
-
     
     //MARK: Central Manager Functions
     

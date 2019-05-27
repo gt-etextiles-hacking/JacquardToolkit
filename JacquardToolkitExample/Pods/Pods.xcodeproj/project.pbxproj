@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2EBF6FF36127A680E2F5468A768F91E7 /* Pods-JacquardToolkitExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA5F84CAAE70FAD42FF8DBC6FBA085DD /* Pods-JacquardToolkitExample-dummy.m */; };
 		5BC490F246D06776F35FDFA404632E8A /* JacquardToolkit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FDC7CD9F1CDF656AA1054FBF391D622E /* JacquardToolkit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8232F3AB227AA38100DB963A /* JSGestureTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8232F3AA227AA38100DB963A /* JSGestureTutorialView.swift */; };
 		82C1345D2276462B0080F9E1 /* JacquardServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C1345C2276462B0080F9E1 /* JacquardServiceDelegate.swift */; };
 		857077339453FB9D44C3826DECA0920A /* JacquardToolkit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA048F6187B2CD98B1966C9F9F46256 /* JacquardToolkit-dummy.m */; };
 		86AEBF7E6587CB38808AF584B7497EE0 /* Pods-JacquardToolkitExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A7BF50FD9DA3D2E883A2FB20B6184ADB /* Pods-JacquardToolkitExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,6 +44,7 @@
 		4D927A0F3D90A91F0CD13C28063F981A /* Pods-JacquardToolkitExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JacquardToolkitExample-resources.sh"; sourceTree = "<group>"; };
 		4DD435858822BFD6F8D21E595183C53B /* JSQRCodeScannerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSQRCodeScannerView.swift; path = JacquardToolkit/JSQRCodeScannerView.swift; sourceTree = "<group>"; };
 		6E8A03C114384FCA185A249B3B3FF0F9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8232F3AA227AA38100DB963A /* JSGestureTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSGestureTutorialView.swift; sourceTree = "<group>"; };
 		82C1345C2276462B0080F9E1 /* JacquardServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JacquardServiceDelegate.swift; sourceTree = "<group>"; };
 		8F8CF58E8A0B15B876960BAE746EC2DE /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -197,6 +199,7 @@
 				D67C88BD7181EAFBC6962545ED862CDB /* JSConstants.swift */,
 				D3328515D3969B1BC2D8247434D8D7D1 /* JSHelper.swift */,
 				4DD435858822BFD6F8D21E595183C53B /* JSQRCodeScannerView.swift */,
+				8232F3AA227AA38100DB963A /* JSGestureTutorialView.swift */,
 				CC4B1AEABB6ACA5CAB6CFD42160D2B51 /* JacquardToolkit */,
 				13043CAD37FEAB32550D9C0101E82DF2 /* Pod */,
 				E74769808D0C1AEBBC4D3882B22F506B /* Support Files */,
@@ -324,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD4038EDB9D7EE0D6AAB5088BF2D3BF3 /* ForceTouch.mlmodel in Sources */,
+				8232F3AB227AA38100DB963A /* JSGestureTutorialView.swift in Sources */,
 				82C1345D2276462B0080F9E1 /* JacquardServiceDelegate.swift in Sources */,
 				F130DF50D814697BEDF6EF8F974C3B45 /* JacquardService.swift in Sources */,
 				857077339453FB9D44C3826DECA0920A /* JacquardToolkit-dummy.m in Sources */,

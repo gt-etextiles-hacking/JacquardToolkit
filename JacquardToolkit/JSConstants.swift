@@ -81,5 +81,18 @@ struct JSConstants {
         }
         
     }
+    
+    struct JSURLs {
+        
+        struct Tutorial {
+            static let doubleTap = "https://i.imgur.com/3bJZwos.mp4"
+            static let brushIn = "https://i.imgur.com/x41of8j.mp4"
+            static let brushOut = "https://i.imgur.com/kSQC5xO.mp4"
+            static let cover = "https://i.imgur.com/DGzX8bO.mp4"
+            static let scratch = "https://i.imgur.com/ZZCQnUB.mp4"
+            static let forceTouch = "https://i.imgur.com/bWHrzcA.mp4"
+        }
+        
+    }
 
 }
