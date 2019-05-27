@@ -10,8 +10,6 @@ import Foundation
 import CoreBluetooth
 import CoreML
 import NotificationCenter
-import AVFoundation
-import AVKit
 
 public class JacquardService: NSObject, CBCentralManagerDelegate {
 

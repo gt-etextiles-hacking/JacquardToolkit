@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVKit
 import JacquardToolkit
 
 class ViewController: UIViewController {
@@ -57,7 +56,7 @@ extension ViewController: JacquardServiceDelegate {
     }
     
     func didDetectThreadTouch(threadArray: [Float]) {
-//        print("Threads: \(threadArray)")
+        print("Threads: \(threadArray)")
     }
     
     func didDetectConnection(isConnected: Bool) {
