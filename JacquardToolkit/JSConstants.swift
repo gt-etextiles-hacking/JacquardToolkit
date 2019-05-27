@@ -85,12 +85,12 @@ struct JSConstants {
     struct JSURLs {
         
         struct Tutorial {
-            static let doubleTap = "https://cdn-b-east.streamable.com/video/mp4/rzpud.mp4?token=-qqRR9SaWO6s6Y5z-NW_vA&expires=1558822200"
-            static let brushIn = "https://cdn-b-east.streamable.com/video/mp4/pl2ku.mp4?token=nMJ_OMPv7ajoLiy8w8zMpA&expires=1558822560"
-            static let brushOut = "https://cdn-b-east.streamable.com/video/mp4/ht3oh.mp4?token=E8WLjT3HSR4hgwSQH5XLyw&expires=1558822740"
-            static let cover = "https://cdn-b-east.streamable.com/video/mp4/zi9gn.mp4?token=X-BMVh1yOWyHZgirbi29kQ&expires=1558822740"
-            static let scratch = "https://cdn-b-east.streamable.com/video/mp4/ytw3g.mp4?token=MwO30M-e4f58eUbb0eO9jw&expires=1558822740"
-            static let forceTouch = "https://cdn-b-east.streamable.com/video/mp4/a9ij7.mp4?token=cux_TjMhTM7cJymB3w20LA&expires=1558822800"
+            static let doubleTap = "https://i.imgur.com/3bJZwos.mp4"
+            static let brushIn = "https://i.imgur.com/x41of8j.mp4"
+            static let brushOut = "https://i.imgur.com/kSQC5xO.mp4"
+            static let cover = "https://i.imgur.com/DGzX8bO.mp4"
+            static let scratch = "https://i.imgur.com/ZZCQnUB.mp4"
+            static let forceTouch = "https://i.imgur.com/bWHrzcA.mp4"
         }
         
     }

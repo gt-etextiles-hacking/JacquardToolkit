@@ -2,13 +2,15 @@
 
 JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard...
 
-# New Features
+# What can I do with the Toolkit?
 
 - Enable your applications bluetooth to start searching nearby devices
 - Ability to easily connect with your own Levi's Jacquard
-- Send a rainbow glow to your jacket with ease
+- Send a rainbow glow to your jacket
 - React to gesture the user performs on their jacket
 - Access each specific threads value at any point in time
+- Play gesture tutorial videos for your users
+- Tell if you are currently connected to your jacket
 
 ### Installation
 
@@ -40,7 +42,7 @@ import JacquardToolkit
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        JacquardService.shared.activateBlutooth { _ in 
+        JacquardService.shared.activateBluetooth { _ in 
             JacquardService.shared.connect(viewController: self)
         }
     }
@@ -104,6 +106,33 @@ extension ViewController: JacquardServiceDelegate {
         //the intensity each thread is being touched by
     }
 
+}
+```
+
+6. Show your user how to correctly perform the gestures with tutorial videos:
+```sh
+@IBAction func doubleTapTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playDoubleTapTutorial(viewController: self)
+}
+
+@IBAction func brushInTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playBrushInTutorial(viewController: self)
+}
+
+@IBAction func brushOutTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playBrushOutTutorial(viewController: self)
+}
+
+@IBAction func coverTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playCoverTutorial(viewController: self)
+}
+
+@IBAction func scratchTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playScratchTutorial(viewController: self)
+}
+
+@IBAction func forceTouchTutorialButtonTapped(_ sender: Any) {
+    JacquardService.shared.playForceTouchTutorial(viewController: self)
 }
 ```
 

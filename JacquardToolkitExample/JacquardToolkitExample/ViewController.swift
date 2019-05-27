@@ -22,10 +22,11 @@ class ViewController: UIViewController {
     
     @IBAction func glowButtonTapped(_ sender: Any) {
         JacquardService.shared.rainbowGlowJacket()
+        JacquardService.shared.playBrushOutTutorial(viewController: self)
     }
     
     @IBAction func showVideoButtonTapped(_ sender: Any) {
-        JacquardService.shared.playCoverTutorial(viewController: self)
+        JacquardService.shared.playBrushInTutorial(viewController: self)
     }
 }
 
@@ -56,7 +57,7 @@ extension ViewController: JacquardServiceDelegate {
     }
     
     func didDetectThreadTouch(threadArray: [Float]) {
-        print("Threads: \(threadArray)")
+//        print("Threads: \(threadArray)")
     }
     
     func didDetectConnection(isConnected: Bool) {

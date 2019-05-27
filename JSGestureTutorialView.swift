@@ -7,19 +7,16 @@
 
 import UIKit
 import AVKit
+import NotificationCenter
 
-class JSGestureTutorialView: UIView {
+class JSGestureTutorialView: AVPlayerViewController {
     
-    private var player = AVPlayer()
-    private var session = AVCaptureSession()
-    private var playerController = AVPlayerViewController()
-    
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main, using: { _ in
+            self.player?.seek(to: CMTime.zero)
+            self.player?.play()
+        })
     }
     
     public func playVideo(tutorialURL: String) {
@@ -29,17 +26,11 @@ class JSGestureTutorialView: UIView {
         }
         
         player = AVPlayer(url: movieURL)
-        playerController.player = player
-        playerController.view.frame = self.layer.bounds
-        playerController.videoGravity = .resizeAspectFill
-        playerController.showsPlaybackControls = false
-        player.play()
+        player?.isMuted = true
+        videoGravity = .resizeAspectFill
+        showsPlaybackControls = false
         
-        self.layer.addSublayer(playerController.view.layer)
-    }
-    
-    public func stopVideo() {
-        player.pause()
+        player?.play()
     }
     
 }

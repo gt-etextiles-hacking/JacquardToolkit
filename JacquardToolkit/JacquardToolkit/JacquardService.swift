@@ -145,8 +145,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playDoubleTapTutorial(viewController: UIViewController) {
         isDoubleTapTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
     }
     
@@ -158,8 +158,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the video appear over
      */
     public func playBrushInTutorial(viewController: UIViewController) {
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        isBrushInTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
     }
     
@@ -171,8 +172,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the video appear over
      */
     public func playBrushOutTutorial(viewController: UIViewController) {
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        isBrushOutTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
     }
     
@@ -184,8 +186,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the video appear over
      */
     public func playCoverTutorial(viewController: UIViewController) {
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        isCoverTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
     }
     
@@ -197,8 +200,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the video appear over
      */
     public func playScratchTutorial(viewController: UIViewController) {
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        isScratchTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
     }
     
@@ -210,8 +214,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the video appear over
      */
     public func playForceTouchTutorial(viewController: UIViewController) {
-        jsGestureTutorialView = JSGestureTutorialView(frame: viewController.view.bounds)
-        viewController.view.addSubview(jsGestureTutorialView)
+        isForceTouchTutorialActivated = true
+        jsGestureTutorialView = JSGestureTutorialView()
+        viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
     }
     
@@ -257,16 +262,33 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
                         if isDoubleTapTutorialActivated {
-                            jsGestureTutorialView.stopVideo()
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isDoubleTapTutorialActivated = false
                         }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
+                        if isBrushInTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushInTutorialActivated = false
+                        }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
+                        if isBrushOutTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushOutTutorialActivated = false
+                        }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
+                        if isCoverTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isCoverTutorialActivated = false
+                        }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
+                        if isScratchTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isScratchTutorialActivated = false
+                        }
                     default:
                         NSLog("Detected an unknown gesture with characteristic: \(characteristic.uuid.uuidString)")
                     }
@@ -309,6 +331,10 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     cachingGoogleGestures = false
                     mostRecentGesture = .undefined
                     delegate?.didDetectForceTouchGesture?()
+                    if isForceTouchTutorialActivated {
+                        jsGestureTutorialView.view.removeFromSuperview()
+                        isForceTouchTutorialActivated = false
+                    }
                 }
             } else {
                 if forceTouchDetectionProgress > 0 {
@@ -316,14 +342,34 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     switch mostRecentGesture {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
+                        if isDoubleTapTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isDoubleTapTutorialActivated = false
+                        }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
+                        if isBrushInTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushInTutorialActivated = false
+                        }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
+                        if isBrushOutTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isBrushOutTutorialActivated = false
+                        }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
+                        if isCoverTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isCoverTutorialActivated = false
+                        }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
+                        if isScratchTutorialActivated {
+                            jsGestureTutorialView.view.removeFromSuperview()
+                            isScratchTutorialActivated = false
+                        }
                     default:
                         print("default placeholder")
                     }
