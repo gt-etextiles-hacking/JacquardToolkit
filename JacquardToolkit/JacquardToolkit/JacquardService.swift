@@ -106,6 +106,18 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     }
     
     /**
+     Allows you to tell if your Jacquard is currently connected or not
+     
+     You will be returned the boolean value true if your Jacquard is connected or false otherwise
+     */
+    public func isJacquardConnected() -> Bool {
+        guard targetJacket != nil else {
+            return false
+        }
+        return true
+    }
+    
+    /**
      Sends a rainbow strobe glow to your Jacquard's tag
      
      Be sure that you are connected and paired to your Jacquard or else this function will not work

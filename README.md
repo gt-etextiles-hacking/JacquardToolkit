@@ -1,6 +1,6 @@
 # JacquardToolkit
 
-JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard...
+JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard.
 
 # What can I do with the Toolkit?
 
@@ -34,7 +34,7 @@ import JacquardToolkit
 1. Add the 'Privacy - Camera Usage Description' to your Info.plist:
 ![Image of Privacy - Camera Usage Description](https://i.imgur.com/Ki84eK3.png)
 
-2. Enable your device's bluetooth capabilities and connect to your jacket by passing in your jacket's UUID: 
+2. Enable your device's bluetooth capabilities and connect to your jacket with the QR code located on the right inside of your jacket: 
 ```sh
 import UIKit
 import JacquardToolkit
@@ -49,14 +49,7 @@ class ViewController: UIViewController {
 }
 ```
 
-3. Send a colorful rainbow glow to your jacket: 
-```sh
-@IBAction func glowButtonTapped(_ sender: Any) {
-    JacquardService.shared.rainbowGlowJacket()
-}
-```
-
-4. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, Scratch & Force Touch): 
+3. Use the JacquardServiceDelegate to react to all of the user gestures (including Double Tap, Brush In, Brush Out, Cover, Scratch & Force Touch): 
 ```sh
 override func viewDidLoad() {
     super.viewDidLoad()
@@ -92,7 +85,7 @@ extension ViewController: JacquardServiceDelegate {
 }
 ```
 
-5. Additionally, you can uncover the values of each specific thread: 
+4. Additionally, you can uncover the values of each specific thread: 
 ```sh
 override func viewDidLoad() {
     super.viewDidLoad()
@@ -109,7 +102,39 @@ extension ViewController: JacquardServiceDelegate {
 }
 ```
 
-6. Show your user how to correctly perform the gestures with tutorial videos:
+5. Listen for times when your jacket either connects or disconnects from your mobile device:
+```sh
+override func viewDidLoad() {
+    super.viewDidLoad()
+    JacquardService.shared.delegate = self
+}
+
+func didDetectConnection(isConnected: Bool) {
+    //isConnected is true when jacket is connected
+    //and false when the jacket is disconnected
+}
+```
+
+6. Ask your jacket if you have a connection or not with your mobile device:
+```sh
+@IBAction func checkConnectionButtonTapped(_ sender: Any) {
+    let isConnected = JacquardService.shared.isJacquardConnected()
+    if isConnected == true {
+        //Your jacket is connected
+    } else {
+        //Your Jacket is not connected
+    }
+}
+```
+
+7. Send a colorful rainbow glow to your jacket: 
+```sh
+@IBAction func glowButtonTapped(_ sender: Any) {
+    JacquardService.shared.rainbowGlowJacket()
+}
+```
+
+8. Show your user how to correctly perform the gestures with tutorial videos:
 ```sh
 @IBAction func doubleTapTutorialButtonTapped(_ sender: Any) {
     JacquardService.shared.playDoubleTapTutorial(viewController: self)
