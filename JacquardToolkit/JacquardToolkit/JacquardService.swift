@@ -27,7 +27,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var jsQRCodeScannerView = JSQRCodeScannerView()
     private var jsGestureTutorialView = JSGestureTutorialView()
     
-    // forcetouch gesture variables
+    //Forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
     private var threadReadings: [Float]?
     private var input_data: MLMultiArray?
@@ -64,7 +64,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     //MARK: Developer Functions
 
     /**
-     Turns on your phone's bluetooth capalities
+     Turns on your phone's bluetooth capabilities
      
      This function is used to make sure that your phone's bluetooth is in the right state to connect to
      a Jacquard. You will need to call this function before `connect()` to ensure the connection process
@@ -155,7 +155,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playDoubleTapTutorial(viewController: UIViewController) {
         isDoubleTapTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
     }
@@ -169,7 +168,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playBrushInTutorial(viewController: UIViewController) {
         isBrushInTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
     }
@@ -183,7 +181,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playBrushOutTutorial(viewController: UIViewController) {
         isBrushOutTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
     }
@@ -197,7 +194,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playCoverTutorial(viewController: UIViewController) {
         isCoverTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
     }
@@ -211,7 +207,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playScratchTutorial(viewController: UIViewController) {
         isScratchTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
     }
@@ -225,7 +220,6 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playForceTouchTutorial(viewController: UIViewController) {
         isForceTouchTutorialActivated = true
-        jsGestureTutorialView = JSGestureTutorialView()
         viewController.view.addSubview(jsGestureTutorialView.view)
         jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
     }

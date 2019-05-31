@@ -1,6 +1,6 @@
 //
 //  JSQRCodeScannerView.swift
-//  Pods
+//  JacquardToolkit
 //
 //  Created by Caleb Rudnicki on 4/3/19.
 //

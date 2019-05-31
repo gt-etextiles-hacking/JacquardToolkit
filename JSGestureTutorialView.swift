@@ -9,9 +9,9 @@ import UIKit
 import AVKit
 import NotificationCenter
 
-class JSGestureTutorialView: AVPlayerViewController {
+public class JSGestureTutorialView: AVPlayerViewController {
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main, using: { _ in
             self.player?.seek(to: CMTime.zero)
