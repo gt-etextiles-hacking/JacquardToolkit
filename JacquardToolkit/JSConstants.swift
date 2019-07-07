@@ -38,6 +38,9 @@ struct JSConstants {
         struct Notifications {
             static let readGesture = "ReadGesture"
             static let readThreads = "ReadThreads"
+            
+            static let scanSuccessful = "ScanSuccessful"
+            static let didStartEditingTextField = "DidStartEditingTextField"
         }
         
         struct ForceTouch {
