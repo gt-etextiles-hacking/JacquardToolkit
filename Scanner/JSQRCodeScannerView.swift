@@ -14,18 +14,13 @@ class JSQRCodeScannerView: UIView {
     private var video = AVCaptureVideoPreviewLayer()
     private var session = AVCaptureSession()
     private let output = AVCaptureMetadataOutput()
-    
-    private var instructionsViewShouldBeShiftedUp = false
     private var keyboardIsPresent = false
-    
-    private var trayOriginalCenter: CGPoint!
-    private var trayUp: CGPoint!
-    private var trayDown: CGPoint!
+    private var qrCodeRecognized = false
+    private var keyboardFrame: CGFloat!
     
     private let tappableView: UIView = {
         let tappableView = UIView()
-        tappableView.backgroundColor = .red
-        tappableView.alpha = 0.3
+        tappableView.alpha = 1
         tappableView.translatesAutoresizingMaskIntoConstraints = false
         return tappableView
     }()
@@ -33,7 +28,7 @@ class JSQRCodeScannerView: UIView {
     private let scannerTargetView: UIView = {
         let scannerTargetView = UIView()
         scannerTargetView.backgroundColor = .clear
-        scannerTargetView.layer.borderColor = UIColor.gray.cgColor
+        scannerTargetView.layer.borderColor = UIColor.jsLightGrey.cgColor
         scannerTargetView.layer.borderWidth = 5
         scannerTargetView.translatesAutoresizingMaskIntoConstraints = false
         return scannerTargetView
@@ -41,15 +36,18 @@ class JSQRCodeScannerView: UIView {
     
     private let instructionsView: JSQRCodeInstructionsView = {
         let instructionsView = JSQRCodeInstructionsView()
-        instructionsView.backgroundColor = .white
+        instructionsView.backgroundColor = .jsLightGrey
         instructionsView.layer.cornerRadius = 10
         instructionsView.layer.shadowColor = UIColor.black.cgColor
         instructionsView.layer.shadowOpacity = 0.8
         instructionsView.layer.shadowOffset = .zero
         instructionsView.layer.shadowRadius = 5
+        instructionsView.alpha = 0.99
         instructionsView.translatesAutoresizingMaskIntoConstraints = false
         return instructionsView
     }()
+    
+    // MARK: Initializers
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,31 +72,40 @@ class JSQRCodeScannerView: UIView {
             video.frame = layer.bounds
             video.videoGravity = .resizeAspectFill
             
-            
             layer.addSublayer(video)
             layer.insertSublayer(instructionsView.layer, above: video)
             layer.insertSublayer(scannerTargetView.layer, above: video)
             
         }
         
-        trayUp = CGPoint(x: frame.midX, y: frame.height * 1.2)
-        trayDown = CGPoint(x: frame.midX, y: frame.height * 1.6)
-        
-        //CR: Just for testing purposes
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappableAreaTapped))
         tappableView.addGestureRecognizer(tapGestureRecognizer)
         
-        let panGestureRecognizer = UIPanGestureRecognizer.init(target: self, action: #selector(panGestureDragged))
-        panGestureRecognizer.delegate = self
-        instructionsView.addGestureRecognizer(panGestureRecognizer)
-        
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(shiftInstructionsView),
-            name: Notification.Name(JSConstants.JSStrings.Notifications.didStartEditingTextField),
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(recivedKeyboardJacketID),
+            name: Notification.Name(JSConstants.JSStrings.Notifications.scanSuccessfulKeyboard),
             object: nil
         )
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    // MARK: Constraints
     
     override public func updateConstraints() {
         super.updateConstraints()
@@ -121,18 +128,15 @@ class JSQRCodeScannerView: UIView {
             instructionsView.topAnchor.constraint(equalTo: topAnchor, constant: frame.height * 0.6),
             instructionsView.leadingAnchor.constraint(equalTo: leadingAnchor),
             instructionsView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            instructionsView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2)
+            instructionsView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1)
         ])
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+    // MARK: Public Functions
     
     public func startScanner() {
         session.commitConfiguration()
         session.startRunning()
-        
         let rect = CGRect(x: self.center.x - (self.frame.width * 0.5 / 2),
                           y: self.frame.width * 0.5 / 2,
                           width: self.frame.width * 0.5,
@@ -145,50 +149,47 @@ class JSQRCodeScannerView: UIView {
         self.removeFromSuperview()
     }
     
-    @objc private func tappableAreaTapped() {
-        if keyboardIsPresent {
-            instructionsViewShouldBeShiftedUp = !instructionsViewShouldBeShiftedUp
-            endEditing(true)
-            keyboardIsPresent = false
-            UIView.animate(withDuration: 0.35, animations: {
-                self.instructionsView.center = self.trayDown
-                self.scannerTargetView.alpha = 1
-            })
-        }
-    }
+    // MARK: Keyboard Functions
     
-    @objc private func panGestureDragged(recognizer: UIPanGestureRecognizer) {
-        let translation = recognizer.translation(in: instructionsView)
-        switch recognizer.state {
-        case .began:
-            trayOriginalCenter = instructionsView.center
-        case .changed:
-            instructionsView.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
-        case .ended:
-            let velocity = recognizer.velocity(in: instructionsView)
-            if velocity.y > 0 {
-                UIView.animate(withDuration: 0.35, animations: {
-                    self.endEditing(true)
-                    self.scannerTargetView.alpha = 1
-                    self.instructionsView.center = self.trayDown
-                })
-            } else {
-                keyboardIsPresent = true
-                UIView.animate(withDuration: 0.35, animations: {
-                    self.scannerTargetView.alpha = 0
-                    self.instructionsView.center = self.trayUp
-                })
-            }
-        default: break
-        }
-    }
-    
-    @objc private func shiftInstructionsView(userInfo: Notification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard
+            let userInfo = notification.userInfo,
+            let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            else { return }
+        
+        let keyboardFrame = keyboardSize.cgRectValue
         keyboardIsPresent = true
-        UIView.animate(withDuration: 0.35, animations: {
-            self.instructionsView.center = self.trayUp
+        UIView.animate(withDuration: 0.1, animations: {
+            self.instructionsView.frame.origin.y -= keyboardFrame.height
             self.scannerTargetView.alpha = 0
         })
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        guard
+            let userInfo = notification.userInfo,
+            let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            else { return }
+        
+        let keyboardFrame = keyboardSize.cgRectValue
+        keyboardIsPresent = false
+        UIView.animate(withDuration: 0.1, animations: {
+            self.instructionsView.frame.origin.y += keyboardFrame.height
+            self.scannerTargetView.alpha = 1
+        })
+    }
+    
+    @objc private func tappableAreaTapped() {
+        if keyboardIsPresent && !qrCodeRecognized {
+            endEditing(true)
+            keyboardIsPresent = false
+        }
+    }
+
+    @objc private func recivedKeyboardJacketID(notification: Notification) {
+        if let jacketID = notification.userInfo?["JacketID"] as? String {
+            JacquardService.shared.updateJacketIDString(jacketIDString: jacketID)
+        }
     }
     
 }
@@ -198,27 +199,27 @@ extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
     public func metadataOutput(_ output: AVCaptureMetadataOutput,
                                didOutput metadataObjects: [AVMetadataObject],
                                from connection: AVCaptureConnection) {
-        if !instructionsViewShouldBeShiftedUp {
+        if !keyboardIsPresent {
+            qrCodeRecognized = true
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            let scanSuccessfulNotificationName = JSConstants.JSStrings.Notifications.scanSuccessful
-            NotificationCenter.default.post(Notification.init(name: Notification.Name(rawValue: scanSuccessfulNotificationName)))
+            scannerTargetView.layer.borderColor = UIColor.green.cgColor
+            NotificationCenter.default.post(
+                name: NSNotification.Name(rawValue: JSConstants.JSStrings.Notifications.scanSuccessfulScanner),
+                object: nil,
+                userInfo: nil
+            )
             session.stopRunning()
-            if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
+            if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+                let qrCodeString = object.stringValue {
                 if object.type == .qr {
-                    JacquardService.shared.updateJacketIDString(jacketIDString: object.stringValue)
+                    NotificationCenter.default.post(
+                        name:  NSNotification.Name(rawValue: JSConstants.JSStrings.Notifications.scanSuccessfulKeyboard),
+                        object: nil,
+                        userInfo: [JSConstants.JSStrings.Notifications.jacketID: qrCodeString]
+                    )
                 }
             }
         }
     }
 
-}
-
-extension UIView {
-    
-    func addSubviews(_ views: [UIView]) {
-        for view in views {
-            self.addSubview(view)
-        }
-    }
-    
 }

@@ -39,13 +39,22 @@ struct JSConstants {
             static let readGesture = "ReadGesture"
             static let readThreads = "ReadThreads"
             
-            static let scanSuccessful = "ScanSuccessful"
+            static let scanSuccessfulScanner = "ScanSuccessfulScanner"
+            static let scanSuccessfulKeyboard = "ScanSuccessfulKeyboard"
             static let didStartEditingTextField = "DidStartEditingTextField"
+            
+            static let jacketID = "JacketID"
         }
         
         struct ForceTouch {
             static let outputLabel = "ForceTouch"
             static let reenableMessage = "Reenabling force touch"
+        }
+        
+        struct UI {
+            static let scannerInitialPrompt = "Scan QR Code"
+            static let scannerSecondaryPrompt = "Pop Tag In"
+            static let trayButtonLabel = "Connect"
         }
         
     }

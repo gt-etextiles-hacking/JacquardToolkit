@@ -12,15 +12,13 @@ class JSQRCodeInstructionsView: UIView {
     
     private let containerView: UIView = {
         let containerView = UIView()
-//        containerView.layer.borderWidth = 1
-//        containerView.layer.borderColor = UIColor.black.cgColor
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
     }()
     
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Scan QR Code"
+        titleLabel.text = JSConstants.JSStrings.UI.scannerInitialPrompt
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -34,13 +32,17 @@ class JSQRCodeInstructionsView: UIView {
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = UIColor.gray.cgColor
         textField.layer.borderWidth = 1
+        textField.backgroundColor = .jsDarkGrey
+        textField.autocapitalizationType = UITextAutocapitalizationType(rawValue: 3)!
+        textField.clearButtonMode = .whileEditing
+        textField.becomeFirstResponder()
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
     private let button: UIButton = {
        let button = UIButton()
-        button.setTitle("Connect", for: .normal)
+        button.setTitle(JSConstants.JSStrings.UI.trayButtonLabel, for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 10
         button.isEnabled = false
@@ -57,6 +59,8 @@ class JSQRCodeInstructionsView: UIView {
         helpImageView.translatesAutoresizingMaskIntoConstraints = false
         return helpImageView
     }()
+    
+    // MARK: Initializers
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,16 +68,21 @@ class JSQRCodeInstructionsView: UIView {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateTitleLabel),
-            name: Notification.Name(JSConstants.JSStrings.Notifications.scanSuccessful),
+            name: Notification.Name(JSConstants.JSStrings.Notifications.scanSuccessfulScanner),
             object: nil
         )
         
-        textField.delegate = self
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 
         addSubviews([containerView, titleLabel, textField, button, helpImageView])
         updateConstraints()
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    ///MARK: Constraints
     
     public override func updateConstraints() {
         super.updateConstraints()
@@ -116,36 +125,35 @@ class JSQRCodeInstructionsView: UIView {
             helpImageView.heightAnchor.constraint(equalTo: containerView.heightAnchor)
         ])
     }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
     
+    //MARK: UI Functions
+
     @objc private func updateTitleLabel(userInfo: Notification) {
-        titleLabel.text = "Pop Tag In"
+        titleLabel.text = JSConstants.JSStrings.UI.scannerSecondaryPrompt
     }
     
     @objc private func searchButtonTapped() {
-        print(textField.text ?? "No text entered")
-    }
-    
-    @objc private func textFieldDidChange() {
-        if let enteredText = textField.text, enteredText.count > 10 {
-            textField.layer.borderColor = UIColor.gray.cgColor
-            button.isEnabled = true
-        } else {
-            textField.layer.borderColor = UIColor.red.cgColor
-            button.isEnabled = false
+        if let text = textField.text?.uppercased() {
+            NotificationCenter.default.post(
+                name:  NSNotification.Name(rawValue: JSConstants.JSStrings.Notifications.scanSuccessfulKeyboard),
+                object: nil,
+                userInfo: [JSConstants.JSStrings.Notifications.jacketID: text]
+            )
         }
     }
-
-}
-
-extension JSQRCodeInstructionsView: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        let didStartEditingTextFieldNotificationName = JSConstants.JSStrings.Notifications.didStartEditingTextField
-        NotificationCenter.default.post(Notification.init(name: Notification.Name(rawValue: didStartEditingTextFieldNotificationName)))
+    
+    @objc private func textFieldDidChange() -> Bool {
+        if let enteredText = textField.text, enteredText.count > 9, enteredText.count < 12 {
+            if String(enteredText.prefix(5)).isInt &&
+                String(enteredText.suffix(4)).isInt {
+                textField.layer.borderColor = UIColor.gray.cgColor
+                button.isEnabled = true
+                return true
+            }
+        }
+        textField.layer.borderColor = UIColor.red.cgColor
+        button.isEnabled = false
+        return false
     }
-    
-    
+
 }
