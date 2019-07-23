@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name          = "JacquardToolkit"
-  s.version       = "1.2.1"
+  s.version       = "1.2"
   s.summary       = "This development toolkit for the Levi's Jacquard."
   s.description   = "This is a framework for interacting with the Levi's Jacquard made by Caleb Rudnicki"
   s.homepage      = "https://github.com/gt-etextiles-hacking/JacquardToolkit"
