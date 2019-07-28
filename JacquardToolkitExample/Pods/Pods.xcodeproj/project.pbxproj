@@ -219,21 +219,11 @@
 			path = "Target Support Files/Pods-JacquardToolkitExample";
 			sourceTree = "<group>";
 		};
-		CC4B1AEABB6ACA5CAB6CFD42160D2B51 /* JacquardToolkit */ = {
-			isa = PBXGroup;
-			children = (
-				82C1345C2276462B0080F9E1 /* JacquardServiceDelegate.swift */,
-				1C2796E599A238237BF1E77886466C50 /* JacquardService.swift */,
-				B18B830EDD9ECAC9D5D5BC42641EB0AD /* JacquardToolkit.h */,
-			);
-			name = JacquardToolkit;
-			path = JacquardToolkit/JacquardToolkit;
-			sourceTree = "<group>";
-		};
 		E74769808D0C1AEBBC4D3882B22F506B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
 				B586550CBD799D25F885F096BD4232EF /* Info.plist */,
+				B18B830EDD9ECAC9D5D5BC42641EB0AD /* JacquardToolkit.h */,
 				E2C2DECAD263A453820A0F386D650123 /* JacquardToolkit.modulemap */,
 				46788913FCAF30A588280DA69EDA9F9D /* JacquardToolkit.xcconfig */,
 				1BA048F6187B2CD98B1966C9F9F46256 /* JacquardToolkit-dummy.m */,
@@ -247,10 +237,11 @@
 		ED8AD22B8172D88B02C0BC5C79A9C5ED /* JacquardToolkit */ = {
 			isa = PBXGroup;
 			children = (
-				CC4B1AEABB6ACA5CAB6CFD42160D2B51 /* JacquardToolkit */,
+				82C1345C2276462B0080F9E1 /* JacquardServiceDelegate.swift */,
+				1C2796E599A238237BF1E77886466C50 /* JacquardService.swift */,
 				8209C71722E6A25000E50D27 /* CoreML Models */,
-				8209C71022E69B1000E50D27 /* Extensions */,
 				8209C71822E6A28300E50D27 /* Helpers */,
+				8209C71022E69B1000E50D27 /* Extensions */,
 				8209C70D22E696DE00E50D27 /* Tutorial */,
 				8209C70822D2462900E50D27 /* Scanner */,
 				13043CAD37FEAB32550D9C0101E82DF2 /* Pod */,

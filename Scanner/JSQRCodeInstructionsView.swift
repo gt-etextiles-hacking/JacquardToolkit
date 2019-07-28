@@ -35,7 +35,6 @@ class JSQRCodeInstructionsView: UIView {
         textField.backgroundColor = .jsDarkGrey
         textField.autocapitalizationType = UITextAutocapitalizationType(rawValue: 3)!
         textField.clearButtonMode = .whileEditing
-        textField.becomeFirstResponder()
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
