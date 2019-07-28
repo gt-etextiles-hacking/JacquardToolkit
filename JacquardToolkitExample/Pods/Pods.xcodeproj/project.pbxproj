@@ -153,9 +153,9 @@
 		8209C70D22E696DE00E50D27 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
-				8232F3AA227AA38100DB963A /* JSGestureTutorialView.swift */,
 			);
-			path = Tutorial;
+			name = Tutorial;
+			path = JacquardToolkit/JacquardToolkit/Tutorial;
 			sourceTree = "<group>";
 		};
 		8209C71022E69B1000E50D27 /* Extensions */ = {
@@ -165,7 +165,8 @@
 				8209C71122E69B3D00E50D27 /* JacquardToolkit+String.swift */,
 				8209C71322E69B5B00E50D27 /* JacquardToolkit+View.swift */,
 			);
-			path = Extensions;
+			name = Extensions;
+			path = JacquardToolkit/JacquardToolkit/Extensions;
 			sourceTree = "<group>";
 		};
 		8209C71722E6A25000E50D27 /* CoreML Models */ = {
@@ -173,7 +174,8 @@
 			children = (
 				18634442CC7D485589C9589D6E6E7AD4 /* ForceTouch.mlmodel */,
 			);
-			path = "CoreML Models";
+			name = "CoreML Models";
+			path = "JacquardToolkit/JacquardToolkit/CoreML Models";
 			sourceTree = "<group>";
 		};
 		8209C71822E6A28300E50D27 /* Helpers */ = {
@@ -319,6 +321,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					6C899F22E1BCBD41481C2923219A1C35 = {
+						LastSwiftMigration = 1020;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -421,7 +428,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -585,7 +592,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
