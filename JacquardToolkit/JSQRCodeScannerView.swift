@@ -84,13 +84,13 @@ class JSQRCodeScannerView: UIView {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
+            name: NSNotification.Name.UIKeyboardWillShow,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
+            name: NSNotification.Name.UIKeyboardWillHide,
             object: nil
         )
         NotificationCenter.default.addObserver(
@@ -154,7 +154,7 @@ class JSQRCodeScannerView: UIView {
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo,
-            let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            let keyboardSize = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue
             else { return }
         
         let keyboardFrame = keyboardSize.cgRectValue
@@ -168,7 +168,7 @@ class JSQRCodeScannerView: UIView {
     @objc private func keyboardWillHide(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo,
-            let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            let keyboardSize = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue
             else { return }
         
         let keyboardFrame = keyboardSize.cgRectValue

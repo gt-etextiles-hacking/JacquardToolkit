@@ -14,7 +14,7 @@ class JSGestureTutorialView: AVPlayerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main, using: { _ in
-            self.player?.seek(to: .zero)
+            self.player?.seek(to: kCMTimeZero)
             self.player?.play()
         })
     }
@@ -27,7 +27,7 @@ class JSGestureTutorialView: AVPlayerViewController {
         
         player = AVPlayer(url: movieURL)
         player?.isMuted = true
-        videoGravity = .resizeAspectFill
+        videoGravity = "resizeAspectFill"
         showsPlaybackControls = false
         
         player?.play()
