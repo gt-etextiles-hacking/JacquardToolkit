@@ -156,3 +156,9 @@ class JSQRCodeInstructionsView: UIView {
     }
 
 }
+
+extension String {
+    var isInt: Bool {
+        return Int(self) != nil
+    }
+}
