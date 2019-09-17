@@ -25,19 +25,7 @@ class JSQRCodeInstructionsView: UIView {
         return titleLabel
     }()
     
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Jacket ID"
-        textField.font = UIFont(name: "HelveticaNeue-Thin", size: 24)
-        textField.borderStyle = .roundedRect
-        textField.layer.borderColor = UIColor.gray.cgColor
-        textField.layer.borderWidth = 1
-        textField.backgroundColor = .jsDarkGrey
-        textField.autocapitalizationType = UITextAutocapitalizationType(rawValue: 3)!
-        textField.clearButtonMode = .whileEditing
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    private let textField = JTTextField()
     
     private let button: UIButton = {
        let button = UIButton()
@@ -71,7 +59,7 @@ class JSQRCodeInstructionsView: UIView {
             object: nil
         )
         
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        textField.jtTextFieldDelegate = self
 
         addSubviews([containerView, titleLabel, textField, button, helpImageView])
         updateConstraints()
@@ -140,21 +128,23 @@ class JSQRCodeInstructionsView: UIView {
             )
         }
     }
-    
-    @objc private func textFieldDidChange() -> Bool {
-        if let enteredText = textField.text, enteredText.count > 9, enteredText.count < 12 {
-            if String(enteredText.prefix(5)).isInt &&
-                String(enteredText.suffix(4)).isInt {
-                textField.layer.borderColor = UIColor.gray.cgColor
-                button.isEnabled = true
-                return true
-            }
-        }
-        textField.layer.borderColor = UIColor.red.cgColor
-        button.isEnabled = false
-        return false
-    }
 
+}
+
+extension JSQRCodeInstructionsView: JTTextFieldDelegate {
+    
+    func didBeginEditing(_ textField: JTTextField) {
+        //TextField did begin editing
+    }
+    
+    func didEndEditing(_ textField: JTTextField) {
+        //TextField did end editing
+    }
+    
+    func textFieldValidationStateDidChange(to state: Bool) {
+        button.isEnabled = state
+    }
+    
 }
 
 extension String {
