@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol JTTextFieldDelegate {
+internal protocol JTTextFieldDelegate {
     func didBeginEditing(_ textField: JTTextField)
     func didEndEditing(_ textField: JTTextField)
     func textFieldValidationStateDidChange(to state: Bool)
 }
 
-class JTTextField: UITextField {
+internal class JTTextField: UITextField {
     
     enum ValidationState {
         case empty //TODO: Implement the empty case
