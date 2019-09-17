@@ -27,16 +27,7 @@ class JSQRCodeInstructionsView: UIView {
     
     private let textField = JTTextField()
     
-    private let button: UIButton = {
-       let button = UIButton()
-        button.setTitle(JSConstants.JSStrings.UI.trayButtonLabel, for: .normal)
-        button.backgroundColor = .gray
-        button.layer.cornerRadius = 10
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let button = JTButton()
     
     private let helpImageView: UIImageView = {
         let helpImageView = UIImageView()
@@ -60,6 +51,7 @@ class JSQRCodeInstructionsView: UIView {
         )
         
         textField.jtTextFieldDelegate = self
+        button.jtButtonDelegate = self
 
         addSubviews([containerView, titleLabel, textField, button, helpImageView])
         updateConstraints()
@@ -118,16 +110,6 @@ class JSQRCodeInstructionsView: UIView {
     @objc private func updateTitleLabel(userInfo: Notification) {
         titleLabel.text = JSConstants.JSStrings.UI.scannerSecondaryPrompt
     }
-    
-    @objc private func searchButtonTapped() {
-        if let text = textField.text?.uppercased() {
-            NotificationCenter.default.post(
-                name:  NSNotification.Name(rawValue: JSConstants.JSStrings.Notifications.scanSuccessfulKeyboard),
-                object: nil,
-                userInfo: [JSConstants.JSStrings.Notifications.jacketID: text]
-            )
-        }
-    }
 
 }
 
@@ -143,6 +125,22 @@ extension JSQRCodeInstructionsView: JTTextFieldDelegate {
     
     func textFieldValidationStateDidChange(to state: Bool) {
         button.isEnabled = state
+    }
+    
+}
+
+extension JSQRCodeInstructionsView: JTButtonDelegate {
+    
+    func didTap(_ button: JTButton) -> Bool {
+        if let text = textField.text?.uppercased() {
+            NotificationCenter.default.post(
+                name:  NSNotification.Name(rawValue: JSConstants.JSStrings.Notifications.scanSuccessfulKeyboard),
+                object: nil,
+                userInfo: [JSConstants.JSStrings.Notifications.jacketID: text]
+            )
+            return true
+        }
+        return false
     }
     
 }
