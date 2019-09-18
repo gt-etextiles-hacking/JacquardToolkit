@@ -24,8 +24,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private let notificationCenter = NotificationCenter.default
     private var viewController = UIViewController()
     private var targetJacketIDString: String?
-    private var jsQRCodeScannerView = JSQRCodeScannerView()
-    private var jsGestureTutorialView = JSGestureTutorialView()
+    private var jtScannerView = JTScannerView()
+    private var jtGestureTutorialViewController = JTGestureTutorialViewController()
     
     //Forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
@@ -95,9 +95,9 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
             peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
             guard peripheralList.count > 0 else {
-                jsQRCodeScannerView = JSQRCodeScannerView(frame: viewController.view.bounds)
-                viewController.view.addSubview(jsQRCodeScannerView)
-                jsQRCodeScannerView.startScanner()
+                jtScannerView = JTScannerView(frame: viewController.view.bounds)
+                viewController.view.addSubview(jtScannerView)
+                jtScannerView.startScanner()
                 return
             }
             targetJacket = peripheralList[0]
@@ -124,8 +124,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func rainbowGlowJacket() {
         if centralManager.state == .poweredOn {
-            let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
-            let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
+            let dataval = JacquardServiceHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
+            let dataval1 = JacquardServiceHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
             if glowCharacteristic != nil {
                 targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
                 targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
@@ -155,8 +155,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playDoubleTapTutorial(viewController: UIViewController) {
         isDoubleTapTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
     }
     
     /**
@@ -168,8 +168,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playBrushInTutorial(viewController: UIViewController) {
         isBrushInTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
     }
     
     /**
@@ -181,8 +181,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playBrushOutTutorial(viewController: UIViewController) {
         isBrushOutTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
     }
     
     /**
@@ -194,8 +194,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playCoverTutorial(viewController: UIViewController) {
         isCoverTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
     }
     
     /**
@@ -207,8 +207,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playScratchTutorial(viewController: UIViewController) {
         isScratchTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
     }
     
     /**
@@ -220,8 +220,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func playForceTouchTutorial(viewController: UIViewController) {
         isForceTouchTutorialActivated = true
-        viewController.view.addSubview(jsGestureTutorialView.view)
-        jsGestureTutorialView.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
+        viewController.view.addSubview(jtGestureTutorialViewController.view)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
     }
     
     //MARK: Helper Functions
@@ -242,7 +242,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     @objc private func readThreads(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
-                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
+                let threadForceValueArray = JacquardServiceHelper.shared.findThread(from: characteristic)
                 delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
 
@@ -257,7 +257,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     @objc private func readGesture(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
-                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+                let gesture = JacquardServiceHelper.shared.gestureConverter(from: characteristic)
                 if cachingGoogleGestures {
                     mostRecentGesture = gesture
                     print("cached \(mostRecentGesture)")
@@ -266,31 +266,31 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
                         if isDoubleTapTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isDoubleTapTutorialActivated = false
                         }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
                         if isBrushInTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isBrushInTutorialActivated = false
                         }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
                         if isBrushOutTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isBrushOutTutorialActivated = false
                         }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
                         if isCoverTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isCoverTutorialActivated = false
                         }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
                         if isScratchTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isScratchTutorialActivated = false
                         }
                     default:
@@ -336,7 +336,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     mostRecentGesture = .undefined
                     delegate?.didDetectForceTouchGesture?()
                     if isForceTouchTutorialActivated {
-                        jsGestureTutorialView.view.removeFromSuperview()
+                        jtGestureTutorialViewController.view.removeFromSuperview()
                         isForceTouchTutorialActivated = false
                     }
                 }
@@ -347,31 +347,31 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     case .doubleTap:
                         delegate?.didDetectDoubleTapGesture?()
                         if isDoubleTapTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isDoubleTapTutorialActivated = false
                         }
                     case .brushIn:
                         delegate?.didDetectBrushInGesture?()
                         if isBrushInTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isBrushInTutorialActivated = false
                         }
                     case .brushOut:
                         delegate?.didDetectBrushOutGesture?()
                         if isBrushOutTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isBrushOutTutorialActivated = false
                         }
                     case .cover:
                         delegate?.didDetectCoverGesture?()
                         if isCoverTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isCoverTutorialActivated = false
                         }
                     case .scratch:
                         delegate?.didDetectScratchGesture?()
                         if isScratchTutorialActivated {
-                            jsGestureTutorialView.view.removeFromSuperview()
+                            jtGestureTutorialViewController.view.removeFromSuperview()
                             isScratchTutorialActivated = false
                         }
                     default:
@@ -410,8 +410,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             var adDataArray = Array(adData.map { UInt32($0) })
             adDataArray.removeFirst()
             adDataArray.removeFirst()
-            if JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
-                jsQRCodeScannerView.stopScanner()
+            if JacquardServiceHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
+                jtScannerView.stopScanner()
                 targetJacket = peripheral
                 connectHelper()
                 return
