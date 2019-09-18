@@ -1,16 +1,16 @@
 //
-//  JSQRCodeScannerView.swift
-//  Pods
+//  JTScannerView.swift
+//  JacquardToolkit
 //
-//  Created by Caleb Rudnicki on 4/3/19.
+//  Created by Caleb Rudnicki on 9/18/19.
 //
 
 import UIKit
 import AVFoundation
 import NotificationCenter
 
-class JSQRCodeScannerView: UIView {
-    
+internal class JTScannerView: UIView {
+
     private var video = AVCaptureVideoPreviewLayer()
     private var session = AVCaptureSession()
     private let output = AVCaptureMetadataOutput()
@@ -174,7 +174,7 @@ class JSQRCodeScannerView: UIView {
     
 }
 
-extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
+extension JTScannerView: AVCaptureMetadataOutputObjectsDelegate {
     
     public func metadataOutput(_ output: AVCaptureMetadataOutput,
                                didOutput metadataObjects: [AVMetadataObject],
@@ -196,29 +196,11 @@ extension JSQRCodeScannerView: AVCaptureMetadataOutputObjectsDelegate {
     
 }
 
-extension JSQRCodeScannerView: JTTrayDelegate {
+extension JTScannerView: JTTrayDelegate {
     
     func didEnterValidJacketID(with id: String) {
         JacquardService.shared.updateJacketIDString(jacketIDString: id)
         tray.updateTitle(to: JSConstants.JSStrings.Notifications.scanSuccessfulScanner)
     }
-    
-}
 
-extension UIColor {
-    
-    static let jsLightGrey = UIColor(red: 248/255, green: 247/255, blue: 243/255, alpha: 1)
-    static let jsDarkGrey = UIColor(red: 231/255, green: 220/255, blue: 236/255, alpha: 1)
-    
 }
-
-extension UIView {
-    
-    func addSubviews(_ views: [UIView]) {
-        for view in views {
-            self.addSubview(view)
-        }
-    }
-    
-}
-

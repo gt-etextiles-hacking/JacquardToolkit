@@ -132,9 +132,3 @@ extension JTTray: JTButtonDelegate {
     }
     
 }
-
-extension String {
-    var isInt: Bool {
-        return Int(self) != nil
-    }
-}

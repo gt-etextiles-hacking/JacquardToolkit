@@ -1,16 +1,16 @@
 //
-//  JSGestureTutorialView.swift
+//  JTGestureTutorialViewController.swift
 //  JacquardToolkit
 //
-//  Created by Caleb Rudnicki on 5/2/19.
+//  Created by Caleb Rudnicki on 9/18/19.
 //
 
 import UIKit
 import AVKit
 import NotificationCenter
 
-class JSGestureTutorialView: AVPlayerViewController {
-    
+class JTGestureTutorialViewController: AVPlayerViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main, using: { _ in
@@ -32,5 +32,5 @@ class JSGestureTutorialView: AVPlayerViewController {
         
         player?.play()
     }
-    
+
 }
