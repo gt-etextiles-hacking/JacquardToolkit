@@ -158,10 +158,12 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playDoubleTapTutorial(viewController: UIViewController) {
+    public func playDoubleTapTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        print(showPlaybackControls)
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isDoubleTapTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -174,7 +176,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func playBrushInTutorial(viewController: UIViewController) {
         isBrushInTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn, withDismissButton: true)
     }
     
     /**
@@ -187,7 +189,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func playBrushOutTutorial(viewController: UIViewController) {
         isBrushOutTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut, withDismissButton: true)
     }
     
     /**
@@ -200,7 +202,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func playCoverTutorial(viewController: UIViewController) {
         isCoverTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover, withDismissButton: true)
     }
     
     /**
@@ -213,7 +215,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func playScratchTutorial(viewController: UIViewController) {
         isScratchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch, withDismissButton: true)
     }
     
     /**
@@ -226,7 +228,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     public func playForceTouchTutorial(viewController: UIViewController) {
         isForceTouchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch, withDismissButton: true)
     }
     
     //MARK: Helper Functions

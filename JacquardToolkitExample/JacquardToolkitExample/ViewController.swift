@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     @IBAction func playTutorialButtonTapped(_ sender: Any) {
         switch currentlySelectedTutorial {
         case "Double Tap":
-            JacquardService.shared.playDoubleTapTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playDoubleTapTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Brush In":
             JacquardService.shared.playBrushInTutorial(viewController: self.navigationController!)
         case "Brush Out":
@@ -120,7 +120,7 @@ extension ViewController: JacquardServiceDelegate {
         connectButton.title = isConnected ? "Connected" : "Connect"
         connectButton.isEnabled = !isConnected
         rainbowGlowButton.isEnabled = isConnected
-        playTutorialButton.isEnabled = isConnected
+        playTutorialButton.isEnabled = true//isConnected
         for thread in threadArray {
             thread.alpha = isConnected ? 1.0 : 0.3
         }
