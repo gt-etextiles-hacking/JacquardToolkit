@@ -1,8 +1,8 @@
 //
-//  JSConstants.swift
+//  JacquardServiceConstants.swift
 //  JacquardToolkit
 //
-//  Created by Caleb Rudnicki on 12/1/18.
+//  Created by Caleb Rudnicki on 9/18/19.
 //
 
 import Foundation
@@ -38,19 +38,13 @@ struct JSConstants {
         struct Notifications {
             static let readGesture = "ReadGesture"
             static let readThreads = "ReadThreads"
-            
-            static let scanSuccessfulScanner = "ScanSuccessfulScanner"
-            static let scanSuccessfulKeyboard = "ScanSuccessfulKeyboard"
-            static let didStartEditingTextField = "DidStartEditingTextField"
-            
-            static let jacketID = "JacketID"
         }
         
         struct ForceTouch {
             static let outputLabel = "ForceTouch"
             static let reenableMessage = "Reenabling force touch"
         }
-
+        
     }
     
     struct JSNumbers {
