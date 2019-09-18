@@ -191,6 +191,7 @@
 		CC4B1AEABB6ACA5CAB6CFD42160D2B51 /* JacquardToolkit */ = {
 			isa = PBXGroup;
 			children = (
+				829CEAA52332640B00055AA6 /* CustomViews */,
 				82C1345C2276462B0080F9E1 /* JacquardServiceDelegate.swift */,
 				1C2796E599A238237BF1E77886466C50 /* JacquardService.swift */,
 				B18B830EDD9ECAC9D5D5BC42641EB0AD /* JacquardToolkit.h */,
@@ -216,7 +217,6 @@
 		ED8AD22B8172D88B02C0BC5C79A9C5ED /* JacquardToolkit */ = {
 			isa = PBXGroup;
 			children = (
-				829CEAA52332640B00055AA6 /* CustomViews */,
 				18634442CC7D485589C9589D6E6E7AD4 /* ForceTouch.mlmodel */,
 				D67C88BD7181EAFBC6962545ED862CDB /* JSConstants.swift */,
 				D3328515D3969B1BC2D8247434D8D7D1 /* JSHelper.swift */,
