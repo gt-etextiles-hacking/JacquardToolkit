@@ -10,6 +10,13 @@ import AVFoundation
 import NotificationCenter
 
 internal class JTScannerView: UIView {
+    
+    struct Constants {
+        static let trayTitleInitial = "Scan QR Code"
+        static let trayTitleSecondary = "Pop Tag In"
+        static let trayTextFieldPlaceholder = "Jacket ID"
+        static let trayButtonTitle = "Connect"
+    }
 
     private var video = AVCaptureVideoPreviewLayer()
     private var session = AVCaptureSession()
@@ -28,13 +35,16 @@ internal class JTScannerView: UIView {
     private let scannerTargetView: UIView = {
         let scannerTargetView = UIView()
         scannerTargetView.backgroundColor = .clear
-        scannerTargetView.layer.borderColor = UIColor.jsLightGrey.cgColor
+        scannerTargetView.layer.borderColor = UIColor.jtLightGrey.cgColor
         scannerTargetView.layer.borderWidth = 5
         scannerTargetView.translatesAutoresizingMaskIntoConstraints = false
         return scannerTargetView
     }()
     
-    private let tray = JTTray()
+    private let tray = JTTray(frame: CGRect.zero,
+                              title: Constants.trayTitleInitial,
+                              textFieldPlaceholder: Constants.trayTextFieldPlaceholder,
+                              buttonTitle: Constants.trayButtonTitle)
     
     // MARK: Initializers
     
@@ -183,7 +193,7 @@ extension JTScannerView: AVCaptureMetadataOutputObjectsDelegate {
             qrCodeRecognized = true
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scannerTargetView.layer.borderColor = UIColor.green.cgColor
-            tray.updateTitle(to: JSConstants.JSStrings.UI.scannerSecondaryPrompt)
+            tray.updateTitle(to: Constants.trayTitleSecondary)
             session.stopRunning()
             if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
                 let qrCodeString = object.stringValue {
@@ -200,7 +210,7 @@ extension JTScannerView: JTTrayDelegate {
     
     func didEnterValidJacketID(with id: String) {
         JacquardService.shared.updateJacketIDString(jacketIDString: id)
-        tray.updateTitle(to: JSConstants.JSStrings.UI.scannerSecondaryPrompt)
+        tray.updateTitle(to: Constants.trayTitleSecondary)
     }
 
 }

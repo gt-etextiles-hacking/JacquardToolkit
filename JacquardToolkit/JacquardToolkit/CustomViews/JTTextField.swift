@@ -26,21 +26,26 @@ internal class JTTextField: UITextField {
     
     // MARK: Initializers
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        placeholder = "Jacket ID"
+    convenience init(frame: CGRect, placeholder: String) {
+        self.init(frame: frame)
+        
+        self.placeholder = placeholder
+        
         font = UIFont(name: "HelveticaNeue-Thin", size: 24)
         borderStyle = .roundedRect
         layer.borderColor = UIColor.gray.cgColor
         layer.borderWidth = 1
-        backgroundColor = .jsDarkGrey
+        backgroundColor = .jtDarkGrey
         autocapitalizationType = UITextAutocapitalizationType(rawValue: 3)!
         clearButtonMode = .whileEditing
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         
-                
         addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required public init?(coder aDecoder: NSCoder) {

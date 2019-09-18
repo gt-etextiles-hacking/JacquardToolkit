@@ -23,23 +23,25 @@ internal class JTTray: UIView {
     
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = JSConstants.JSStrings.UI.scannerInitialPrompt
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         return titleLabel
     }()
     
-    private let textField = JTTextField()
-    
-    private let button = JTButton()
+    private var textField = JTTextField()
+    private var button = JTButton()
 
     // MARK: Initializers
     
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
+    convenience init(frame: CGRect, title: String, textFieldPlaceholder: String, buttonTitle: String) {
+        self.init(frame: frame)
         
-        backgroundColor = .jsLightGrey
+        titleLabel.text = title
+        textField = JTTextField(frame: frame, placeholder: textFieldPlaceholder)
+        button = JTButton(frame: frame, title: buttonTitle)
+        
+        backgroundColor = .jtLightGrey
         layer.cornerRadius = 10
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.8
@@ -53,6 +55,10 @@ internal class JTTray: UIView {
         
         addSubviews([containerView, titleLabel, textField, button])
         updateConstraints()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required init?(coder aDecoder: NSCoder) {

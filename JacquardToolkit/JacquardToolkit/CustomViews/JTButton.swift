@@ -14,10 +14,13 @@ internal protocol JTButtonDelegate {
 internal class JTButton: UIButton {
     
     var jtButtonDelegate: JTButtonDelegate?
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setTitle(JSConstants.JSStrings.UI.trayButtonLabel, for: .normal)
+    
+    // MARK: Initializers
+    
+    convenience init(frame: CGRect, title: String) {
+        self.init(frame: frame)
+        
+        setTitle(title, for: .normal)
         backgroundColor = .gray
         layer.cornerRadius = 10
         isEnabled = false
@@ -25,10 +28,16 @@ internal class JTButton: UIButton {
         
         addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
     }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    // MARK: Actions
     
     @objc private func searchButtonTapped() {
         let _ = jtButtonDelegate?.didTap(self)

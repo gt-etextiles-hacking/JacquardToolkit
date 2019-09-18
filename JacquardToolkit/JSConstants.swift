@@ -50,13 +50,7 @@ struct JSConstants {
             static let outputLabel = "ForceTouch"
             static let reenableMessage = "Reenabling force touch"
         }
-        
-        struct UI {
-            static let scannerInitialPrompt = "Scan QR Code"
-            static let scannerSecondaryPrompt = "Pop Tag In"
-            static let trayButtonLabel = "Connect"
-        }
-        
+
     }
     
     struct JSNumbers {

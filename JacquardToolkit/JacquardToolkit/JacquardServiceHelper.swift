@@ -1,16 +1,16 @@
 //
-//  JSHelper.swift
+//  JacquardServiceHelper.swift
 //  JacquardToolkit
 //
-//  Created by Caleb Rudnicki on 11/30/18.
+//  Created by Caleb Rudnicki on 9/18/19.
 //
 
 import Foundation
 import CoreBluetooth
 
-class JSHelper {
+internal class JacquardServiceHelper {
     
-    public static let shared = JSHelper()
+    public static let shared = JacquardServiceHelper()
     
     internal func gestureConverter(from characteristic: CBCharacteristic) -> JSConstants.JSGestures {
         guard let characteristicData = characteristic.value, let byte = characteristicData.first else { return JSConstants.JSGestures.undefined }
@@ -120,7 +120,7 @@ class JSHelper {
                 counter = counter + 1
             } else if sixBitCode <= 0x22 {
                 sixBitCode += UInt8(Character(unicodeScalarLiteral: "A").asciiValue - 0x0a)
-//                i = i - 1
+                //                i = i - 1
             } else if sixBitCode <= 0x3b {
                 sixBitCode += UInt8(Character(unicodeScalarLiteral: "a").asciiValue - 0x23)
                 counter = counter + 1

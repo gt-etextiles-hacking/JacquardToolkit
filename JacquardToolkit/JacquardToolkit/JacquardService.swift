@@ -124,8 +124,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func rainbowGlowJacket() {
         if centralManager.state == .poweredOn {
-            let dataval = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
-            let dataval1 = JSHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
+            let dataval = JacquardServiceHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code1)
+            let dataval1 = JacquardServiceHelper.shared.dataWithHexString(hex: JSConstants.JSHexCodes.RainbowGlow.code2)
             if glowCharacteristic != nil {
                 targetJacket.writeValue(dataval, for: glowCharacteristic, type: .withoutResponse)
                 targetJacket.writeValue(dataval1, for: glowCharacteristic, type: .withoutResponse)
@@ -242,7 +242,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     @objc private func readThreads(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic {
-                let threadForceValueArray = JSHelper.shared.findThread(from: characteristic)
+                let threadForceValueArray = JacquardServiceHelper.shared.findThread(from: characteristic)
                 delegate?.didDetectThreadTouch?(threadArray: threadForceValueArray)
                 checkForForceTouch(threadReadings: threadForceValueArray)
 
@@ -257,7 +257,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     @objc private func readGesture(userInfo: Notification) {
         if let userInfo = userInfo.userInfo {
             if let characteristic = userInfo["characteristic"] as? CBCharacteristic, forceTouchTurnedEnabled {
-                let gesture = JSHelper.shared.gestureConverter(from: characteristic)
+                let gesture = JacquardServiceHelper.shared.gestureConverter(from: characteristic)
                 if cachingGoogleGestures {
                     mostRecentGesture = gesture
                     print("cached \(mostRecentGesture)")
@@ -410,7 +410,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
             var adDataArray = Array(adData.map { UInt32($0) })
             adDataArray.removeFirst()
             adDataArray.removeFirst()
-            if JSHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
+            if JacquardServiceHelper.shared.decodeAdvertisementData(dataIn: adDataArray) == targetJacketIDString {
                 jtScannerView.stopScanner()
                 targetJacket = peripheral
                 connectHelper()
