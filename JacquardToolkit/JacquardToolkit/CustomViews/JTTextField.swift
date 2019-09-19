@@ -35,7 +35,7 @@ internal class JTTextField: UITextField {
         borderStyle = .roundedRect
         layer.borderColor = UIColor.gray.cgColor
         layer.borderWidth = 1
-        backgroundColor = .jtDarkGrey
+        backgroundColor = .clear
         autocapitalizationType = UITextAutocapitalizationType(rawValue: 3)!
         clearButtonMode = .whileEditing
         translatesAutoresizingMaskIntoConstraints = false
