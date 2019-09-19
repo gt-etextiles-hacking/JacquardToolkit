@@ -25,6 +25,14 @@ internal class JTScannerView: UIView {
     private var qrCodeRecognized = false
     private var keyboardFrame: CGFloat!
     
+    private let dismissButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "dismiss.png", in: Bundle(for: JacquardService.self), compatibleWith: nil), for: .normal)
+        button.tintColor = .jtLightGrey
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let tappableView: UIView = {
         let tappableView = UIView()
         tappableView.alpha = 1
@@ -53,7 +61,9 @@ internal class JTScannerView: UIView {
         
         tray.jtTrayDelegate = self
         
-        addSubviews([tappableView, scannerTargetView, tray])
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
+        
+        addSubviews([dismissButton, tappableView, scannerTargetView, tray])
         updateConstraints()
         
         if let captureDevice = AVCaptureDevice.default(for: .video) {
@@ -76,6 +86,7 @@ internal class JTScannerView: UIView {
             layer.addSublayer(video)
             layer.insertSublayer(tray.layer, above: video)
             layer.insertSublayer(scannerTargetView.layer, above: video)
+            layer.insertSublayer(dismissButton.layer, above: video)
             
         }
         
@@ -107,25 +118,30 @@ internal class JTScannerView: UIView {
         super.updateConstraints()
         
         NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            dismissButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
+        ])
+        
+        NSLayoutConstraint.activate([
             tappableView.topAnchor.constraint(equalTo: topAnchor),
             tappableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tappableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tappableView.bottomAnchor.constraint(equalTo: tray.topAnchor)
-            ])
+        ])
         
         NSLayoutConstraint.activate([
             scannerTargetView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 64),
             scannerTargetView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5),
             scannerTargetView.centerXAnchor.constraint(equalTo: centerXAnchor),
             scannerTargetView.heightAnchor.constraint(equalTo: scannerTargetView.widthAnchor)
-            ])
+        ])
         
         NSLayoutConstraint.activate([
             tray.topAnchor.constraint(equalTo: topAnchor, constant: frame.height * 0.6),
             tray.leadingAnchor.constraint(equalTo: leadingAnchor),
             tray.trailingAnchor.constraint(equalTo: trailingAnchor),
             tray.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1)
-            ])
+        ])
     }
     
     // MARK: Public Functions
@@ -142,7 +158,7 @@ internal class JTScannerView: UIView {
     
     public func stopScanner() {
         session.startRunning()
-        self.removeFromSuperview()
+        removeFromSuperview()
     }
     
     // MARK: Keyboard Functions
@@ -180,6 +196,10 @@ internal class JTScannerView: UIView {
             endEditing(true)
             keyboardIsPresent = false
         }
+    }
+    
+    @objc private func dismissButtonTapped() {
+        removeFromSuperview()
     }
     
 }

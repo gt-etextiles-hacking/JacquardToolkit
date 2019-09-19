@@ -11,6 +11,7 @@
 		5BC490F246D06776F35FDFA404632E8A /* JacquardToolkit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FDC7CD9F1CDF656AA1054FBF391D622E /* JacquardToolkit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		820C0A752332A68E009414F1 /* JacquardServiceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820C0A742332A68E009414F1 /* JacquardServiceHelper.swift */; };
 		820C0A782332B712009414F1 /* JacquardServiceConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820C0A772332B712009414F1 /* JacquardServiceConstants.swift */; };
+		820E9DF62333B03100689153 /* JTAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 820E9DF52333B03100689153 /* JTAssets.xcassets */; };
 		829CEA9E23300E4300055AA6 /* JTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829CEA9D23300E4300055AA6 /* JTTextField.swift */; };
 		829CEAA0233186A800055AA6 /* JTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829CEA9F233186A800055AA6 /* JTButton.swift */; };
 		829CEAA2233193EB00055AA6 /* JTTray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829CEAA1233193EB00055AA6 /* JTTray.swift */; };
@@ -49,6 +50,7 @@
 		6E8A03C114384FCA185A249B3B3FF0F9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		820C0A742332A68E009414F1 /* JacquardServiceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JacquardServiceHelper.swift; sourceTree = "<group>"; };
 		820C0A772332B712009414F1 /* JacquardServiceConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JacquardServiceConstants.swift; sourceTree = "<group>"; };
+		820E9DF52333B03100689153 /* JTAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = JTAssets.xcassets; sourceTree = "<group>"; };
 		829CEA9D23300E4300055AA6 /* JTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JTTextField.swift; sourceTree = "<group>"; };
 		829CEA9F233186A800055AA6 /* JTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JTButton.swift; sourceTree = "<group>"; };
 		829CEAA1233193EB00055AA6 /* JTTray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JTTray.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				1C2796E599A238237BF1E77886466C50 /* JacquardService.swift */,
 				820C0A742332A68E009414F1 /* JacquardServiceHelper.swift */,
 				820C0A772332B712009414F1 /* JacquardServiceConstants.swift */,
+				820E9DF52333B03100689153 /* JTAssets.xcassets */,
 				B18B830EDD9ECAC9D5D5BC42641EB0AD /* JacquardToolkit.h */,
 			);
 			name = JacquardToolkit;
@@ -329,6 +332,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				820E9DF62333B03100689153 /* JTAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
