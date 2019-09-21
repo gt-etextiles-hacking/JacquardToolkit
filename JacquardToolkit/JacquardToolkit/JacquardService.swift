@@ -26,6 +26,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var targetJacketIDString: String?
     private var jtScannerView = JTScannerView()
     private var jtGestureTutorialViewController = JTGestureTutorialViewController()
+    private var isOnDebug: Bool = false
     
     //Forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
@@ -51,6 +52,10 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     
     private override init() {
         super.init()
+        #if DEBUG
+            isOnDebug = true
+        #endif
+        
         centralManager = CBCentralManager(delegate: self, queue: nil)
         do {
             input_data = try MLMultiArray(shape: [JSConstants.JSNumbers.ForceTouch.fullThreadCount as NSNumber], dataType: MLMultiArrayDataType.double);
@@ -74,7 +79,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func activateBluetooth(completion: @escaping (Bool) -> Void) {
         powerOnCompletion = completion
-        if centralManager.state == .poweredOn {
+        if centralManager.state == .poweredOn || isOnDebug {
             powerOnCompletion?(true)
             powerOnCompletion = nil
         }
@@ -91,7 +96,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the camera open up on
      */
     public func connect(viewController: UIViewController) {
-        if centralManager.state == .poweredOn {
+        if centralManager.state == .poweredOn || isOnDebug {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
             peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
             guard peripheralList.count > 0 else {
