@@ -12,8 +12,10 @@ import NotificationCenter
 class JTGestureTutorialViewController: AVPlayerViewController {
     
     private let dismissButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.text = "Button"
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "dismiss.png", in: Bundle(for: JacquardService.self), compatibleWith: nil), for: .normal)
+        button.tintColor = .jtDarkGrey
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
@@ -23,6 +25,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
             self.player?.seek(to: kCMTimeZero)
             self.player?.play()
         })
+        
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         
         contentOverlayView?.addSubview(dismissButton)
         updateConstraints()
@@ -36,8 +40,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
         }
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: 8),
-            dismissButton.leadingAnchor.constraint(equalTo: overlayView.leadingAnchor, constant: 8)
+            dismissButton.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: 36),
+            dismissButton.leadingAnchor.constraint(equalTo: overlayView.leadingAnchor, constant: 16)
         ])
     }
     
@@ -51,17 +55,11 @@ class JTGestureTutorialViewController: AVPlayerViewController {
         player?.isMuted = true
         videoGravity = "resizeAspectFill"
         showsPlaybackControls = false
-        contentOverlayView?.addSubview(dismissButton)
-//        updateConstraints()
-//        self.contentOverlayView
-            //= JTTray(frame: CGRect.zero, title: "Title", textFieldPlaceholder: "Placeholder", buttonTitle: "Button Title")
-        
-        
         player?.play()
     }
     
-    @objc private func dismissView() {
-        print("Dismissing")
+    @objc private func dismissButtonTapped() {
+        removeFromParentViewController()
     }
 
 }
