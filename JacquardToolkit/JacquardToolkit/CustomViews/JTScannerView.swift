@@ -66,29 +66,33 @@ internal class JTScannerView: UIView {
         addSubviews([dismissButton, tappableView, scannerTargetView, tray])
         updateConstraints()
         
-        if let captureDevice = AVCaptureDevice.default(for: .video) {
-            do {
-                let input = try AVCaptureDeviceInput(device: captureDevice)
-                session.addInput(input)
-            } catch {
-                print("Error")
+        #if DEBUG
+            video.frame = frame
+            video.backgroundColor = UIColor.darkGray.cgColor
+        #else
+            if let captureDevice = AVCaptureDevice.default(for: .video) {
+                do {
+                    let input = try AVCaptureDeviceInput(device: captureDevice)
+                    session.addInput(input)
+                } catch {
+                    print("Error")
+                }
+                
+                session.addOutput(output)
+                
+                output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                output.metadataObjectTypes = [.qr]
+                
+                video = AVCaptureVideoPreviewLayer(session: session)
+                video.frame = layer.bounds
+                video.videoGravity = .resizeAspectFill
             }
-            
-            session.addOutput(output)
-            
-            output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            output.metadataObjectTypes = [.qr]
-            
-            video = AVCaptureVideoPreviewLayer(session: session)
-            video.frame = layer.bounds
-            video.videoGravity = .resizeAspectFill
-            
-            layer.addSublayer(video)
-            layer.insertSublayer(tray.layer, above: video)
-            layer.insertSublayer(scannerTargetView.layer, above: video)
-            layer.insertSublayer(dismissButton.layer, above: video)
-            
-        }
+        #endif
+        
+        layer.addSublayer(video)
+        layer.insertSublayer(tray.layer, above: video)
+        layer.insertSublayer(scannerTargetView.layer, above: video)
+        layer.insertSublayer(dismissButton.layer, above: video)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappableAreaTapped))
         tappableView.addGestureRecognizer(tapGestureRecognizer)
@@ -118,7 +122,7 @@ internal class JTScannerView: UIView {
         super.updateConstraints()
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: 36),
             dismissButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
         ])
         
