@@ -69,15 +69,15 @@ class ViewController: UIViewController {
         case "Double Tap":
             JacquardService.shared.playDoubleTapTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Brush In":
-            JacquardService.shared.playBrushInTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playBrushInTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Brush Out":
-            JacquardService.shared.playBrushOutTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playBrushOutTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Cover":
-            JacquardService.shared.playCoverTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playCoverTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Scratch":
-            JacquardService.shared.playScratchTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playScratchTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         case "Force Touch":
-            JacquardService.shared.playForceTouchTutorial(viewController: self.navigationController!)
+            JacquardService.shared.playForceTouchTutorial(viewController: self.navigationController!, showPlaybackControls: true)
         default:
             print("Did not select a valid choice")
         }

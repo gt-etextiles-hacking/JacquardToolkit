@@ -25,15 +25,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
             self.player?.seek(to: kCMTimeZero)
             self.player?.play()
         })
-        
-        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
-        
-        contentOverlayView?.addSubview(dismissButton)
-        updateConstraints()
     }
-    
-    
-    
+
     private func updateConstraints() {
         guard let overlayView = self.contentOverlayView else {
             return
@@ -55,11 +48,18 @@ class JTGestureTutorialViewController: AVPlayerViewController {
         player?.isMuted = true
         videoGravity = "resizeAspectFill"
         showsPlaybackControls = false
+        
+        if withDismissButton {
+            dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
+            contentOverlayView?.addSubview(dismissButton)
+            updateConstraints()
+        }
+        
         player?.play()
     }
     
     @objc private func dismissButtonTapped() {
-        removeFromParentViewController()
+        view.removeFromSuperview()
     }
 
 }

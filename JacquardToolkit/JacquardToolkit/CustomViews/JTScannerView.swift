@@ -66,7 +66,7 @@ internal class JTScannerView: UIView {
         addSubviews([dismissButton, tappableView, scannerTargetView, tray])
         updateConstraints()
         
-        #if DEBUG
+        #if targetEnvironment(simulator)
             video.frame = frame
             video.backgroundColor = UIColor.darkGray.cgColor
         #else
