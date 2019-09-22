@@ -26,7 +26,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var targetJacketIDString: String?
     private var jtScannerView = JTScannerView()
     private var jtGestureTutorialViewController = JTGestureTutorialViewController()
-    private var isOnDebug: Bool = false
+    private var isOnSimulator: Bool = false
     
     //Forcetouch gesture variables
     private let forceTouchModel = ForceTouch()
@@ -52,8 +52,8 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     
     private override init() {
         super.init()
-        #if DEBUG
-            isOnDebug = true
+        #if targetEnvironment(simulator)
+            isOnSimulator = true
         #endif
         
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -79,7 +79,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      */
     public func activateBluetooth(completion: @escaping (Bool) -> Void) {
         powerOnCompletion = completion
-        if centralManager.state == .poweredOn || isOnDebug {
+        if centralManager.state == .poweredOn || isOnSimulator {
             powerOnCompletion?(true)
             powerOnCompletion = nil
         }
@@ -96,7 +96,7 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      - Parameter viewController: the class you would like to have the camera open up on
      */
     public func connect(viewController: UIViewController) {
-        if centralManager.state == .poweredOn || isOnDebug {
+        if centralManager.state == .poweredOn || isOnSimulator {
             let serviceCBUUID = CBUUID(string: JSConstants.JSUUIDs.ServiceStrings.generalReadingUUID)
             peripheralList = centralManager.retrieveConnectedPeripherals(withServices: [serviceCBUUID])
             guard peripheralList.count > 0 else {
@@ -158,10 +158,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playDoubleTapTutorial(viewController: UIViewController) {
+    public func playDoubleTapTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isDoubleTapTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -171,10 +172,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playBrushInTutorial(viewController: UIViewController) {
+    public func playBrushInTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isBrushInTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -184,10 +186,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playBrushOutTutorial(viewController: UIViewController) {
+    public func playBrushOutTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isBrushOutTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -197,10 +200,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playCoverTutorial(viewController: UIViewController) {
+    public func playCoverTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isCoverTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -210,10 +214,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playScratchTutorial(viewController: UIViewController) {
+    public func playScratchTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isScratchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch, withDismissButton: showPlaybackControls)
     }
     
     /**
@@ -223,10 +228,11 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      
      - Parameter viewController: the class you would like to have the video appear over
      */
-    public func playForceTouchTutorial(viewController: UIViewController) {
+    public func playForceTouchTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
+        guard let showPlaybackControls = showPlaybackControls else { return }
         isForceTouchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch, withDismissButton: showPlaybackControls)
     }
     
     //MARK: Helper Functions
