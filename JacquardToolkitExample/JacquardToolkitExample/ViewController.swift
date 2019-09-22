@@ -120,7 +120,7 @@ extension ViewController: JacquardServiceDelegate {
         connectButton.title = isConnected ? "Connected" : "Connect"
         connectButton.isEnabled = !isConnected
         rainbowGlowButton.isEnabled = isConnected
-        playTutorialButton.isEnabled = true//isConnected
+        playTutorialButton.isEnabled = isConnected
         for thread in threadArray {
             thread.alpha = isConnected ? 1.0 : 0.3
         }
