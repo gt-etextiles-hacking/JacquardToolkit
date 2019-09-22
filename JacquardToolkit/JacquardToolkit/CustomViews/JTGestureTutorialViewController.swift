@@ -18,6 +18,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    // MARK: Initializers
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
             self.player?.play()
         })
     }
+    
+    // MARK: Constraints
 
     private func updateConstraints() {
         guard let overlayView = self.contentOverlayView else {
@@ -37,6 +41,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
             dismissButton.leadingAnchor.constraint(equalTo: overlayView.leadingAnchor, constant: 16)
         ])
     }
+    
+    // MARK: Public Functions
     
     public func playVideo(tutorialURL: String, withDismissButton: Bool) {
         guard let movieURL = URL(string: tutorialURL) else {
@@ -57,6 +63,8 @@ class JTGestureTutorialViewController: AVPlayerViewController {
         
         player?.play()
     }
+    
+    // MARK: Action Functions
     
     @objc private func dismissButtonTapped() {
         view.removeFromSuperview()

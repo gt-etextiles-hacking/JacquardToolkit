@@ -1,6 +1,6 @@
 # JacquardToolkit
 
-JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard...
+JacquardToolkit is a iOS framework to enable developers to develop their own applications using their Levi's Jacquard.
 
 # What can I do with the Toolkit?
 
@@ -112,27 +112,27 @@ extension ViewController: JacquardServiceDelegate {
 6. Show your user how to correctly perform the gestures with tutorial videos:
 ```sh
 @IBAction func doubleTapTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playDoubleTapTutorial(viewController: self)
+    JacquardService.shared.playDoubleTapTutorial(viewController: self, showDismissButton: true)
 }
 
 @IBAction func brushInTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playBrushInTutorial(viewController: self)
+    JacquardService.shared.playBrushInTutorial(viewController: self, showDismissButton: true)
 }
 
 @IBAction func brushOutTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playBrushOutTutorial(viewController: self)
+    JacquardService.shared.playBrushOutTutorial(viewController: self, showDismissButton: true)
 }
 
 @IBAction func coverTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playCoverTutorial(viewController: self)
+    JacquardService.shared.playCoverTutorial(viewController: self, showDismissButton: true)
 }
 
 @IBAction func scratchTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playScratchTutorial(viewController: self)
+    JacquardService.shared.playScratchTutorial(viewController: self, showDismissButton: true)
 }
 
 @IBAction func forceTouchTutorialButtonTapped(_ sender: Any) {
-    JacquardService.shared.playForceTouchTutorial(viewController: self)
+    JacquardService.shared.playForceTouchTutorial(viewController: self, showDismissButton: true)
 }
 ```
 

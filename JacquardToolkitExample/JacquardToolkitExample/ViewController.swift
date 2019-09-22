@@ -67,17 +67,17 @@ class ViewController: UIViewController {
     @IBAction func playTutorialButtonTapped(_ sender: Any) {
         switch currentlySelectedTutorial {
         case "Double Tap":
-            JacquardService.shared.playDoubleTapTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playDoubleTapTutorial(viewController: self.navigationController!, showDismissButton: true)
         case "Brush In":
-            JacquardService.shared.playBrushInTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playBrushInTutorial(viewController: self.navigationController!, showDismissButton: true)
         case "Brush Out":
-            JacquardService.shared.playBrushOutTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playBrushOutTutorial(viewController: self.navigationController!, showDismissButton: true)
         case "Cover":
-            JacquardService.shared.playCoverTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playCoverTutorial(viewController: self.navigationController!, showDismissButton: true)
         case "Scratch":
-            JacquardService.shared.playScratchTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playScratchTutorial(viewController: self.navigationController!, showDismissButton: true)
         case "Force Touch":
-            JacquardService.shared.playForceTouchTutorial(viewController: self.navigationController!, showPlaybackControls: true)
+            JacquardService.shared.playForceTouchTutorial(viewController: self.navigationController!, showDismissButton: true)
         default:
             print("Did not select a valid choice")
         }

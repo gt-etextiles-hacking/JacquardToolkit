@@ -154,15 +154,16 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     /**
      Plays the video tutorial for the Double Tap gesture
      
-     Be sure that you have an internet connection
+     Be sure that you have an internet connection. `showDismissButton` is set to `false` by default.
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playDoubleTapTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playDoubleTapTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isDoubleTapTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.doubleTap, withDismissButton: showDismissButton)
     }
     
     /**
@@ -171,12 +172,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      Be sure that you have an internet connection
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playBrushInTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playBrushInTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isBrushInTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushIn, withDismissButton: showDismissButton)
     }
     
     /**
@@ -185,12 +187,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      Be sure that you have an internet connection
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playBrushOutTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playBrushOutTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isBrushOutTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.brushOut, withDismissButton: showDismissButton)
     }
     
     /**
@@ -199,12 +202,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      Be sure that you have an internet connection
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playCoverTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playCoverTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isCoverTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.cover, withDismissButton: showDismissButton)
     }
     
     /**
@@ -213,12 +217,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      Be sure that you have an internet connection
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playScratchTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playScratchTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isScratchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.scratch, withDismissButton: showDismissButton)
     }
     
     /**
@@ -227,12 +232,13 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
      Be sure that you have an internet connection
      
      - Parameter viewController: the class you would like to have the video appear over
+     - Parameter showDismissButton: optional value to display a dismiss button
      */
-    public func playForceTouchTutorial(viewController: UIViewController, showPlaybackControls: Bool? = false) {
-        guard let showPlaybackControls = showPlaybackControls else { return }
+    public func playForceTouchTutorial(viewController: UIViewController, showDismissButton: Bool? = false) {
+        guard let showDismissButton = showDismissButton else { return }
         isForceTouchTutorialActivated = true
         viewController.view.addSubview(jtGestureTutorialViewController.view)
-        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch, withDismissButton: showPlaybackControls)
+        jtGestureTutorialViewController.playVideo(tutorialURL: JSConstants.JSURLs.Tutorial.forceTouch, withDismissButton: showDismissButton)
     }
     
     //MARK: Helper Functions

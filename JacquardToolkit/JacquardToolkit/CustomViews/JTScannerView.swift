@@ -165,7 +165,7 @@ internal class JTScannerView: UIView {
         removeFromSuperview()
     }
     
-    // MARK: Keyboard Functions
+    // MARK: Action Functions
     
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard

@@ -105,7 +105,7 @@ internal class JTTray: UIView {
     
     // MARK: Public functions
     
-    func updateTitle(to string: String) {
+    public func updateTitle(to string: String) {
         titleLabel.text = string
     }
 

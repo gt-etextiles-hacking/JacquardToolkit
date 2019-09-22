@@ -52,6 +52,8 @@ internal class JTTextField: UITextField {
         super.init(coder: aDecoder)
     }
     
+    // MARK: Action Functions
+    
     @objc private func textFieldDidChange() {
         if let enteredText = text, enteredText.count > 9, enteredText.count < 12 {
             if String(enteredText.prefix(5)).isInt && String(enteredText.suffix(4)).isInt {
