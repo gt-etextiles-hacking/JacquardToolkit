@@ -138,6 +138,9 @@ extension ViewController: JacquardServiceDelegate {
 
 Be sure to check out the example application for more information (JacquardToolkitExample).
 
+### Want to contribute?
+Make sure to create your own fork and then submit a pull request.
+
 ### E-Textile Hacking 
 This framework is just a small part of the project that our team at Georgia Tech has been working on. If you are interested in learning more about our project, please visit [our Medium publication](https://medium.com/e-textile-hacking).
 
