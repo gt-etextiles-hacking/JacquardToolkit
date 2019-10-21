@@ -341,7 +341,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 92DETN2MKQ;
+				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -360,7 +360,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 92DETN2MKQ;
+				DEVELOPMENT_TEAM = U4985LT7P8;
 				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
