@@ -11,6 +11,14 @@ import CoreBluetooth
 import CoreML
 import NotificationCenter
 
+enum TouchZone: Int {
+    case Bottom = 0
+    case LowerMiddle = 1
+    case UpperMiddle = 2
+    case Top = 3
+}
+
+
 public class JacquardService: NSObject, CBCentralManagerDelegate {
 
     public static let shared = JacquardService()
@@ -45,6 +53,15 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
     private var isCoverTutorialActivated = false
     private var isScratchTutorialActivated = false
     private var isForceTouchTutorialActivated = false
+
+    var threadChunkArray: [[Float]] = []
+    var gestureHistory: [Int] = []
+    var gestureResetTimer: Timer?
+    var gestureHistoryConsumtionTimer: Timer?
+    var isGestureActive = false
+    var GESTURE_END_DELAY = 0.1
+    var GESTURE_HISTORY_CONSUMTION_DELAY = 0.4
+    var uniqueTouchedZones: [Int] = []
     
     // csv logging
     private var csvText = ""
@@ -267,7 +284,91 @@ public class JacquardService: NSObject, CBCentralManagerDelegate {
                     let strArray = threadForceValueArray.map { String($0) }
                     csvText.append("\(strArray.joined(separator:",")),\n")
                 }
+
+                //Pinching
+                if let gestureResetTimer = gestureResetTimer {
+                    gestureResetTimer.invalidate()
+                }
+
+                isGestureActive = true
+                gestureResetTimer = Timer.scheduledTimer(withTimeInterval: GESTURE_END_DELAY, repeats: false, block: { (timer) in
+                    print("GESTURE OVER")
+
+                    self.isGestureActive = false
+                    self.gestureHistoryConsumtionTimer?.invalidate()
+                    print("Unique Touch Zones: \(self.uniqueTouchedZones)")
+                    if self.uniqueTouchedZones == [1, 2, 3, 0] || self.uniqueTouchedZones == [1, 2, 0, 3] ||
+                       self.uniqueTouchedZones == [2, 1, 3, 0] || self.uniqueTouchedZones == [2, 1, 0, 3] {
+                        print("Pinch Out")
+                        self.delegate?.didDetectZoomInGesture?()
+                    } else if self.uniqueTouchedZones == [3, 0, 1, 2] || self.uniqueTouchedZones == [0, 3, 1, 2] ||
+                        self.uniqueTouchedZones == [3, 0, 2, 1] || self.uniqueTouchedZones == [0, 3, 2, 1] {
+                        print("Pinch In")
+                        self.delegate?.didDetectZoomOutGesture?()
+                    }
+                    self.uniqueTouchedZones.removeAll()
+                })
+
+                if threadChunkArray.count == 5 {
+                    let group = groupDetector(input: &threadChunkArray)
+                    gestureHistory.append(group.rawValue)
+                    if !uniqueTouchedZones.contains(group.rawValue) {
+                        uniqueTouchedZones.append(group.rawValue)
+                    }
+                    threadChunkArray.removeAll(keepingCapacity: false)
+                } else {
+                    threadChunkArray.append(threadForceValueArray)
+                }
+
             }
+        }
+    }
+
+    func groupDetector(input: inout [[Float]]) -> TouchZone {
+
+        var output: [Float] = [0.0, 0.0, 0.0, 0.0]
+        for i in 0..<input.count {
+            for j in 0..<input[i].count {
+                dfs(input: &input, i: i, j: j, output: &output)
+            }
+        }
+
+        let maxValue = output.max() != 0 ? output.max() : -1
+        switch output.firstIndex(of: maxValue!) {
+        case TouchZone.Bottom.rawValue:
+            return TouchZone.Bottom
+        case TouchZone.LowerMiddle.rawValue:
+            return TouchZone.LowerMiddle
+        case TouchZone.UpperMiddle.rawValue:
+            return TouchZone.UpperMiddle
+        case TouchZone.Top.rawValue:
+            return TouchZone.Top
+        default:
+            break
+
+        }
+        return TouchZone.Top
+    }
+
+    func dfs(input: inout [[Float]], i: Int, j: Int, output: inout [Float]) {
+        if i >= 0 && i < input.count && j >= 0 && j < input[i].count && input[i][j] != 0 {
+
+            if j <= 3 {
+                output[0] += 1
+            } else if j <= 6 {
+                output[1] += 1
+            } else if j <= 9 {
+                output[2] += 1
+            } else {
+                output[3] += 1
+            }
+
+            input[i][j] = 0
+            dfs(input: &input, i: i + 1, j: j, output: &output)
+            dfs(input: &input, i: i - 1, j: j, output: &output)
+            dfs(input: &input, i: i, j: j + 1, output: &output)
+            dfs(input: &input, i: i, j: j - 1, output: &output)
+
         }
     }
     

@@ -38,6 +38,16 @@ import Foundation
      Invoked when a force touch gesture is performed on the Jacquard
      */
     @objc optional func didDetectForceTouchGesture()
+
+    /**
+     Invoked when a zoom in gesture is performed on the Jacquard
+     */
+    @objc optional func didDetectZoomInGesture()
+
+    /**
+     Invoked when a zoom out gesture is performed on the Jacquard
+     */
+    @objc optional func didDetectZoomOutGesture()
     
     /**
      Invoked when at least one of the Jacquard threads is being touch

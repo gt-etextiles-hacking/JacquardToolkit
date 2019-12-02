@@ -122,7 +122,7 @@ internal class JTScannerView: UIView {
         super.updateConstraints()
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: 36),
+            dismissButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 36),
             dismissButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
         ])
         

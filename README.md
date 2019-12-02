@@ -85,8 +85,16 @@ extension ViewController: JacquardServiceDelegate {
         //Detected Scratch Gesture
     }
 
-    func didDetectForceTouch() {
+    func didDetectForceTouchGesture() {
         //Detected Force Touch Gesture 
+    }
+    
+    func didDetectZoomInGesture() {
+        //Detected Zoom In Gesture 
+    }
+    
+    func didDetectZoomOutGesture() {
+        //Detected Zoom Out Gesture 
     }
 
 }
@@ -149,3 +157,7 @@ This framework is just a small part of the project that our team at Georgia Tech
 License
 ----
 MIT
+
+---
+
+📍Made in ATL

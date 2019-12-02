@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4FE3066B0101F921D47E40DD /* Pods_JacquardToolkitExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD877E47F75A4D1CEC368C2 /* Pods_JacquardToolkitExample.framework */; };
-		82089B4B2327810D00E89B2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82089B4A2327810D00E89B2A /* Main.storyboard */; };
 		82089B4D2327812800E89B2A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82089B4C2327812800E89B2A /* ViewController.swift */; };
 		8288E20721AD9B3400F03ACC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8288E20621AD9B3400F03ACC /* AppDelegate.swift */; };
 		8288E20E21AD9B3600F03ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8288E20D21AD9B3600F03ACC /* Assets.xcassets */; };
@@ -17,7 +16,6 @@
 
 /* Begin PBXFileReference section */
 		02B7479AF6060907362D077A /* Pods-JacquardToolkitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JacquardToolkitExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JacquardToolkitExample/Pods-JacquardToolkitExample.debug.xcconfig"; sourceTree = "<group>"; };
-		82089B4A2327810D00E89B2A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		82089B4C2327812800E89B2A /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8288E20321AD9B3300F03ACC /* JacquardToolkitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JacquardToolkitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8288E20621AD9B3400F03ACC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +61,6 @@
 			children = (
 				8288E20621AD9B3400F03ACC /* AppDelegate.swift */,
 				82089B4C2327812800E89B2A /* ViewController.swift */,
-				82089B4A2327810D00E89B2A /* Main.storyboard */,
 				8288E20D21AD9B3600F03ACC /* Assets.xcassets */,
 				8288E20F21AD9B3600F03ACC /* LaunchScreen.storyboard */,
 				8288E21221AD9B3600F03ACC /* Info.plist */,
@@ -150,7 +147,6 @@
 			files = (
 				8288E21121AD9B3600F03ACC /* LaunchScreen.storyboard in Resources */,
 				8288E20E21AD9B3600F03ACC /* Assets.xcassets in Resources */,
-				82089B4B2327810D00E89B2A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +266,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -325,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -341,14 +337,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U4985LT7P8;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 92DETN2MKQ;
 				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calebrudnicki.JacquardToolkitExample;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = JacquardToolkitExample;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -360,14 +358,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U4985LT7P8;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 92DETN2MKQ;
 				INFOPLIST_FILE = JacquardToolkitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calebrudnicki.JacquardToolkitExample;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = JacquardToolkitExample;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
