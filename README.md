@@ -14,7 +14,7 @@ JacquardToolkit is a iOS framework to enable developers to develop their own app
 
 ### Installation
 
-JacquardToolkit is currently only availible as a Cocoapod.
+JacquardToolkit is currently only available as a Cocoapod.
 
 1. Add a pod entry for JacquardToolkit to your Podfile: 
 ```sh
